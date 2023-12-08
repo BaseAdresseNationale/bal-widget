@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyledWindow } from './Window.styles'
-import Logo from '../../assets/logo.png'
-import { motion } from 'framer-motion'
+import Logo from '../../../assets/logo.png'
 import { useNavigate, useLocation } from 'react-router-dom'
+import ConfigContext from '../../contexts/configContext'
 
 interface WindowProps {
   children: React.ReactNode
@@ -10,6 +10,7 @@ interface WindowProps {
 }
 
 function Window({ children, isExpanded }: WindowProps) {
+  const config = useContext(ConfigContext)
   const navigate = useNavigate()
   const onClick = () => {
     navigate('/')
@@ -17,32 +18,18 @@ function Window({ children, isExpanded }: WindowProps) {
   const location = useLocation()
   const isOnHomePage = location.pathname === '/'
   return (
-    <StyledWindow isExpanded={isExpanded}>
+    <StyledWindow $isExpanded={isExpanded}>
       <header>
-        <div className='logo-wrapper'>
-          <img src={Logo} alt='Logo BAL' height={30} width={30} />
-        </div>
-        <div>
-          <h1>Centre d&apos;aide Base Adresse Locale</h1>
-          {!isOnHomePage && (
-            <button
-              onClick={onClick}
-              className='fr-link fr-icon-arrow-left-line fr-link--icon-left'
-            >
-              Retour
-            </button>
-          )}
-        </div>
+        {isOnHomePage ? (
+          <div className='logo-wrapper'>
+            <img src={Logo} alt='Logo BAL' height={30} width={30} />
+          </div>
+        ) : (
+          <button title='Retour' onClick={onClick} className='fr-btn fr-icon-arrow-left-line' />
+        )}
+        <h1>{config?.global?.title}</h1>
       </header>
-      <motion.main
-        className='main-container'
-        initial={{ width: 0 }}
-        animate={{ width: '100%' }}
-        exit={{ x: '100%', opacity: 0 }}
-        transition={{ duration: 2 }}
-      >
-        {children}
-      </motion.main>
+      <main className='main-container'>{children}</main>
     </StyledWindow>
   )
 }

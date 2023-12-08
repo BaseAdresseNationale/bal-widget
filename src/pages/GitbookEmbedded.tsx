@@ -1,6 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
+import AnimatedPage from '../layouts/AnimatedPage'
 
 const iframeBaseSrc = 'https://doc.adresse.data.gouv.fr'
 
@@ -16,13 +17,16 @@ function GitBookEmbededPage() {
   if (search) {
     const searchParams = new URLSearchParams(search)
     const path = searchParams.get('path')
-    console.log(path)
     iframeSrc += path
   } else {
     iframeSrc += '/?q='
   }
 
-  return <StyledGitBookEmbededPage src={iframeSrc} />
+  return (
+    <AnimatedPage style={{ padding: 0, height: '100%' }}>
+      <StyledGitBookEmbededPage src={iframeSrc} />
+    </AnimatedPage>
+  )
 }
 
 export default GitBookEmbededPage

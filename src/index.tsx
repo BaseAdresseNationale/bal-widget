@@ -1,19 +1,25 @@
 import React from 'react'
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import ReactDOM from 'react-dom/client'
 import BALWidget from './BALWidget'
 import reportWebVitals from './reportWebVitals'
 import '@gouvfr/dsfr/dist/dsfr.min.css'
 import '@gouvfr/dsfr/dist/utility/utility.min.css'
+import GlobalStyle from './globalStyle'
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+const body = document.getElementsByTagName('body')[0]
+const balWidgetRootElement = document.createElement('div')
+balWidgetRootElement.setAttribute('id', 'bal-widget')
+body.appendChild(balWidgetRootElement)
+const root = ReactDOM.createRoot(balWidgetRootElement)
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <GlobalStyle />
+    <MemoryRouter>
       <Routes>
         <Route path='/*' element={<BALWidget />} />
       </Routes>
-    </BrowserRouter>
+    </MemoryRouter>
   </React.StrictMode>,
 )
 
