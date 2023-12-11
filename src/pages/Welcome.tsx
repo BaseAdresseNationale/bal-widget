@@ -11,20 +11,17 @@ function WecomePage() {
 
   return (
     <AnimatedPage animation='prev'>
-      <HelpBlock label='Vous êtes ?'>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <button
-            onClick={() => navigate('/gitbook')}
-            style={{ textAlign: 'left' }}
-            className='fr-link fr-icon-arrow-right-line fr-link--icon-right'
-          >
-            Un EPCI
-          </button>
-          <button
-            style={{ textAlign: 'left' }}
-            className='fr-link fr-icon-arrow-right-line fr-link--icon-right'
-          >
-            Une commune
+      <HelpBlock label='Vous êtes une commune ?'>
+        <div className='fr-search-bar' id='header-search' role='search'>
+          <input
+            className='fr-input'
+            placeholder='Rechercher votre commune'
+            type='search'
+            id='commune-search'
+            name='commune-search'
+          />
+          <button className='fr-btn' title='Rechercher'>
+            Rechercher
           </button>
         </div>
       </HelpBlock>

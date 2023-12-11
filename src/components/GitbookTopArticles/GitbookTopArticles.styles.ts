@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 
 export const StyledGitBookTopArticles = styled.div`
-    .links-wrapper {
-        button {
-            margin-bottom: 10px;
-        }
+  .links-wrapper {
+    button {
+      display: block;
+      margin-bottom: 10px;
     }
+  }
 `

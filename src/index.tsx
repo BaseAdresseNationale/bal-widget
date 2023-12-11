@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals'
 import '@gouvfr/dsfr/dist/dsfr.min.css'
 import '@gouvfr/dsfr/dist/utility/utility.min.css'
 import GlobalStyle from './globalStyle'
+import { ConfigProvider } from './contexts/configContext'
 
 const body = document.getElementsByTagName('body')[0]
 const balWidgetRootElement = document.createElement('div')
@@ -14,12 +15,14 @@ body.appendChild(balWidgetRootElement)
 const root = ReactDOM.createRoot(balWidgetRootElement)
 root.render(
   <React.StrictMode>
-    <GlobalStyle />
-    <MemoryRouter>
-      <Routes>
-        <Route path='/*' element={<BALWidget />} />
-      </Routes>
-    </MemoryRouter>
+    <ConfigProvider>
+      <GlobalStyle />
+      <MemoryRouter>
+        <Routes>
+          <Route path='/*' element={<BALWidget />} />
+        </Routes>
+      </MemoryRouter>
+    </ConfigProvider>
   </React.StrictMode>,
 )
 

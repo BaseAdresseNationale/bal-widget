@@ -7,10 +7,10 @@ module.exports = {
       );
 
       config.output.filename = 'bal-widget.js'
+      config.output.publicPath = process.env.PUBLIC_URL || '/'
       config.output.chunkFilename = 'bal-widget.chunk.[id].js'
 
       config.resolve.plugins.splice(scopePluginIndex, 1);
-
 
       return config;
     },

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useBALAdmin } from '../hooks/useBALAdmin'
+import { useLocationChange } from '../hooks/useLocationChange'
 
 export interface BALWidgetLink {
   label: string
@@ -29,9 +30,11 @@ interface ConfigProviderProps {
 }
 
 export function ConfigProvider({ children }: ConfigProviderProps) {
-  const { getConfig } = useBALAdmin()
-  const [isLoading, setIsLoading] = useState(false)
   const [config, setConfig] = useState<BALWidgetConfig | null>(null)
+  const { getConfig } = useBALAdmin()
+  const [showWidget, setShowWidget] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  useLocationChange()
 
   useEffect(() => {
     async function fetchConfig() {
@@ -44,7 +47,29 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
     fetchConfig()
   }, [getConfig])
 
-  return <ConfigContext.Provider value={config}>{!isLoading && children}</ConfigContext.Provider>
+  useEffect(() => {
+    if (!config) {
+      return
+    }
+    const updateShowWidget = () => {
+      const availablePages = config.global.showOnPages || []
+      const hideWidget =
+        config.global.hideWidget || availablePages.every((page) => window.location.href !== page)
+      setShowWidget(!hideWidget)
+    }
+
+    window.addEventListener('locationchange', updateShowWidget)
+    updateShowWidget()
+    return () => {
+      window.removeEventListener('locationchange', updateShowWidget)
+    }
+  }, [config])
+
+  return (
+    <ConfigContext.Provider value={config}>
+      {!isLoading && showWidget && children}
+    </ConfigContext.Provider>
+  )
 }
 
 export const ConfigConsumer = ConfigContext.Consumer
