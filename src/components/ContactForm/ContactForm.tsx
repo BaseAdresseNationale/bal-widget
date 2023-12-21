@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
+import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { StyledContactForm, StyledContactFormSuccess } from './ContactForm.styles'
 import { useBALAdmin } from '../../hooks/useBALAdmin'
 
-const RE_CAPTCHA_SITE_KEY = process.env.REACT_APP_RE_CAPTCHA_SITE_KEY || ''
+const HCAPTCHA_SITE_KEY = process.env.REACT_APP_HCAPTCHA_SITE_KEY || ''
 
 enum EmailSentStatus {
   NOT_SENT = 'NOT_SENT',
@@ -18,7 +18,7 @@ export interface EmailData {
   email: string
   subject: string
   message: string
-  reCaptchaToken: string
+  captchaToken: string
 }
 
 interface ContactFormProps {
@@ -32,7 +32,7 @@ function ContactForm({ subjects }: ContactFormProps) {
     email: '',
     subject: '',
     message: '',
-    reCaptchaToken: '',
+    captchaToken: '',
   })
 
   const isFormValid = useMemo(() => {
@@ -134,11 +134,9 @@ function ContactForm({ subjects }: ContactFormProps) {
           name='message'
         />
       </div>
-      <ReCAPTCHA
-        className='re-captcha'
-        sitekey={RE_CAPTCHA_SITE_KEY}
-        onChange={onEdit('reCaptchaToken')}
-      />
+      <div className='captcha-wrapper'>
+        <HCaptcha sitekey={HCAPTCHA_SITE_KEY} onVerify={(token) => onEdit('captchaToken')(token)} />
+      </div>
       {emailStatus === EmailSentStatus.ERROR && (
         <p className='error-message'>Une erreur est survenue, veuillez réessayer plus tard.</p>
       )}

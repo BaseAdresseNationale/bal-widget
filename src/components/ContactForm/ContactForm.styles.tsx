@@ -18,7 +18,7 @@ export const StyledContactForm = styled.form`
     margin-top: 1.5rem;
   }
 
-  .re-captcha > div {
+  .captcha-wrapper > div {
     display: flex;
     justify-content: center;
   }
