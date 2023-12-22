@@ -4,26 +4,22 @@ import GitBookTopArticles from '../components/GitbookTopArticles/GitbookTopArtic
 import { useNavigate } from 'react-router-dom'
 import AnimatedPage from '../layouts/AnimatedPage'
 import ConfigContext from '../contexts/configContext'
+import CommuneAutocomplete, {
+  APIGeoCommune,
+} from '../components/CommuneAutocomplete/CommuneAutocomplete'
 
 function WecomePage() {
   const navigate = useNavigate()
   const config = useContext(ConfigContext)
 
+  const onSelectCommune = (commune: APIGeoCommune) => {
+    navigate(`/commune?code=${commune.code}&nom=${commune.nom}`)
+  }
+
   return (
     <AnimatedPage animation='prev'>
       <HelpBlock label='Vous êtes une commune ?'>
-        <div className='fr-search-bar' id='header-search' role='search'>
-          <input
-            className='fr-input'
-            placeholder='Rechercher votre commune'
-            type='search'
-            id='commune-search'
-            name='commune-search'
-          />
-          <button className='fr-btn' title='Rechercher'>
-            Rechercher
-          </button>
-        </div>
+        <CommuneAutocomplete onChange={onSelectCommune} />
       </HelpBlock>
       <HelpBlock label={config?.gitbook?.welcomeBlockTitle || ''}>
         <GitBookTopArticles articles={config?.gitbook?.topArticles || []} />

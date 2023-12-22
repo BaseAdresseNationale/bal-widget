@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { EmailData } from '../components/ContactForm/ContactForm'
+import { CommuneInfosData } from '../types/CommuneInfos'
 
 const BAL_ADMIN_API_URL =
   process.env.REACT_APP_BAL_ADMIN_API_URL || 'https://bal-admin.adresse.data.gouv.fr'
@@ -35,8 +36,20 @@ export const useBALAdmin = () => {
     return data
   }, [])
 
+  const getCommuneInfos = useCallback(async (codeCommune: string) => {
+    const response = await fetch(`${balWidgetUrl}/commune/${codeCommune}`)
+    const data = await response.json()
+
+    if (response.status !== 200) {
+      throw new Error(data.message)
+    }
+
+    return data as CommuneInfosData
+  }, [])
+
   return {
     getConfig,
     sendMail,
+    getCommuneInfos,
   }
 }

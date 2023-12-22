@@ -4,7 +4,7 @@ import MainButton from './components/MainButton/MainButton'
 import Window from './components/Window/Window'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import WecomePage from './pages/Welcome'
-import BALHelp from './pages/BALHelp'
+import Commune from './pages/Commune'
 import GitBookEmbeded from './pages/GitbookEmbedded'
 import Contact from './pages/Contact'
 import { AnimatePresence } from 'framer-motion'
@@ -46,7 +46,7 @@ function BALWidget() {
         <AnimatePresence>
           <Routes location={location} key={location.pathname}>
             <Route index element={<WecomePage />} />
-            <Route path='bal-help' element={<BALHelp />} />
+            <Route path='commune' element={<Commune />} />
             <Route path='gitbook' element={<GitBookEmbeded />} />
             <Route path='contact' element={<Contact />} />
           </Routes>
