@@ -1,6 +1,6 @@
 import React from 'react'
-import { BALMesAdresses } from '../../types/CommuneInfos'
 import { StyledBALStatusBadge } from './BALStatusBadge.styles'
+import { BALMesAdresses } from '../../hooks/useMesAdresses'
 
 interface BALStatusBadgeProps {
   status: 'published' | 'replaced'

@@ -1,16 +1,46 @@
-import React from 'react'
+import React, { useContext, useMemo } from 'react'
 import { StyledCommuneInfosMessage } from './CommuneInfosMessage.style'
-import { CommuneInfosData } from '../../types/CommuneInfos'
+import ConfigContext from '../../contexts/configContext'
+import { MES_ADRESSES_URL } from '../../hooks/useMesAdresses'
+import { APIDepotRevision } from '../../hooks/useAPIDepot'
 
-export const PublishedFromOtherClient = (communeInfos: CommuneInfosData) => {
-  console.log('communeInfos', communeInfos)
-  // Cas guichet adresse
+type PublishedFromOtherClientProps = {
+  currentRevision: APIDepotRevision
+}
+
+export const PublishedFromOtherClient = ({ currentRevision }: PublishedFromOtherClientProps) => {
+  const config = useContext(ConfigContext)
+  const client = currentRevision?.client
+
+  const isOutdated = useMemo(() => {
+    return (
+      config?.commune?.outdatedApiDepotClients?.includes(currentRevision?.client?._id || '') ||
+      false
+    )
+  }, [config, client])
+
   return (
     <StyledCommuneInfosMessage>
       <p>
-        Votre commune a publié une révision depuis un autre client. Vous pouvez la consulter en
-        cliquant sur le bouton ci-dessous.
+        Une Base Adresse Locale a été publiée par <b>{client.chefDeFile}</b>. En cas de doute, merci
+        de prendre attache auprès de cet organisme en contactant :{' '}
+        <b>{client.chefDeFileEmailContact}</b>
       </p>
+      {isOutdated ? (
+        <p>
+          Cependant cette organisation ne met plus à jour vos adresses. Afin de reprendre la main
+          sur votre adressage, vous pouvez créer une Base Adresse Locale sur{' '}
+          <a href={MES_ADRESSES_URL} className='fr-link' target='_blank' rel='noreferrer'>
+            Mes-Adresses
+          </a>
+          et &quot;Forcer la publication&quot;.
+        </p>
+      ) : (
+        <p>
+          La commune reste toutefois l’autorité compétente en matière d’adressage, et vous pouvez
+          décider à tout moment de reprendre la main sur la publication de votre BAL
+        </p>
+      )}
     </StyledCommuneInfosMessage>
   )
 }

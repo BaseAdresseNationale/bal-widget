@@ -1,14 +1,13 @@
 import React from 'react'
 import { StyledCommuneInfosMessage } from './CommuneInfosMessage.style'
 import { BALStatusBadge } from '../BALStatusBadge/BALStatusBadge'
-import { CommuneInfosData } from '../../types/CommuneInfos'
+import { BALMesAdresses, MES_ADRESSES_URL } from '../../hooks/useMesAdresses'
 
-const MES_ADRESSES_URL =
-  process.env.REACT_APP_MES_ADRESSES_URL || 'https://mes-adresses.data.gouv.fr'
+type PublishedFromMesAdressesProps = {
+  publishedBals: BALMesAdresses[]
+}
 
-export const PublishedFromMesAdresses = (communeInfos: CommuneInfosData) => {
-  const publishedBals = communeInfos.balsMesAdresses
-
+export const PublishedFromMesAdresses = ({ publishedBals }: PublishedFromMesAdressesProps) => {
   return (
     <StyledCommuneInfosMessage>
       <p>Voici la liste des Bases Adresses Locales publiées par votre commune sur Mes Adresses :</p>

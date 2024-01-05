@@ -1,20 +1,9 @@
-export interface BALMesAdresses {
-  _id: string
-  _updated: string
-  _created: string
-  nom: string
-  status: 'published' | 'replaced'
-  sync: {
-    status: 'conflict' | 'paused' | 'outdated' | 'synced'
-    isPaused: boolean
-  }
-  nbNumeros: number
-  nbNumerosCertifies: number
-  isAllCertified: boolean
-}
+import { useCallback } from 'react'
 
 export interface APIDepotRevision {
   client: {
+    chefDeFile: string
+    chefDeFileEmailContact: string
     mandataire: string
     nom: string
     _id: string
@@ -30,6 +19,7 @@ export interface APIDepotRevision {
       codePostal: string
       departement: string
       region: string
+      sourceId?: string
     }
   }
   createdAt: string
@@ -49,10 +39,21 @@ export interface APIDepotRevision {
   _id: string
 }
 
-export interface APIMoissonneurRevision {}
+export const API_DEPOT_URL =
+  process.env.REACT_APP_API_DEPOT_URL || 'https://plateforme-bal.adresse.data.gouv.fr/api-depot'
 
-export interface CommuneInfosData {
-  balsMesAdresses: BALMesAdresses[]
-  apiDepotRevisions: APIDepotRevision[]
-  apiMoissonneurRevisions: APIMoissonneurRevision[]
+export const useAPIDepot = () => {
+  const getCurrentRevision = useCallback(async (codeCommune: string) => {
+    const response = await fetch(`${API_DEPOT_URL}/communes/${codeCommune}/current-revision`)
+
+    const data = await response.json()
+
+    if (response.status === 200) {
+      return data as APIDepotRevision
+    }
+  }, [])
+
+  return {
+    getCurrentRevision,
+  }
 }

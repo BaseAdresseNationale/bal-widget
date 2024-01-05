@@ -9,12 +9,11 @@ export const StyledCommuneInfosMessage = styled.div`
     user-select: none;
     padding: 10px;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid var(--background-action-high-blue-france);
     width: 100%;
     summary {
       margin: 0;
       padding: 0;
-      cursor: pointer;
       outline: none;
       font-weight: bold;
 
@@ -28,6 +27,7 @@ export const StyledCommuneInfosMessage = styled.div`
       display: flex;
       align-items: center;
       justify-content: space-around;
+      cursor: initial;
 
       div {
         font-size: 12px;

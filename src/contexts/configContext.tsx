@@ -16,6 +16,10 @@ export interface BALWidgetConfig {
     welcomeBlockTitle: string
     topArticles: BALWidgetLink[]
   }
+  commune: {
+    outdatedApiDepotClients: string[]
+    outdatedHarvestSources: string[]
+  }
   contactUs: {
     welcomeBlockTitle: string
     subjects: string[]
