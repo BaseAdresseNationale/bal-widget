@@ -48,9 +48,8 @@ function BALWidget() {
     const { pathname } = location
     const url = window.location.href
     const trackedUrl = `${url}#bal-widget${pathname}`
-    console.log('trackedUrl', trackedUrl)
     window._paq.push(['setCustomUrl', trackedUrl])
-  }, [location])
+  }, [location.pathname])
 
   const isWidgetDisplayed = !isDisabled || isExpanded
 
