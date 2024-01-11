@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { PublishedFromMesAdresses } from '../components/CommuneInfosMessage/PublishedFromMesAdresses'
 import { PublishedFromMoissonneur } from '../components/CommuneInfosMessage/PublishedFromMoissonneur'
 import { PublishedFromOtherClient } from '../components/CommuneInfosMessage/PublishedFromOtherClient'
-import { APIDepotRevision, useAPIDepot } from './useAPIDepot'
-import { BALMesAdresses, useMesAdressesAPI } from './useMesAdresses'
+import { useAPIDepot } from './useAPIDepot'
+import { useMesAdressesAPI } from './useMesAdresses'
+import { APIDepotRevision } from '../types/APIDepot.types'
+import { BALMesAdresses } from '../types/MesAdresses.types'
 
 const ADRESSE_DATA_GOUV_URL =
   process.env.REACT_APP_ADRESSE_DATA_GOUV_URL || 'https://adresse.data.gouv.fr'
