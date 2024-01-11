@@ -1,7 +1,7 @@
 export interface APIDepotRevision {
   client: {
-    chefDeFile: string
-    chefDeFileEmailContact: string
+    chefDeFile?: string
+    chefDeFileEmailContact?: string
     mandataire: string
     nom: string
     _id: string

@@ -6,6 +6,7 @@ export const StyledCommuneInfosMessage = styled.div`
   align-items: center;
 
   details {
+    margin: 5px 0;
     user-select: none;
     padding: 10px;
     background-color: #fff;

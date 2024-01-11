@@ -22,9 +22,14 @@ export const PublishedFromOtherClient = ({ currentRevision }: PublishedFromOther
   return (
     <StyledCommuneInfosMessage>
       <p>
-        Une Base Adresse Locale a été publiée par <b>{client.chefDeFile}</b>. En cas de doute, merci
-        de prendre attache auprès de cet organisme en contactant :{' '}
-        <b>{client.chefDeFileEmailContact}</b>
+        Une Base Adresse Locale a déjà été publiée par <b>{client.chefDeFile || client.nom}</b> pour
+        votre commune.
+        {client.chefDeFileEmailContact && (
+          <>
+            Vous pouvez contacter cet organisme via l&apos;adresse :{' '}
+            <b>{client.chefDeFileEmailContact}</b>
+          </>
+        )}
       </p>
       {isOutdated ? (
         <p>
@@ -38,7 +43,12 @@ export const PublishedFromOtherClient = ({ currentRevision }: PublishedFromOther
       ) : (
         <p>
           La commune reste toutefois l’autorité compétente en matière d’adressage, et vous pouvez
-          décider à tout moment de reprendre la main sur la publication de votre BAL
+          décider à tout moment de reprendre la main sur la publication de votre BAL via
+          l&apos;outil{' '}
+          <a href={MES_ADRESSES_URL} className='fr-link' target='_blank' rel='noreferrer'>
+            Mes-Adresses
+          </a>
+          .
         </p>
       )}
     </StyledCommuneInfosMessage>

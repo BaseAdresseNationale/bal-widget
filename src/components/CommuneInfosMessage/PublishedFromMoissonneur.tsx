@@ -36,7 +36,7 @@ export const PublishedFromMoissonneur = ({ currentRevision }: PublishedFromMoiss
       {organization ? (
         <>
           <p>
-            Une Base Adresse Locale a été publié par{' '}
+            Une Base Adresse Locale a déjà été publiée par{' '}
             <a
               target='_blank'
               href={`${organization.page}`}
@@ -61,7 +61,7 @@ export const PublishedFromMoissonneur = ({ currentRevision }: PublishedFromMoiss
           )}
         </>
       ) : (
-        <p>Une Base Adresse Locale a déjà été déposé pour votre commune</p>
+        <p>Une Base Adresse Locale a déjà été déposée pour votre commune</p>
       )}
 
       <p>

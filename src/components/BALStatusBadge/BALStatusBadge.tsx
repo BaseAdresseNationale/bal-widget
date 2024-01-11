@@ -61,9 +61,9 @@ export const BALStatusBadge = ({ status, sync }: BALStatusBadgeProps) => {
   const computedStatus = computeStatus(status, sync)
   return (
     <StyledBALStatusBadge
-      color={computedStatus.color}
-      background={computedStatus.background}
-      content={computedStatus.content}
+      $color={computedStatus.color}
+      $background={computedStatus.background}
+      $content={computedStatus.content}
     >
       <span className='bal-status-badge__label'>{computedStatus.label}</span>
     </StyledBALStatusBadge>

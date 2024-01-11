@@ -13,7 +13,7 @@ import ConfigContext from './contexts/configContext'
 
 function BALWidget() {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [isDisabled, setIsDisabled] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(true)
 
   const location = useLocation()
   const config = useContext(ConfigContext)
