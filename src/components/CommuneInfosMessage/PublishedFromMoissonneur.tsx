@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { StyledCommuneInfosMessage } from './CommuneInfosMessage.style'
 import ConfigContext from '../../contexts/configContext'
-import { DataGouvOrganization, useDataGouv } from '../../hooks/useDataGouv'
+import { useDataGouv } from '../../hooks/useDataGouv'
 import { MES_ADRESSES_URL } from '../../hooks/useMesAdresses'
-import { APIDepotRevision } from '../../hooks/useAPIDepot'
+import { DataGouvOrganization } from '../../types/DataGouv.types'
+import { APIDepotRevision } from '../../types/APIDepot.types'
 
 type PublishedFromMoissonneurProps = {
   currentRevision: APIDepotRevision

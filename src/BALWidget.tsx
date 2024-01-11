@@ -33,10 +33,24 @@ function BALWidget() {
 
     window.addEventListener('locationchange', updateIsDisabled)
     updateIsDisabled()
+
     return () => {
       window.removeEventListener('locationchange', updateIsDisabled)
     }
   }, [config])
+
+  // Track location change on matomo
+  useEffect(() => {
+    if (!window._paq) {
+      return
+    }
+
+    const { pathname } = location
+    const url = window.location.href
+    const trackedUrl = `${url}#bal-widget${pathname}`
+    console.log('trackedUrl', trackedUrl)
+    window._paq.push(['setCustomUrl', trackedUrl])
+  }, [location])
 
   const isWidgetDisplayed = !isDisabled || isExpanded
 
