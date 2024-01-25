@@ -3,10 +3,10 @@ import styled from 'styled-components'
 export const StyledWindow = styled.div<{ $isExpanded: boolean }>`
   position: fixed;
   z-index: 1000;
-  right: 40px;
-  bottom: ${({ $isExpanded }) => ($isExpanded ? '120px' : '-70vh')};
+  right: 0;
+  bottom: ${({ $isExpanded }) => ($isExpanded ? '0' : '-600px')};
   opacity: ${({ $isExpanded }) => ($isExpanded ? 1 : 0)};
-  height: 70vh;
+  height: 600px;
   width: 450px;
   border-radius: 5px;
   border: 1px solid var(--background-action-high-blue-france);
@@ -23,12 +23,18 @@ export const StyledWindow = styled.div<{ $isExpanded: boolean }>`
     align-items: center;
     border-bottom: 1px solid var(--background-action-high-blue-france);
     background-color: var(--background-action-high-blue-france);
+    justify-content: space-between;
 
-    h1 {
-      font-size: 16px;
-      font-weight: 600;
-      margin: 0 0 0 10px;
-      color: white;
+    > div {
+      display: flex;
+      align-items: center;
+
+      h1 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 0 0 10px;
+        color: white;
+      }
     }
 
     button {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyledBALWidget } from './BALWidget.styles'
 import MainButton from './components/MainButton/MainButton'
 import Window from './components/Window/Window'
@@ -8,54 +8,26 @@ import Commune from './pages/Commune'
 import GitBookEmbeded from './pages/GitbookEmbedded'
 import Contact from './pages/Contact'
 import { AnimatePresence } from 'framer-motion'
-import { useLocationChange } from './hooks/useLocationChange'
-import ConfigContext from './contexts/configContext'
 
 function BALWidget() {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [isDisabled, setIsDisabled] = useState(true)
-
   const location = useLocation()
-  const config = useContext(ConfigContext)
-  useLocationChange()
-
-  useEffect(() => {
-    if (!config) {
-      return
-    }
-    const updateIsDisabled = () => {
-      const availablePages = config.global.showOnPages || []
-      const isWidgetHidden =
-        config.global.hideWidget ||
-        (availablePages.length > 0 && availablePages.every((page) => window.location.href !== page))
-      setIsDisabled(isWidgetHidden)
-    }
-
-    window.addEventListener('locationchange', updateIsDisabled)
-    updateIsDisabled()
-
-    return () => {
-      window.removeEventListener('locationchange', updateIsDisabled)
-    }
-  }, [config])
 
   // Track location change on matomo
   useEffect(() => {
-    if (!window._paq) {
-      return
-    }
-
     const { pathname } = location
-    const url = window.location.href
-    const trackedUrl = `${url}#bal-widget${pathname}`
-    window._paq.push(['setCustomUrl', trackedUrl])
+    window.parent.postMessage({ type: 'BAL_WIDGET_LOCATION', content: pathname }, '*')
   }, [location.pathname])
 
-  const isWidgetDisplayed = !isDisabled || isExpanded
+  // Send message to parent window when widget is expanded or collapsed
+  useEffect(() => {
+    const message = isExpanded ? { type: 'BAL_WIDGET_OPENED' } : { type: 'BAL_WIDGET_CLOSED' }
+    window.parent.postMessage(message, '*')
+  }, [isExpanded])
 
-  return isWidgetDisplayed ? (
+  return (
     <StyledBALWidget>
-      <Window isExpanded={isExpanded}>
+      <Window isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
         <AnimatePresence>
           <Routes location={location} key={location.pathname}>
             <Route index element={<WecomePage />} />
@@ -65,9 +37,9 @@ function BALWidget() {
           </Routes>
         </AnimatePresence>
       </Window>
-      <MainButton isExpanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)} />
+      <MainButton isExpanded={isExpanded} onClick={() => setIsExpanded((oldState) => !oldState)} />
     </StyledBALWidget>
-  ) : null
+  )
 }
 
 export default BALWidget

@@ -3,8 +3,8 @@ import styled from 'styled-components'
 export const StyledMainButton = styled.button`
   position: fixed;
   z-index: 999;
-  bottom: 40px;
-  right: 40px;
+  bottom: 0;
+  right: 0;
   border-radius: 50%;
   display: flex;
   justify-content: center;
