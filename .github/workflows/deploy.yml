@@ -9,6 +9,10 @@ on:
 
   workflow_dispatch:
 
+env:
+  PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+  REACT_APP_HCAPTCHA_SITE_KEY: ${{ vars.REACT_APP_HCAPTCHA_SITE_KEY }}
+
 jobs:
   deployment:
     runs-on: ubuntu-latest
