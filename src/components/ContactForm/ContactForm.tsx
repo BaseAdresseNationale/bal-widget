@@ -77,15 +77,15 @@ function ContactForm({ subjects }: ContactFormProps) {
           ></input>
         </div>
         <div className='fr-col-6'>
-          <label className='fr-label' htmlFor='firstName'>
+          <label className='fr-label' htmlFor='lastName'>
             Nom
           </label>
           <input
-            onChange={(e) => onEdit('firstName')(e.target.value)}
+            onChange={(e) => onEdit('lastName')(e.target.value)}
             required
             className='fr-input'
-            type='firstName'
-            name='firstName'
+            type='lastName'
+            name='lastName'
           ></input>
         </div>
       </div>
