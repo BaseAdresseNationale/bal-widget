@@ -70,7 +70,6 @@ function ContactForm({ subjects }: ContactFormProps) {
           </label>
           <input
             onChange={(e) => onEdit('firstName')(e.target.value)}
-            required
             className='fr-input'
             type='firstName'
             name='firstName'
@@ -82,7 +81,6 @@ function ContactForm({ subjects }: ContactFormProps) {
           </label>
           <input
             onChange={(e) => onEdit('lastName')(e.target.value)}
-            required
             className='fr-input'
             type='lastName'
             name='lastName'
