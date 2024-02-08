@@ -14,7 +14,7 @@ export const PublishedFromOtherClient = ({ currentRevision }: PublishedFromOther
 
   const isOutdated = useMemo(() => {
     return (
-      config?.commune?.outdatedApiDepotClients?.includes(currentRevision?.client?._id || '') ||
+      config?.communes?.outdatedApiDepotClients?.includes(currentRevision?.client?._id || '') ||
       false
     )
   }, [config, client])

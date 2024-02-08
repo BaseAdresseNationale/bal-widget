@@ -16,7 +16,8 @@ export interface BALWidgetConfig {
     welcomeBlockTitle: string
     topArticles: BALWidgetLink[]
   }
-  commune: {
+  communes: {
+    welcomeBlockTitle: string
     outdatedApiDepotClients: string[]
     outdatedHarvestSources: string[]
   }
@@ -35,18 +36,34 @@ interface ConfigProviderProps {
 export function ConfigProvider({ children }: ConfigProviderProps) {
   const [config, setConfig] = useState<BALWidgetConfig | null>(null)
   const { getConfig } = useBALAdmin()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const isEmbeddedInIframe = window !== window.parent
 
   useEffect(() => {
+    function getConfigFromParent(event: { data: { type: string; content: BALWidgetConfig } }) {
+      if (event.data.type === 'BAL_WIDGET_CONFIG') {
+        setConfig(event.data.content)
+        setIsLoading(false)
+      }
+    }
+
     async function fetchConfig() {
-      setIsLoading(true)
       const config = await getConfig()
       setConfig(config as BALWidgetConfig)
       setIsLoading(false)
     }
 
-    fetchConfig()
-  }, [getConfig])
+    if (isEmbeddedInIframe) {
+      window.parent.postMessage({ type: 'BAL_WIDGET_READY' }, '*')
+      window.addEventListener('message', getConfigFromParent)
+    } else {
+      fetchConfig()
+    }
+
+    return () => {
+      isEmbeddedInIframe && window.removeEventListener('message', getConfigFromParent)
+    }
+  }, [isEmbeddedInIframe, getConfig])
 
   return <ConfigContext.Provider value={config}>{!isLoading && children}</ConfigContext.Provider>
 }

@@ -18,7 +18,7 @@ function WecomePage() {
 
   return (
     <AnimatedPage animation='prev'>
-      <HelpBlock label='Vous êtes une commune ?'>
+      <HelpBlock label={config?.communes?.welcomeBlockTitle || ''}>
         <CommuneAutocomplete onChange={onSelectCommune} />
       </HelpBlock>
       <HelpBlock label={config?.gitbook?.welcomeBlockTitle || ''}>

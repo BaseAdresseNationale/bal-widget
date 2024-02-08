@@ -24,7 +24,7 @@ export const PublishedFromMoissonneur = ({ currentRevision }: PublishedFromMoiss
         const dataset = await getDataset(id[1])
 
         setOrganization(dataset.organization)
-        setIsOutdated(config?.commune?.outdatedHarvestSources?.includes(sourceId) || false)
+        setIsOutdated(config?.communes?.outdatedHarvestSources?.includes(sourceId) || false)
       }
     }
 
