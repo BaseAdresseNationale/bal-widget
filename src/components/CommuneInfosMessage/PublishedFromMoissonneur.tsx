@@ -66,7 +66,11 @@ export const PublishedFromMoissonneur = ({ currentRevision }: PublishedFromMoiss
 
       <p>
         Toutefois, la commune étant compétente en matière d’adressage, vous pouvez prendre la main
-        directement via Mes Adresses.
+        directement via{' '}
+        <a href={MES_ADRESSES_URL} className='fr-link' target='_blank' rel='noreferrer'>
+          Mes-Adresses
+        </a>
+        .
       </p>
     </StyledCommuneInfosMessage>
   )
