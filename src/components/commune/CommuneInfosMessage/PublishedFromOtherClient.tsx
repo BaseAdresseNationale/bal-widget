@@ -1,8 +1,8 @@
 import React, { useContext, useMemo } from 'react'
 import { StyledCommuneInfosMessage } from './CommuneInfosMessage.style'
-import ConfigContext from '../../contexts/configContext'
-import { MES_ADRESSES_URL } from '../../hooks/useMesAdresses'
-import { APIDepotRevision } from '../../types/APIDepot.types'
+import ConfigContext from '../../../contexts/configContext'
+import { MES_ADRESSES_URL } from '../../../hooks/useMesAdresses'
+import { APIDepotRevision } from '../../../types/APIDepot.types'
 
 type PublishedFromOtherClientProps = {
   currentRevision: APIDepotRevision

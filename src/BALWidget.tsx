@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyledBALWidget } from './BALWidget.styles'
-import MainButton from './components/MainButton/MainButton'
-import Window from './components/Window/Window'
+import MainButton from './components/common/MainButton/MainButton'
+import Window from './components/common/Window/Window'
 import { Route, Routes, useLocation } from 'react-router-dom'
-import WecomePage from './pages/Welcome'
-import Commune from './pages/Commune'
-import GitBookEmbeded from './pages/GitbookEmbedded'
-import Contact from './pages/Contact'
+import HomePage from './pages'
 import { AnimatePresence } from 'framer-motion'
+import CommuneWelcomePage from './pages/commune'
+import ParticulierWelcomePage from './pages/particulier'
+import GitBookEmbededPage from './pages/common/GitBookEmbededPage'
+import CommuneBALStatusPage from './pages/commune/CommuneBALStatusPage'
+import ContactPage from './pages/commune/ContactPage'
+import ConfigContext from './contexts/configContext'
+import ParticulierTroubleshootingPage from './pages/particulier/ParticulierTroubleshootingPage'
+import AdresseProblemFormPage from './pages/particulier/AdresseProblemFormPage'
 
 function BALWidget() {
   const [isExpanded, setIsExpanded] = useState(false)
   const location = useLocation()
+  const config = useContext(ConfigContext)
 
   // Track location change on matomo
   useEffect(() => {
@@ -30,10 +36,22 @@ function BALWidget() {
       <Window isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
         <AnimatePresence>
           <Routes location={location} key={location.pathname}>
-            <Route index element={<WecomePage />} />
-            <Route path='commune' element={<Commune />} />
-            <Route path='gitbook' element={<GitBookEmbeded />} />
-            <Route path='contact' element={<Contact />} />
+            <Route index element={<HomePage />} />
+            <Route path='commune' element={<CommuneWelcomePage />} />
+            <Route path='commune/bal-status' element={<CommuneBALStatusPage />} />
+            <Route path='commune/gitbook' element={<GitBookEmbededPage />} />
+            <Route
+              path='commune/contact'
+              element={<ContactPage subjects={config?.contactUs.subjects} />}
+            />
+
+            <Route path='particulier' element={<ParticulierWelcomePage />} />
+            <Route
+              path='particulier/troubleshooting'
+              element={<ParticulierTroubleshootingPage />}
+            />
+            <Route path='particulier/gitbook' element={<GitBookEmbededPage />} />
+            <Route path='particulier/contact' element={<AdresseProblemFormPage />} />
           </Routes>
         </AnimatePresence>
       </Window>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import AnimatedPage from '../layouts/AnimatedPage'
+import AnimatedPage from '../../layouts/AnimatedPage'
 
 const iframeBaseSrc = 'https://doc.adresse.data.gouv.fr'
 

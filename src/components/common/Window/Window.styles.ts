@@ -4,10 +4,10 @@ export const StyledWindow = styled.div<{ $isExpanded: boolean }>`
   position: fixed;
   z-index: 1000;
   right: 0;
-  bottom: ${({ $isExpanded }) => ($isExpanded ? '0' : '-600px')};
+  bottom: ${({ $isExpanded }) => ($isExpanded ? '0' : '-100%')};
   opacity: ${({ $isExpanded }) => ($isExpanded ? 1 : 0)};
-  height: 600px;
-  width: 450px;
+  height: 100%;
+  width: 100%;
   border-radius: 5px;
   border: 1px solid var(--background-action-high-blue-france);
   transition:
@@ -32,6 +32,7 @@ export const StyledWindow = styled.div<{ $isExpanded: boolean }>`
       h1 {
         font-size: 16px;
         font-weight: 600;
+        line-height: normal;
         margin: 0 0 0 10px;
         color: white;
       }
@@ -55,6 +56,7 @@ export const StyledWindow = styled.div<{ $isExpanded: boolean }>`
   }
 
   .main-container {
+    overflow-x: hidden;
     overflow-y: auto;
     height: 100%;
   }

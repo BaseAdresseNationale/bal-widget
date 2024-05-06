@@ -12,7 +12,7 @@ export interface BALWidgetConfig {
     hideWidget: boolean
     showOnPages: string[]
   }
-  gitbook: {
+  gitbookCommunes: {
     welcomeBlockTitle: string
     topArticles: BALWidgetLink[]
   }
@@ -24,6 +24,10 @@ export interface BALWidgetConfig {
   contactUs: {
     welcomeBlockTitle: string
     subjects: string[]
+  }
+  gitbookParticuliers: {
+    welcomeBlockTitle: string
+    topArticles: BALWidgetLink[]
   }
 }
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyledCommuneInfosMessage } from './CommuneInfosMessage.style'
 import { BALStatusBadge } from '../BALStatusBadge/BALStatusBadge'
-import { MES_ADRESSES_URL } from '../../hooks/useMesAdresses'
-import { BALMesAdresses } from '../../types/MesAdresses.types'
+import { MES_ADRESSES_URL } from '../../../hooks/useMesAdresses'
+import { BALMesAdresses } from '../../../types/MesAdresses.types'
 
 type PublishedFromMesAdressesProps = {
   publishedBals: BALMesAdresses[]

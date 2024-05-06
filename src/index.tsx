@@ -7,6 +7,7 @@ import '@gouvfr/dsfr/dist/dsfr.min.css'
 import '@gouvfr/dsfr/dist/utility/utility.min.css'
 import GlobalStyle from './globalStyle'
 import { ConfigProvider } from './contexts/configContext'
+import { RouterHistoryProvider } from './contexts/routerhistoryContext'
 
 const body = document.getElementsByTagName('body')[0]
 const balWidgetRootElement = document.createElement('div')
@@ -18,9 +19,11 @@ root.render(
     <ConfigProvider>
       <GlobalStyle />
       <MemoryRouter>
-        <Routes>
-          <Route path='/*' element={<BALWidget />} />
-        </Routes>
+        <RouterHistoryProvider>
+          <Routes>
+            <Route path='/*' element={<BALWidget />} />
+          </Routes>
+        </RouterHistoryProvider>
       </MemoryRouter>
     </ConfigProvider>
   </React.StrictMode>,
