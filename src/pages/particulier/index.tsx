@@ -21,7 +21,10 @@ function ParticulierWelcomePage() {
         </button>
       </HelpBlock>
       <HelpBlock label={config?.gitbookParticuliers?.welcomeBlockTitle || ''}>
-        <GitBookTopArticles articles={config?.gitbookParticuliers?.topArticles || []} />
+        <GitBookTopArticles
+          path='/particulier/gitbook'
+          articles={config?.gitbookParticuliers?.topArticles || []}
+        />
       </HelpBlock>
     </AnimatedPage>
   )

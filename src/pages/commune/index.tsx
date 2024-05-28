@@ -49,7 +49,10 @@ function CommuneWelcomePage() {
         />
       </HelpBlock>
       <HelpBlock label={config?.gitbookCommunes?.welcomeBlockTitle || ''}>
-        <GitBookTopArticles articles={config?.gitbookCommunes?.topArticles || []} />
+        <GitBookTopArticles
+          path='/commune/gitbook'
+          articles={config?.gitbookCommunes?.topArticles || []}
+        />
       </HelpBlock>
       <HelpBlock label={config?.contactUs?.welcomeBlockTitle || ''}>
         <button

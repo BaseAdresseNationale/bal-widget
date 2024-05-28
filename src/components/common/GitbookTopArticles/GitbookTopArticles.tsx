@@ -7,17 +7,18 @@ interface GitBookTopArticlesProps {
     label: string
     url: string
   }[]
+  path: string
 }
 
-function GitBookTopArticles({ articles }: GitBookTopArticlesProps) {
+function GitBookTopArticles({ articles, path: pagePath }: GitBookTopArticlesProps) {
   const { navigate } = useContext(RouterHistoryContext)
 
   const onFocus = () => {
-    navigate('/gitbook')
+    navigate(pagePath)
   }
 
   const onSelectArticle = (path: string) => {
-    navigate('/gitbook?path=' + path, { replace: true })
+    navigate(`${pagePath}?path=` + path, { replace: true })
   }
 
   return (
