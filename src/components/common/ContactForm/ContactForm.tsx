@@ -1,25 +1,8 @@
-import React, { useMemo, useState } from 'react'
+import React from 'react'
 import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { StyledContactForm, StyledContactFormSuccess } from './ContactForm.styles'
-import { useBALAdmin } from '../../hooks/useBALAdmin'
-
-const HCAPTCHA_SITE_KEY = process.env.REACT_APP_HCAPTCHA_SITE_KEY || ''
-
-enum EmailSentStatus {
-  NOT_SENT = 'NOT_SENT',
-  SENT = 'SENT',
-  SENDING = 'SENDING',
-  ERROR = 'ERROR',
-}
-
-export interface EmailData {
-  firstName?: string
-  lastName?: string
-  email: string
-  subject: string
-  message: string
-  captchaToken: string
-}
+import { EmailSentStatus, useContactForm } from '../../../hooks/useContactForm'
+import { useBALAdmin } from '../../../hooks/useBALAdmin'
 
 interface ContactFormProps {
   subjects: string[]
@@ -27,34 +10,17 @@ interface ContactFormProps {
 
 function ContactForm({ subjects }: ContactFormProps) {
   const { sendMail } = useBALAdmin()
-  const [emailStatus, setEmailStatus] = useState<EmailSentStatus>(EmailSentStatus.NOT_SENT)
-  const [formData, setFormData] = useState<EmailData>({
-    email: '',
-    subject: '',
-    message: '',
-    captchaToken: '',
-  })
-
-  const isFormValid = useMemo(() => {
-    return Object.keys(formData).every((key) => formData[key as keyof EmailData] !== '')
-  }, [formData])
-
-  const onEdit = (key: keyof EmailData) => (value: string | null) => {
-    setFormData((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    try {
-      setEmailStatus(EmailSentStatus.SENDING)
-      await sendMail(formData)
-      setEmailStatus(EmailSentStatus.SENT)
-    } catch (error) {
-      console.log(error)
-      setEmailStatus(EmailSentStatus.ERROR)
-    }
-  }
+  const { emailStatus, canSubmit, onEdit, onSubmit } = useContactForm(
+    {
+      email: '',
+      firstName: '',
+      lastName: '',
+      subject: '',
+      message: '',
+      captchaToken: '',
+    },
+    sendMail,
+  )
 
   return emailStatus === EmailSentStatus.SENT ? (
     <StyledContactFormSuccess>
@@ -133,13 +99,16 @@ function ContactForm({ subjects }: ContactFormProps) {
         />
       </div>
       <div className='captcha-wrapper'>
-        <HCaptcha sitekey={HCAPTCHA_SITE_KEY} onVerify={(token) => onEdit('captchaToken')(token)} />
+        <HCaptcha
+          sitekey={process.env.REACT_APP_HCAPTCHA_SITE_KEY || ''}
+          onVerify={(token) => onEdit('captchaToken')(token)}
+        />
       </div>
       {emailStatus === EmailSentStatus.ERROR && (
         <p className='error-message'>Une erreur est survenue, veuillez réessayer plus tard.</p>
       )}
       <button
-        disabled={!isFormValid || emailStatus === EmailSentStatus.SENDING}
+        disabled={!canSubmit || emailStatus === EmailSentStatus.SENDING}
         className='fr-btn fr-icon-send-plane-fill fr-btn--icon-right'
         type='submit'
       >

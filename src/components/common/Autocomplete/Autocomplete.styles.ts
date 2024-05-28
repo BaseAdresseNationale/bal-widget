@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-export const StyledCommuneAutocomplete = styled.div`
+export const StyledAutocomplete = styled.div`
   position: relative;
-  .commune-results {
+  .results {
     position: absolute;
     background-color: #fff;
     width: 100%;

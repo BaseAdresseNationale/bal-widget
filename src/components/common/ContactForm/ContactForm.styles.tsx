@@ -27,6 +27,16 @@ export const StyledContactForm = styled.form`
     color: red;
     margin: 0.5rem 0 0 0;
   }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
 `
 
-export const StyledContactFormSuccess = styled.div``
+export const StyledContactFormSuccess = styled.div`
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+`

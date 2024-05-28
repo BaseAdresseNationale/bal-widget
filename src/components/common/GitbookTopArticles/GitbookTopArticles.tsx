@@ -1,6 +1,6 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useContext } from 'react'
 import { StyledGitBookTopArticles } from './GitbookTopArticles.styles'
+import RouterHistoryContext from '../../../contexts/routerhistoryContext'
 
 interface GitBookTopArticlesProps {
   articles: {
@@ -10,7 +10,8 @@ interface GitBookTopArticlesProps {
 }
 
 function GitBookTopArticles({ articles }: GitBookTopArticlesProps) {
-  const navigate = useNavigate()
+  const { navigate } = useContext(RouterHistoryContext)
+
   const onFocus = () => {
     navigate('/gitbook')
   }

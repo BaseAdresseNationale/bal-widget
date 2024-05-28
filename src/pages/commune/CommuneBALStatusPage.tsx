@@ -1,9 +1,9 @@
 import React from 'react'
-import AnimatedPage from '../layouts/AnimatedPage'
-import { useSearchParams } from '../hooks/useSearchParams'
-import { useCommuneInfos } from '../hooks/useCommuneInfos'
+import AnimatedPage from '../../layouts/AnimatedPage'
+import { useSearchParams } from '../../hooks/useSearchParams'
+import { useCommuneInfos } from '../../hooks/useCommuneInfos'
 
-function CommunePage() {
+function CommuneBALStatusPage() {
   const [codeCommune, nomCommune] = useSearchParams('code', 'nom')
   const { communeInfos, status } = useCommuneInfos(codeCommune)
 
@@ -25,4 +25,4 @@ function CommunePage() {
   )
 }
 
-export default CommunePage
+export default CommuneBALStatusPage
