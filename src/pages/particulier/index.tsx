@@ -15,7 +15,7 @@ function ParticulierWelcomePage() {
         <button
           onClick={() => navigate('/particulier/troubleshooting')}
           style={{ textAlign: 'left' }}
-          className='fr-link fr-icon-arrow-right-line fr-link--icon-right'
+          className='fr-btn fr-icon-arrow-right-line fr-btn--icon-right'
         >
           C&apos;est par ici
         </button>

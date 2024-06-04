@@ -57,8 +57,7 @@ function CommuneWelcomePage() {
       <HelpBlock label={config?.contactUs?.welcomeBlockTitle || ''}>
         <button
           onClick={() => navigate('/commune/contact')}
-          style={{ textAlign: 'left' }}
-          className='fr-link fr-icon-arrow-right-line fr-link--icon-right'
+          className='fr-btn fr-icon-arrow-right-line fr-btn--icon-right'
         >
           Formulaire de contact
         </button>

@@ -9,20 +9,20 @@ function HomePage() {
   return (
     <AnimatedPage animation='prev'>
       <HelpBlock label='Vous êtes ?'>
-        <button
-          onClick={() => navigate('/commune')}
-          style={{ textAlign: 'left', display: 'block' }}
-          className='fr-link fr-icon-arrow-right-line fr-link--icon-right'
-        >
-          Une commune
-        </button>
-        <button
-          onClick={() => navigate('/particulier')}
-          style={{ textAlign: 'left', display: 'block', marginTop: '1rem' }}
-          className='fr-link fr-icon-arrow-right-line fr-link--icon-right'
-        >
-          Un particulier
-        </button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <button
+            onClick={() => navigate('/commune')}
+            className='fr-btn fr-btn--icon-right fr-icon-france-line'
+          >
+            Une commune
+          </button>
+          <button
+            onClick={() => navigate('/particulier')}
+            className='fr-btn fr-btn--icon-right fr-icon-user-line'
+          >
+            Un particulier
+          </button>
+        </div>
       </HelpBlock>
     </AnimatedPage>
   )
