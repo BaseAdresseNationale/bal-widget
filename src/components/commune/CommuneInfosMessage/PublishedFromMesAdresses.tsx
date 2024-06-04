@@ -3,6 +3,7 @@ import { StyledCommuneInfosMessage } from './CommuneInfosMessage.style'
 import { BALStatusBadge } from '../BALStatusBadge/BALStatusBadge'
 import { MES_ADRESSES_URL } from '../../../hooks/useMesAdresses'
 import { BALMesAdresses } from '../../../types/MesAdresses.types'
+import { isEmbeddedInIframe } from '../../../utils/iframe.utils'
 
 type PublishedFromMesAdressesProps = {
   publishedBals: BALMesAdresses[]
@@ -25,7 +26,7 @@ export const PublishedFromMesAdresses = ({ publishedBals }: PublishedFromMesAdre
             <a
               href={`${MES_ADRESSES_URL}/bal/${bal._id}`}
               className='fr-btn fr-btn--primary'
-              target='_blank'
+              target={isEmbeddedInIframe() ? '_parent' : '_blank'}
               rel='noreferrer'
             >
               Consulter

@@ -1,4 +1,5 @@
 import React from 'react'
+import { isEmbeddedInIframe } from '../../../utils/iframe.utils'
 
 function AdresseFoundInBAN() {
   return (
@@ -11,7 +12,7 @@ function AdresseFoundInBAN() {
       <p>
         Vous pouvez consulter la liste de ces organisations à cette page :{' '}
         <a
-          target='_blank'
+          target={isEmbeddedInIframe() ? '_parent' : '_blank'}
           className='fr-link'
           href='https://adresse.data.gouv.fr/donnees-nationales/usages'
           rel='noreferrer'

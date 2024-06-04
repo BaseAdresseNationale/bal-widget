@@ -3,6 +3,7 @@ import { StyledCommuneInfosMessage } from './CommuneInfosMessage.style'
 import ConfigContext from '../../../contexts/configContext'
 import { MES_ADRESSES_URL } from '../../../hooks/useMesAdresses'
 import { APIDepotRevision } from '../../../types/APIDepot.types'
+import { isEmbeddedInIframe } from '../../../utils/iframe.utils'
 
 type PublishedFromOtherClientProps = {
   currentRevision: APIDepotRevision
@@ -35,7 +36,12 @@ export const PublishedFromOtherClient = ({ currentRevision }: PublishedFromOther
         <p>
           Cependant cette organisation ne met plus à jour vos adresses. Afin de reprendre la main
           sur votre adressage, vous pouvez créer une Base Adresse Locale sur{' '}
-          <a href={MES_ADRESSES_URL} className='fr-link' target='_blank' rel='noreferrer'>
+          <a
+            href={MES_ADRESSES_URL}
+            className='fr-link'
+            target={isEmbeddedInIframe() ? '_parent' : '_blank'}
+            rel='noreferrer'
+          >
             Mes-Adresses
           </a>
           et &quot;Forcer la publication&quot;.
@@ -45,7 +51,12 @@ export const PublishedFromOtherClient = ({ currentRevision }: PublishedFromOther
           La commune reste toutefois l’autorité compétente en matière d’adressage, et vous pouvez
           décider à tout moment de reprendre la main sur la publication de votre BAL via
           l&apos;outil{' '}
-          <a href={MES_ADRESSES_URL} className='fr-link' target='_blank' rel='noreferrer'>
+          <a
+            href={MES_ADRESSES_URL}
+            className='fr-link'
+            target={isEmbeddedInIframe() ? '_parent' : '_blank'}
+            rel='noreferrer'
+          >
             Mes-Adresses
           </a>
           .

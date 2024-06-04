@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useBALAdmin } from '../hooks/useBALAdmin'
-
+import { isEmbeddedInIframe } from '../utils/iframe.utils'
 export interface BALWidgetLink {
   label: string
   url: string
@@ -41,7 +41,7 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
   const [config, setConfig] = useState<BALWidgetConfig | null>(null)
   const { getConfig } = useBALAdmin()
   const [isLoading, setIsLoading] = useState(true)
-  const isEmbeddedInIframe = window !== window.parent
+  const isEmbedded = isEmbeddedInIframe()
 
   useEffect(() => {
     function getConfigFromParent(event: { data: { type: string; content: BALWidgetConfig } }) {
@@ -57,7 +57,7 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
       setIsLoading(false)
     }
 
-    if (isEmbeddedInIframe) {
+    if (isEmbedded) {
       window.parent.postMessage({ type: 'BAL_WIDGET_READY' }, '*')
       window.addEventListener('message', getConfigFromParent)
     } else {
@@ -65,9 +65,9 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
     }
 
     return () => {
-      isEmbeddedInIframe && window.removeEventListener('message', getConfigFromParent)
+      isEmbedded && window.removeEventListener('message', getConfigFromParent)
     }
-  }, [isEmbeddedInIframe, getConfig])
+  }, [isEmbedded, getConfig])
 
   return <ConfigContext.Provider value={config}>{!isLoading && children}</ConfigContext.Provider>
 }

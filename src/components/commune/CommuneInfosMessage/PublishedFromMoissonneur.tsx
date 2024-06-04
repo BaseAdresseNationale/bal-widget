@@ -5,6 +5,7 @@ import { useDataGouv } from '../../../hooks/useDataGouv'
 import { MES_ADRESSES_URL } from '../../../hooks/useMesAdresses'
 import { DataGouvOrganization } from '../../../types/DataGouv.types'
 import { APIDepotRevision } from '../../../types/APIDepot.types'
+import { isEmbeddedInIframe } from '../../../utils/iframe.utils'
 
 type PublishedFromMoissonneurProps = {
   currentRevision: APIDepotRevision
@@ -38,7 +39,7 @@ export const PublishedFromMoissonneur = ({ currentRevision }: PublishedFromMoiss
           <p>
             Une Base Adresse Locale a déjà été publiée par{' '}
             <a
-              target='_blank'
+              target={isEmbeddedInIframe() ? '_parent' : '_blank'}
               href={`${organization.page}`}
               rel='noopener noreferrer'
               className='fr-link'
@@ -51,7 +52,12 @@ export const PublishedFromMoissonneur = ({ currentRevision }: PublishedFromMoiss
             <p>
               Cependant cette organisation ne met plus à jour vos adresses. Afin de reprendre la
               main sur votre adressage, vous pouvez créer une Base Adresse Locale sur{' '}
-              <a href={MES_ADRESSES_URL} className='fr-link' target='_blank' rel='noreferrer'>
+              <a
+                href={MES_ADRESSES_URL}
+                className='fr-link'
+                target={isEmbeddedInIframe() ? '_parent' : '_blank'}
+                rel='noreferrer'
+              >
                 Mes-Adresses
               </a>
               et &quot;Forcer la publication&quot;.
@@ -67,7 +73,12 @@ export const PublishedFromMoissonneur = ({ currentRevision }: PublishedFromMoiss
       <p>
         Toutefois, la commune étant compétente en matière d’adressage, vous pouvez prendre la main
         directement via{' '}
-        <a href={MES_ADRESSES_URL} className='fr-link' target='_blank' rel='noreferrer'>
+        <a
+          href={MES_ADRESSES_URL}
+          className='fr-link'
+          target={isEmbeddedInIframe() ? '_parent' : '_blank'}
+          rel='noreferrer'
+        >
           Mes-Adresses
         </a>
         .

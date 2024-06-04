@@ -6,6 +6,7 @@ import { useAPIDepot } from './useAPIDepot'
 import { useMesAdressesAPI } from './useMesAdresses'
 import { APIDepotRevision } from '../types/APIDepot.types'
 import { BALMesAdresses } from '../types/MesAdresses.types'
+import { isEmbeddedInIframe } from '../utils/iframe.utils'
 
 const ADRESSE_DATA_GOUV_URL =
   process.env.REACT_APP_ADRESSE_DATA_GOUV_URL || 'https://adresse.data.gouv.fr'
@@ -35,7 +36,12 @@ const formatInfosCommune = (communeInfos: CommuneInfosData) => {
         <p>
           Votre commune n’a pas encore publié sa Base Adresse Locale. Vous trouverez tous les
           renseignements nécessaires à commencer votre adressage sur{' '}
-          <a href={`${ADRESSE_DATA_GOUV_URL}/gerer-mes-adresses`} className='fr-link'>
+          <a
+            href={`${ADRESSE_DATA_GOUV_URL}/gerer-mes-adresses`}
+            target={isEmbeddedInIframe() ? '_parent' : '_blank'}
+            className='fr-link'
+            rel='noreferrer'
+          >
             cette page
           </a>
           .
