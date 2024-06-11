@@ -115,7 +115,6 @@ export const ParticulierTroubleshooting = () => {
                   <div key={commune.code}>
                     <button
                       type='button'
-                      className='autocomplete-btn'
                       onClick={() => setAdresse(() => ({ ...adresse, municipality: commune }))}
                     >
                       {commune.nom} ({commune.postcode})
@@ -155,7 +154,6 @@ export const ParticulierTroubleshooting = () => {
                       <div key={voie.code}>
                         <button
                           type='button'
-                          className='autocomplete-btn'
                           onClick={() =>
                             setAdresse(() => ({
                               ...adresse,

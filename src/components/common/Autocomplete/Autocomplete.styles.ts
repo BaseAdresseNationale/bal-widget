@@ -19,6 +19,7 @@ export const StyledAutocomplete = styled.div`
         width: 100%;
         text-align: left;
         padding: 5px 10px;
+        cursor: pointer;
         &:hover {
           background-color: #eee;
         }
