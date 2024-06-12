@@ -50,10 +50,7 @@ const Autocomplete = <T extends { code: string }>({
           onChange={onSearch}
           onFocus={() => setHasFocus(true)}
           onBlur={(e) => {
-            if (
-              e.target instanceof Element &&
-              (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT')
-            ) {
+            if (e.relatedTarget instanceof Element && e.relatedTarget.tagName === 'BUTTON') {
               return
             }
             setHasFocus(false)

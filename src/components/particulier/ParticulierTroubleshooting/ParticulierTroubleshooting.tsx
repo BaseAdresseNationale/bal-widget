@@ -114,6 +114,7 @@ export const ParticulierTroubleshooting = () => {
                 ResultCmp={(commune: APIAdresseResult) => (
                   <div key={commune.code}>
                     <button
+                      tabIndex={0}
                       type='button'
                       onClick={() => setAdresse(() => ({ ...adresse, municipality: commune }))}
                     >
@@ -153,6 +154,7 @@ export const ParticulierTroubleshooting = () => {
                     ResultCmp={(voie: APIAdresseResult) => (
                       <div key={voie.code}>
                         <button
+                          tabIndex={0}
                           type='button'
                           onClick={() =>
                             setAdresse(() => ({

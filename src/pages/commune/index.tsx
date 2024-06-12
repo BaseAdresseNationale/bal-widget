@@ -37,7 +37,7 @@ function CommuneWelcomePage() {
           fetchResults={fetchCommunes}
           ResultCmp={(commune: APIGeoCommune) => (
             <div key={commune.code}>
-              <button type='button' onClick={() => onSelectCommune(commune)}>
+              <button tabIndex={0} type='button' onClick={() => onSelectCommune(commune)}>
                 {commune.nom} ({commune.code})
               </button>
             </div>
