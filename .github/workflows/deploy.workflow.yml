@@ -1,0 +1,38 @@
+# https://github.com/gregrickaby/nextjs-github-pages/blob/main/.github/workflows/deploy.yml
+
+name: Deploy to Github Pages
+
+on:
+  push:
+    branches:
+      - master
+
+  workflow_dispatch:
+
+env:
+  PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+  REACT_APP_HCAPTCHA_SITE_KEY: ${{ vars.REACT_APP_HCAPTCHA_SITE_KEY }}
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          cache: 'yarn'
+
+      - name: Build
+        run: |
+          yarn
+          yarn build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./build
+          publish_branch: gh-pages
