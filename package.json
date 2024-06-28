@@ -50,7 +50,6 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
-    "@types/react-google-recaptcha": "^2.1.8",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",
     "eslint": "^8.54.0",
