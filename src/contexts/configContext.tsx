@@ -58,7 +58,10 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
     }
 
     if (isEmbedded) {
-      window.parent.postMessage({ type: 'BAL_WIDGET_READY' }, window.parent.origin)
+      window.parent.postMessage(
+        { type: 'BAL_WIDGET_READY' },
+        'https://baseadressenationale.github.io',
+      )
       window.addEventListener('message', getConfigFromParent)
     } else {
       fetchConfig()

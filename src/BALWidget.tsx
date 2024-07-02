@@ -24,14 +24,14 @@ function BALWidget() {
     const { pathname } = location
     window.parent.postMessage(
       { type: 'BAL_WIDGET_LOCATION', content: pathname },
-      window.parent.origin,
+      'https://baseadressenationale.github.io',
     )
   }, [location.pathname])
 
   // Send message to parent window when widget is expanded or collapsed
   useEffect(() => {
     const message = isExpanded ? { type: 'BAL_WIDGET_OPENED' } : { type: 'BAL_WIDGET_CLOSED' }
-    window.parent.postMessage(message, window.parent.origin)
+    window.parent.postMessage(message, 'https://baseadressenationale.github.io')
   }, [isExpanded])
 
   return (
