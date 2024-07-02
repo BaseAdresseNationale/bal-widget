@@ -58,7 +58,7 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
     }
 
     if (isEmbedded) {
-      window.parent.postMessage({ type: 'BAL_WIDGET_READY' }, '*')
+      window.parent.postMessage({ type: 'BAL_WIDGET_READY' }, window.parent.origin)
       window.addEventListener('message', getConfigFromParent)
     } else {
       fetchConfig()

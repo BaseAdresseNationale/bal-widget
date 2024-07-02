@@ -22,13 +22,16 @@ function BALWidget() {
   // Track location change on matomo
   useEffect(() => {
     const { pathname } = location
-    window.parent.postMessage({ type: 'BAL_WIDGET_LOCATION', content: pathname }, '*')
+    window.parent.postMessage(
+      { type: 'BAL_WIDGET_LOCATION', content: pathname },
+      window.parent.origin,
+    )
   }, [location.pathname])
 
   // Send message to parent window when widget is expanded or collapsed
   useEffect(() => {
     const message = isExpanded ? { type: 'BAL_WIDGET_OPENED' } : { type: 'BAL_WIDGET_CLOSED' }
-    window.parent.postMessage(message, '*')
+    window.parent.postMessage(message, window.parent.origin)
   }, [isExpanded])
 
   return (

@@ -10,7 +10,7 @@ export const StyledParticulierToubleshooting = styled.div`
   .step {
     margin-top: 1rem;
 
-    label {
+    .step-label {
       display: block;
       /* font-size: 1.25rem; */
       margin-bottom: 1rem;

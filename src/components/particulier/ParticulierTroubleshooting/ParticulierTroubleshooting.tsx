@@ -88,9 +88,9 @@ export const ParticulierTroubleshooting = () => {
         <>
           <h2>Votre adresse existe-t-elle dans la Base d&apos;Adresse Nationale ?</h2>
           <div className='step'>
-            <label>
+            <div className='step-label'>
               <span>1.</span>Dans quelle commune se situe votre adresse?
-            </label>
+            </div>
             {adresse.municipality ? (
               <div className='selection'>
                 Ma commune : <span>{adresse.municipality.nom}</span>{' '}
@@ -127,9 +127,9 @@ export const ParticulierTroubleshooting = () => {
           </div>
           {adresse.municipality && (
             <div className='step'>
-              <label>
+              <div className='step-label'>
                 <span>2.</span> Recherchez votre voie
-              </label>
+              </div>
               {adresse.street ? (
                 <div className='selection'>
                   Ma voie : <span>{adresse.street.nom}</span>{' '}
@@ -181,9 +181,9 @@ export const ParticulierTroubleshooting = () => {
           )}
           {adresse.municipality && adresse.street && (
             <div className='step'>
-              <label>
+              <div className='step-label'>
                 <span>3.</span> Sélectionnez votre numéro
-              </label>
+              </div>
 
               {isLoading ? (
                 <Loader />
