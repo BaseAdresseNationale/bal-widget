@@ -12,7 +12,7 @@ interface WindowProps {
 }
 
 function Window({ children, isExpanded, onClose }: WindowProps) {
-  const config = useContext(ConfigContext)
+  const { config } = useContext(ConfigContext)
   const location = useLocation()
   const { navigate } = useContext(RouterHistoryContext)
 

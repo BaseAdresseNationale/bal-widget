@@ -12,7 +12,7 @@ type PublishedFromMoissonneurProps = {
 }
 
 export const PublishedFromMoissonneur = ({ currentRevision }: PublishedFromMoissonneurProps) => {
-  const config = useContext(ConfigContext)
+  const { config } = useContext(ConfigContext)
   const { getDataset } = useDataGouv()
   const sourceId = currentRevision?.context?.extras?.sourceId
   const [organization, setOrganization] = useState<DataGouvOrganization | null>(null)

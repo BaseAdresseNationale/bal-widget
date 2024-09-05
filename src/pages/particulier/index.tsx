@@ -6,7 +6,7 @@ import ConfigContext from '../../contexts/configContext'
 import RouterHistoryContext from '../../contexts/routerhistoryContext'
 
 function ParticulierWelcomePage() {
-  const config = useContext(ConfigContext)
+  const { config } = useContext(ConfigContext)
   const { navigate, isNavigatingBack } = useContext(RouterHistoryContext)
 
   return (

@@ -16,16 +16,16 @@ body.appendChild(balWidgetRootElement)
 const root = ReactDOM.createRoot(balWidgetRootElement)
 root.render(
   <React.StrictMode>
-    <ConfigProvider>
-      <GlobalStyle />
-      <MemoryRouter>
-        <RouterHistoryProvider>
+    <GlobalStyle />
+    <MemoryRouter>
+      <RouterHistoryProvider>
+        <ConfigProvider>
           <Routes>
             <Route path='/*' element={<BALWidget />} />
           </Routes>
-        </RouterHistoryProvider>
-      </MemoryRouter>
-    </ConfigProvider>
+        </ConfigProvider>
+      </RouterHistoryProvider>
+    </MemoryRouter>
   </React.StrictMode>,
 )
 

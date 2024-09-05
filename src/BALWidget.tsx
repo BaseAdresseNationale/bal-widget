@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { StyledBALWidget } from './BALWidget.styles'
 import MainButton from './components/common/MainButton/MainButton'
 import Window from './components/common/Window/Window'
@@ -15,9 +15,8 @@ import ParticulierTroubleshootingPage from './pages/particulier/ParticulierTroub
 import AdresseProblemFormPage from './pages/particulier/AdresseProblemFormPage'
 
 function BALWidget() {
-  const [isExpanded, setIsExpanded] = useState(false)
   const location = useLocation()
-  const config = useContext(ConfigContext)
+  const { config, isOpen, setIsOpen } = useContext(ConfigContext)
 
   // Track location change on matomo
   useEffect(() => {
@@ -27,13 +26,13 @@ function BALWidget() {
 
   // Send message to parent window when widget is expanded or collapsed
   useEffect(() => {
-    const message = isExpanded ? { type: 'BAL_WIDGET_OPENED' } : { type: 'BAL_WIDGET_CLOSED' }
+    const message = isOpen ? { type: 'BAL_WIDGET_OPENED' } : { type: 'BAL_WIDGET_CLOSED' }
     window.parent.postMessage(message, '*')
-  }, [isExpanded])
+  }, [isOpen])
 
   return (
     <StyledBALWidget>
-      <Window isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
+      <Window isExpanded={isOpen} onClose={() => setIsOpen(false)}>
         <AnimatePresence>
           <Routes location={location} key={location.pathname}>
             <Route index element={<HomePage />} />
@@ -55,7 +54,7 @@ function BALWidget() {
           </Routes>
         </AnimatePresence>
       </Window>
-      <MainButton isExpanded={isExpanded} onClick={() => setIsExpanded((oldState) => !oldState)} />
+      <MainButton isExpanded={isOpen} onClick={() => setIsOpen((oldState) => !oldState)} />
     </StyledBALWidget>
   )
 }

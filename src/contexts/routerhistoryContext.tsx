@@ -28,7 +28,7 @@ export function RouterHistoryProvider({ children }: RouterHistoryProps) {
   }, [location.pathname])
 
   const navigate = (to: string, options?: NavigateOptions | undefined) => {
-    const lastLocation = routerHistory[routerHistory.length - 1]
+    const lastLocation = routerHistory[routerHistory.length - 1] || '/'
     if (to.length < lastLocation.length) {
       setIsNavigatingBack(true)
     } else {

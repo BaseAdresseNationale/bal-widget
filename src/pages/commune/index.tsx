@@ -23,7 +23,7 @@ function CommuneWelcomePage() {
     return data as APIGeoCommune[]
   }
 
-  const config = useContext(ConfigContext)
+  const { config } = useContext(ConfigContext)
 
   const onSelectCommune = (commune: APIGeoCommune) => {
     navigate(`/commune/bal-status?code=${commune.code}&nom=${commune.nom}`)

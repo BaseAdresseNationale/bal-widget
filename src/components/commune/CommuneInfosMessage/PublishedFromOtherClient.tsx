@@ -10,7 +10,7 @@ type PublishedFromOtherClientProps = {
 }
 
 export const PublishedFromOtherClient = ({ currentRevision }: PublishedFromOtherClientProps) => {
-  const config = useContext(ConfigContext)
+  const { config } = useContext(ConfigContext)
   const client = currentRevision?.client
 
   const isOutdated = useMemo(() => {
