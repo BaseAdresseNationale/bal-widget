@@ -21,8 +21,7 @@ export const PublishedFromMoissonneur = ({ currentRevision }: PublishedFromMoiss
   useEffect(() => {
     const loadOrganization = async () => {
       if (sourceId) {
-        const id: string[] = sourceId.split('-')
-        const dataset = await getDataset(id[1])
+        const dataset = await getDataset(sourceId)
 
         setOrganization(dataset.organization)
         setIsOutdated(config?.communes?.outdatedHarvestSources?.includes(sourceId) || false)
