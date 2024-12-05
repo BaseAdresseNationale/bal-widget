@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useBALAdmin } from '../hooks/useBALAdmin'
 import { isEmbeddedInIframe } from '../utils/iframe.utils'
 import RouterHistoryContext from './routerhistoryContext'
@@ -36,12 +36,14 @@ interface ConfigContextType {
   config: BALWidgetConfig | null
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  parentNavigateTo: (url: string) => void
 }
 
 const ConfigContext = React.createContext<ConfigContextType>({
   config: null,
   isOpen: false,
   setIsOpen: () => {},
+  parentNavigateTo: () => {},
 })
 
 interface ConfigProviderProps {
@@ -56,6 +58,10 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
   const { getConfig } = useBALAdmin()
   const [isLoading, setIsLoading] = useState(true)
   const isEmbedded = isEmbeddedInIframe()
+
+  const parentNavigateTo = (url: string) => {
+    window.parent.postMessage({ type: 'BAL_WIDGET_PARENT_NAVIGATE_TO', content: url }, '*')
+  }
 
   useEffect(() => {
     function getEventsFromParent(event: {
@@ -96,11 +102,9 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
     }
   }, [isEmbedded, getConfig])
 
-  return (
-    <ConfigContext.Provider value={{ config, isOpen, setIsOpen }}>
-      {!isLoading && children}
-    </ConfigContext.Provider>
-  )
+  const value = useMemo(() => ({ config, isOpen, setIsOpen, parentNavigateTo }), [config, isOpen])
+
+  return <ConfigContext.Provider value={value}>{!isLoading && children}</ConfigContext.Provider>
 }
 
 export const ConfigConsumer = ConfigContext.Consumer

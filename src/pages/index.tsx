@@ -17,6 +17,12 @@ function HomePage() {
             Une commune
           </button>
           <button
+            onClick={() => navigate('/ban-user')}
+            className='fr-btn fr-btn--icon-right fr-icon-settings-5-line'
+          >
+            Un utilisateur BAN
+          </button>
+          <button
             onClick={() => navigate('/particulier')}
             className='fr-btn fr-btn--icon-right fr-icon-user-line'
           >

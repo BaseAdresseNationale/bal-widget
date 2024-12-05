@@ -13,6 +13,8 @@ import ContactPage from './pages/commune/ContactPage'
 import ConfigContext from './contexts/configContext'
 import ParticulierTroubleshootingPage from './pages/particulier/ParticulierTroubleshootingPage'
 import AdresseProblemFormPage from './pages/particulier/AdresseProblemFormPage'
+import BANUserContactPage from './pages/ban-user/BANUserContactPage'
+import BANUserWelcomePage from './pages/ban-user'
 
 function BALWidget() {
   const location = useLocation()
@@ -43,6 +45,9 @@ function BALWidget() {
               path='commune/contact'
               element={<ContactPage subjects={config?.contactUs.subjects} />}
             />
+
+            <Route path='ban-user' element={<BANUserWelcomePage />} />
+            <Route path='ban-user/contact' element={<BANUserContactPage />} />
 
             <Route path='particulier' element={<ParticulierWelcomePage />} />
             <Route
