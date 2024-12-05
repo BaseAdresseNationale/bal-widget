@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useBALAdmin } from '../hooks/useBALAdmin'
 import { isEmbeddedInIframe } from '../utils/iframe.utils'
 import RouterHistoryContext from './routerhistoryContext'
@@ -102,11 +102,9 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
     }
   }, [isEmbedded, getConfig])
 
-  return (
-    <ConfigContext.Provider value={{ config, isOpen, setIsOpen, parentNavigateTo }}>
-      {!isLoading && children}
-    </ConfigContext.Provider>
-  )
+  const value = useMemo(() => ({ config, isOpen, setIsOpen, parentNavigateTo }), [config, isOpen])
+
+  return <ConfigContext.Provider value={value}>{!isLoading && children}</ConfigContext.Provider>
 }
 
 export const ConfigConsumer = ConfigContext.Consumer
