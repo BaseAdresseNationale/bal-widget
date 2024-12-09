@@ -36,7 +36,7 @@ interface ConfigContextType {
   config: BALWidgetConfig | null
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  parentNavigateTo: (url: string) => void
+  parentNavigateTo: (url: { href: string; target?: string }) => void
 }
 
 const ConfigContext = React.createContext<ConfigContextType>({
@@ -59,8 +59,8 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
   const [isLoading, setIsLoading] = useState(true)
   const isEmbedded = isEmbeddedInIframe()
 
-  const parentNavigateTo = (url: string) => {
-    window.parent.postMessage({ type: 'BAL_WIDGET_PARENT_NAVIGATE_TO', content: url }, '*')
+  const parentNavigateTo = (content: { href: string; target?: string }) => {
+    window.parent.postMessage({ type: 'BAL_WIDGET_PARENT_NAVIGATE_TO', content }, '*')
   }
 
   useEffect(() => {
