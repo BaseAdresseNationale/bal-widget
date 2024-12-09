@@ -13,7 +13,12 @@ function BANUserWelcomePage() {
     <AnimatedPage animation={isNavigatingBack ? 'prev' : 'next'}>
       <HelpBlock label="Accédez aux données et outils d'exploitation">
         <button
-          onClick={() => parentNavigateTo('/outils')}
+          onClick={() =>
+            parentNavigateTo({
+              href: '/outils',
+              target: '_self',
+            })
+          }
           className='fr-btn fr-icon-arrow-right-line fr-btn--icon-right'
         >
           C&apos;est par ici
@@ -22,9 +27,10 @@ function BANUserWelcomePage() {
       <HelpBlock label='Vous souhaitez contribuer aux évolutions de la BAN?'>
         <button
           onClick={() =>
-            parentNavigateTo(
-              'https://www.ign.fr/professionnels/rejoignez-la-communaute-dutilisateurs-de-la-ban',
-            )
+            parentNavigateTo({
+              href: 'https://www.ign.fr/professionnels/rejoignez-la-communaute-dutilisateurs-de-la-ban',
+              target: '_blank',
+            })
           }
           className='fr-btn fr-icon-arrow-right-line fr-btn--icon-right'
         >
