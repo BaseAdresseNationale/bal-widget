@@ -15,7 +15,7 @@ export const PublishedFromOtherClient = ({ currentRevision }: PublishedFromOther
 
   const isOutdated = useMemo(() => {
     return (
-      config?.communes?.outdatedApiDepotClients?.includes(currentRevision?.client?._id || '') ||
+      config?.communes?.outdatedApiDepotClients?.includes(currentRevision?.client?.id || '') ||
       false
     )
   }, [config, client])
@@ -25,13 +25,12 @@ export const PublishedFromOtherClient = ({ currentRevision }: PublishedFromOther
       <p>
         Une Base Adresse Locale a déjà été publiée par <b>{client.chefDeFile || client.nom}</b> pour
         votre commune.
-        {client.chefDeFileEmailContact && (
-          <>
-            Vous pouvez contacter cet organisme via l&apos;adresse :{' '}
-            <b>{client.chefDeFileEmailContact}</b>
-          </>
-        )}
       </p>
+      {client.chefDeFileEmail && (
+        <p>
+          Vous pouvez contacter cet organisme via l&apos;adresse : <b>{client.chefDeFileEmail}</b>
+        </p>
+      )}
       {isOutdated ? (
         <p>
           Cependant cette organisation ne met plus à jour vos adresses. Afin de reprendre la main
