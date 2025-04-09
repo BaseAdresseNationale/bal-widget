@@ -2,7 +2,6 @@ export interface APIDepotRevision {
   id: string
   codeCommune: string
   publishedAt: string
-  ready: null
   status: string
   updatedAt: string
   client: {
