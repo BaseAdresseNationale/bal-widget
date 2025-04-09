@@ -1,7 +1,7 @@
 export interface BALMesAdresses {
-  _id: string
-  _updated: string
-  _created: string
+  id: string
+  updatedAt: string
+  createdAt: string
   nom: string
   status: 'published' | 'replaced'
   sync: {

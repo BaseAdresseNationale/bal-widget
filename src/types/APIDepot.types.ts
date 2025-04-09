@@ -1,12 +1,16 @@
 export interface APIDepotRevision {
+  id: string
+  codeCommune: string
+  publishedAt: string
+  status: string
+  updatedAt: string
   client: {
     chefDeFile?: string
-    chefDeFileEmailContact?: string
+    chefDeFileEmail?: string
     mandataire: string
     nom: string
-    _id: string
+    id: string
   }
-  codeCommune: string
   context: {
     nomComplet: string
     organisation: string
@@ -23,16 +27,10 @@ export interface APIDepotRevision {
   createdAt: string
   current: boolean
   habilitation: {
-    _id: string
+    id: string
     emailCommune: string
     codeCommune: string
     createdAt: string
     updatedAt: string
-    __v: number
   }
-  publishedAt: string
-  ready: null
-  status: string
-  updatedAt: string
-  _id: string
 }
