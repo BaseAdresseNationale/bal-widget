@@ -8,11 +8,9 @@ export const useAPIDepot = () => {
   const getCurrentRevision = useCallback(async (codeCommune: string) => {
     const response = await fetch(`${API_DEPOT_URL}/communes/${codeCommune}/current-revision`)
 
-    const data = await response.json()
+    const data = (await response.json()) as APIDepotRevision
 
-    if (response.status === 200) {
-      return data as APIDepotRevision
-    }
+    return data
   }, [])
 
   return {

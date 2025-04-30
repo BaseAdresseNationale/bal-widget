@@ -29,12 +29,25 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+### Configuration
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Cette application utilise des variables d'environnement pour sa configuration.
+Elles peuvent être définies classiquement ou en créant un fichier `.env` sur la base du modèle `.env.sample`.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Nom de la variable                     | Description                     |
+| -------------------------------------- | ------------------------------- |
+| `PORT`                                 | Port utilisé                    |
+| `PUBLIC_URL`                           | Url publique du site            |
+| `REACT_APP_BAL_ADMIN_API_URL`          | URL de base de BAL Admin        |
+| `REACT_APP_MES_ADRESSES_URL`           | URL de base de mes-adresses     |
+| `REACT_APP_MES_ADRESSES_API_URL`       | URL de base de mes-adresses-api |
+| `REACT_APP_API_DEPOT_URL`              | URL de base de l'api de depot   |
+| `REACT_APP_HCAPTCHA_SITE_KEY`          | Configuration du captcha        |
+| `REACT_APP_MES_SIGNALEMENTS_URL`       | URL de base de mes-signalements |
+| `REACT_APP_MES_SIGNALEMENTS_SOURCE_ID` | ID de la source de signalement  |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Toutes ces variables ont des valeurs par défaut que vous trouverez dans le fichier `.env.sample`.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Licence
+
+MIT

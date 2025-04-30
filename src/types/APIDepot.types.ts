@@ -22,6 +22,7 @@ export interface APIDepotRevision {
       departement: string
       region: string
       sourceId?: string
+      balId?: string
     }
   }
   createdAt: string

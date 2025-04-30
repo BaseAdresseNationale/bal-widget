@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { StyledParticulierToubleshooting } from './ParticulierToubleshooting.styles'
 import Autocomplete from '../../common/Autocomplete/Autocomplete'
 import Loader from '../../common/Loader/Loader'
 import AdresseNotFoundInBAN from '../AdresseNotFoundInBAN/AdresseNotFoundInBAN'
 import AdresseFoundInBAN from '../AdresseFoundInBAN/AdresseFoundInBAN'
+import { SignalementMode } from '../../../types/signalement.types'
+import { getSignalementMode } from '../../../utils/signalement.utils'
+import { useAPIDepot } from '../../../hooks/useAPIDepot'
 
 interface APIAdresseResult {
   nom: string
@@ -21,10 +24,20 @@ export const ParticulierTroubleshooting = () => {
     street: null,
     number: '',
   })
-
+  const { getCurrentRevision } = useAPIDepot()
+  const [signalementMode, setSignalementMode] = useState<SignalementMode>(SignalementMode.EMAIL)
   const [numeros, setNumeros] = useState<string[]>([])
   const [numeroNotFound, setNumeroNotFound] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  const browseToMesSignalements = useCallback(
+    () =>
+      window.open(
+        `${process.env.REACT_APP_MES_SIGNALEMENTS_URL}/#/${adresse.street?.code}?sourceId=${process.env.REACT_APP_MES_SIGNALEMENTS_SOURCE_ID}&type=LOCATION_TO_CREATE`,
+        '_blank',
+      ),
+    [adresse],
+  )
 
   const fetchBAN = (type: string) => async (search: string) => {
     setIsLoading(true)
@@ -73,9 +86,21 @@ export const ParticulierTroubleshooting = () => {
   }
 
   useEffect(() => {
-    if (adresse.municipality && adresse.street) {
-      fetchNumeros().then(setNumeros)
+    const fetchData = async () => {
+      if (adresse.municipality && adresse.street) {
+        fetchNumeros().then(setNumeros)
+      } else if (adresse.municipality) {
+        let currentRevision = null
+        try {
+          currentRevision = await getCurrentRevision(adresse.municipality.code)
+        } catch (err) {
+          console.error('Error fetching current revision:', err)
+        }
+        setSignalementMode(getSignalementMode(currentRevision))
+      }
     }
+
+    void fetchData()
   }, [adresse])
 
   return (
@@ -211,7 +236,13 @@ export const ParticulierTroubleshooting = () => {
                   <button
                     type='button'
                     className='fr-btn fr-btn--secondary fr-btn--sm not-found'
-                    onClick={() => setNumeroNotFound(true)}
+                    {...(signalementMode === SignalementMode.MES_SIGNALEMENTS
+                      ? {
+                          onClick: browseToMesSignalements,
+                        }
+                      : {
+                          onClick: () => setNumeroNotFound(true),
+                        })}
                   >
                     Mon numéro n&apos;est pas dans la liste
                   </button>
