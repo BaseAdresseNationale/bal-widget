@@ -13,7 +13,7 @@ const ADRESSE_DATA_GOUV_URL =
 
 interface CommuneInfosData {
   balsMesAdresses: BALMesAdresses[]
-  currentRevision?: APIDepotRevision
+  currentRevision: APIDepotRevision | null
 }
 
 const formatInfosCommune = (communeInfos: CommuneInfosData) => {
