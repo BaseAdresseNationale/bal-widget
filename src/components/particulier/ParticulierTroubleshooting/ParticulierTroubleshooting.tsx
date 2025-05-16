@@ -7,6 +7,7 @@ import AdresseFoundInBAN from '../AdresseFoundInBAN/AdresseFoundInBAN'
 import { SignalementMode } from '../../../types/signalement.types'
 import { getSignalementMode } from '../../../utils/signalement.utils'
 import { useAPIDepot } from '../../../hooks/useAPIDepot'
+import { isSignalementDisabledForCommune } from '../../../lib/api-signalement'
 
 interface APIAdresseResult {
   nom: string
@@ -90,13 +91,22 @@ export const ParticulierTroubleshooting = () => {
       if (adresse.municipality && adresse.street) {
         fetchNumeros().then(setNumeros)
       } else if (adresse.municipality) {
+        let isCommuneDisabled
+        try {
+          isCommuneDisabled = await isSignalementDisabledForCommune(adresse.municipality.code)
+        } catch (err) {
+          console.error('Error fetching commune disabled status:', err)
+          setSignalementMode(SignalementMode.EMAIL)
+          return
+        }
+
         let currentRevision = null
         try {
           currentRevision = await getCurrentRevision(adresse.municipality.code)
         } catch (err) {
           console.error('Error fetching current revision:', err)
         }
-        setSignalementMode(getSignalementMode(currentRevision))
+        setSignalementMode(getSignalementMode(currentRevision, isCommuneDisabled))
       }
     }
 
