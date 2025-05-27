@@ -7,7 +7,7 @@ import AdresseFoundInBAN from '../AdresseFoundInBAN/AdresseFoundInBAN'
 import { SignalementMode } from '../../../types/signalement.types'
 import { getSignalementMode } from '../../../utils/signalement.utils'
 import { useAPIDepot } from '../../../hooks/useAPIDepot'
-import { isSignalementDisabledForCommune } from '../../../lib/api-signalement'
+import { getSignalementCommuneStatus, getSignalementSourceId } from '../../../lib/api-signalement'
 
 interface APIAdresseResult {
   nom: string
@@ -34,7 +34,8 @@ export const ParticulierTroubleshooting = () => {
   const browseToMesSignalements = useCallback(
     () =>
       window.open(
-        `${process.env.REACT_APP_MES_SIGNALEMENTS_URL}/#/${adresse.street?.code}?sourceId=${process.env.REACT_APP_MES_SIGNALEMENTS_SOURCE_ID}&type=LOCATION_TO_CREATE`,
+        `${process.env.REACT_APP_MES_SIGNALEMENTS_URL}/#/${adresse.street
+          ?.code}?sourceId=${getSignalementSourceId()}&type=LOCATION_TO_CREATE`,
         '_blank',
       ),
     [adresse],
@@ -93,7 +94,8 @@ export const ParticulierTroubleshooting = () => {
       } else if (adresse.municipality) {
         let isCommuneDisabled
         try {
-          isCommuneDisabled = await isSignalementDisabledForCommune(adresse.municipality.code)
+          const communeStatus = await getSignalementCommuneStatus(adresse.municipality.code)
+          isCommuneDisabled = communeStatus.disabled
         } catch (err) {
           console.error('Error fetching commune disabled status:', err)
           setSignalementMode(SignalementMode.EMAIL)
