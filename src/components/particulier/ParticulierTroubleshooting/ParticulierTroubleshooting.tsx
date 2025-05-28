@@ -92,7 +92,7 @@ export const ParticulierTroubleshooting = () => {
       if (adresse.municipality && adresse.street) {
         fetchNumeros().then(setNumeros)
       } else if (adresse.municipality) {
-        let isCommuneDisabled
+        let isCommuneDisabled: boolean
         try {
           const communeStatus = await getSignalementCommuneStatus(adresse.municipality.code)
           isCommuneDisabled = communeStatus.disabled
