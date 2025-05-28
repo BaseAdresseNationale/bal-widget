@@ -7,6 +7,7 @@ import AdresseFoundInBAN from '../AdresseFoundInBAN/AdresseFoundInBAN'
 import { SignalementMode } from '../../../types/signalement.types'
 import { getSignalementMode } from '../../../utils/signalement.utils'
 import { useAPIDepot } from '../../../hooks/useAPIDepot'
+import { getSignalementCommuneStatus, getSignalementSourceId } from '../../../lib/api-signalement'
 
 interface APIAdresseResult {
   nom: string
@@ -33,7 +34,8 @@ export const ParticulierTroubleshooting = () => {
   const browseToMesSignalements = useCallback(
     () =>
       window.open(
-        `${process.env.REACT_APP_MES_SIGNALEMENTS_URL}/#/${adresse.street?.code}?sourceId=${process.env.REACT_APP_MES_SIGNALEMENTS_SOURCE_ID}&type=LOCATION_TO_CREATE`,
+        `${process.env.REACT_APP_MES_SIGNALEMENTS_URL}/#/${adresse.street
+          ?.code}?sourceId=${getSignalementSourceId()}&type=LOCATION_TO_CREATE`,
         '_blank',
       ),
     [adresse],
@@ -90,13 +92,23 @@ export const ParticulierTroubleshooting = () => {
       if (adresse.municipality && adresse.street) {
         fetchNumeros().then(setNumeros)
       } else if (adresse.municipality) {
+        let isCommuneDisabled: boolean
+        try {
+          const communeStatus = await getSignalementCommuneStatus(adresse.municipality.code)
+          isCommuneDisabled = communeStatus.disabled
+        } catch (err) {
+          console.error('Error fetching commune disabled status:', err)
+          setSignalementMode(SignalementMode.EMAIL)
+          return
+        }
+
         let currentRevision = null
         try {
           currentRevision = await getCurrentRevision(adresse.municipality.code)
         } catch (err) {
           console.error('Error fetching current revision:', err)
         }
-        setSignalementMode(getSignalementMode(currentRevision))
+        setSignalementMode(getSignalementMode(currentRevision, isCommuneDisabled))
       }
     }
 

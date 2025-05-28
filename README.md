@@ -34,17 +34,18 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 Cette application utilise des variables d'environnement pour sa configuration.
 Elles peuvent être définies classiquement ou en créant un fichier `.env` sur la base du modèle `.env.sample`.
 
-| Nom de la variable                     | Description                     |
-| -------------------------------------- | ------------------------------- |
-| `PORT`                                 | Port utilisé                    |
-| `PUBLIC_URL`                           | Url publique du site            |
-| `REACT_APP_BAL_ADMIN_API_URL`          | URL de base de BAL Admin        |
-| `REACT_APP_MES_ADRESSES_URL`           | URL de base de mes-adresses     |
-| `REACT_APP_MES_ADRESSES_API_URL`       | URL de base de mes-adresses-api |
-| `REACT_APP_API_DEPOT_URL`              | URL de base de l'api de depot   |
-| `REACT_APP_HCAPTCHA_SITE_KEY`          | Configuration du captcha        |
-| `REACT_APP_MES_SIGNALEMENTS_URL`       | URL de base de mes-signalements |
-| `REACT_APP_MES_SIGNALEMENTS_SOURCE_ID` | ID de la source de signalement  |
+| Nom de la variable                     | Description                      |
+| -------------------------------------- | -------------------------------- |
+| `PORT`                                 | Port utilisé                     |
+| `PUBLIC_URL`                           | Url publique du site             |
+| `REACT_APP_BAL_ADMIN_API_URL`          | URL de base de BAL Admin         |
+| `REACT_APP_MES_ADRESSES_URL`           | URL de base de mes-adresses      |
+| `REACT_APP_MES_ADRESSES_API_URL`       | URL de base de mes-adresses-api  |
+| `REACT_APP_API_DEPOT_URL`              | URL de base de l'api de depot    |
+| `REACT_APP_HCAPTCHA_SITE_KEY`          | Configuration du captcha         |
+| `REACT_APP_MES_SIGNALEMENTS_URL`       | URL de base de mes-signalements  |
+| `REACT_APP_MES_SIGNALEMENTS_SOURCE_ID` | ID de la source de signalement   |
+| `REACT_APP_API_SIGNALEMENT_URL`        | URL de base de l'API signalement |
 
 Toutes ces variables ont des valeurs par défaut que vous trouverez dans le fichier `.env.sample`.
 
