@@ -5,7 +5,7 @@ interface AdresseNotFoundInBANProps {
   adresse: {
     municipality: { nom: string; code: string } | null
     street: { nom: string; code: string } | null
-    number: string
+    number: { nom: string; code: string } | null
   }
 }
 

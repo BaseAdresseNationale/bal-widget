@@ -42,7 +42,6 @@ Elles peuvent être définies classiquement ou en créant un fichier `.env` sur 
 | `REACT_APP_MES_ADRESSES_URL`           | URL de base de mes-adresses      |
 | `REACT_APP_MES_ADRESSES_API_URL`       | URL de base de mes-adresses-api  |
 | `REACT_APP_API_DEPOT_URL`              | URL de base de l'api de depot    |
-| `REACT_APP_HCAPTCHA_SITE_KEY`          | Configuration du captcha         |
 | `REACT_APP_MES_SIGNALEMENTS_URL`       | URL de base de mes-signalements  |
 | `REACT_APP_MES_SIGNALEMENTS_SOURCE_ID` | ID de la source de signalement   |
 | `REACT_APP_API_SIGNALEMENT_URL`        | URL de base de l'API signalement |

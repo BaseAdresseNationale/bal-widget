@@ -1,7 +1,12 @@
 import React from 'react'
-import { isEmbeddedInIframe } from '../../../utils/iframe.utils'
+import { browseToMesSignalements } from '../../../utils/signalement.utils'
+import { SignalementType } from '../../../types/signalement.types'
 
-function AdresseFoundInBAN() {
+interface AdresseFoundInBANProps {
+  adresseId: string
+}
+
+function AdresseFoundInBAN({ adresseId }: AdresseFoundInBANProps) {
   return (
     <>
       <h2>Votre adresse est bien répertoriée dans la Base d&apos;Adresse Nationale ✅</h2>
@@ -9,17 +14,18 @@ function AdresseFoundInBAN() {
         Votre adresse est donc bien transmise à l&apos;ensemble des services et des entreprises qui
         utilisent la Base d&apos;Adresse Nationale.
       </p>
-      <p>
-        Vous pouvez consulter la liste de ces organisations à cette page :{' '}
-        <a
-          target={isEmbeddedInIframe() ? '_parent' : '_blank'}
-          className='fr-link'
-          href='https://adresse.data.gouv.fr/donnees-nationales/usages'
-          rel='noreferrer'
-        >
-          Liste des usages
-        </a>
-      </p>
+      <p>Est-elle correctement positionnée?</p>
+      <button
+        type='button'
+        className='fr-btn'
+        onClick={() => {
+          if (adresseId) {
+            browseToMesSignalements(adresseId, SignalementType.LOCATION_TO_UPDATE)
+          }
+        }}
+      >
+        Consulter sur la carte
+      </button>
     </>
   )
 }

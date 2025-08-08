@@ -5,6 +5,7 @@ import AnimatedPage from '../../layouts/AnimatedPage'
 import ConfigContext from '../../contexts/configContext'
 import Autocomplete from '../../components/common/Autocomplete/Autocomplete'
 import RouterHistoryContext from '../../contexts/routerhistoryContext'
+import { fetchCommunes } from '../../lib/api-geo'
 
 interface APIGeoCommune {
   nom: string
@@ -13,15 +14,6 @@ interface APIGeoCommune {
 
 function CommuneWelcomePage() {
   const { navigate, isNavigatingBack } = useContext(RouterHistoryContext)
-
-  const fetchCommunes = async (search: string) => {
-    const response = await fetch(
-      `https://geo.api.gouv.fr/communes?nom=${search}&fields=nom,code&limit=10`,
-    )
-    const data = await response.json()
-
-    return data as APIGeoCommune[]
-  }
 
   const { config } = useContext(ConfigContext)
 

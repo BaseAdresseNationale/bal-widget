@@ -14,13 +14,8 @@ export const StyledContactForm = styled.form`
     margin-bottom: 1.5rem;
   }
 
-  button {
+  button[type='submit'] {
     margin-top: 1.5rem;
-  }
-
-  .captcha-wrapper > div {
-    display: flex;
-    justify-content: center;
   }
 
   .error-message {
@@ -28,13 +23,6 @@ export const StyledContactForm = styled.form`
     margin: 0.5rem 0 0 0;
   }
 
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-`
-
-export const StyledContactFormSuccess = styled.div`
   h2 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;

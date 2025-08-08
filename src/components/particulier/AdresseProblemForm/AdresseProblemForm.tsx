@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import HCaptcha from '@hcaptcha/react-hcaptcha'
-import {
-  StyledContactForm,
-  StyledContactFormSuccess,
-} from '../../common/ContactForm/ContactForm.styles'
-import { EmailSentStatus, useContactForm } from '../../../hooks/useContactForm'
-import { useBALAdmin } from '../../../hooks/useBALAdmin'
-
-const HCAPTCHA_SITE_KEY = process.env.REACT_APP_HCAPTCHA_SITE_KEY || ''
+import { StyledContactForm } from '../../common/ContactForm/ContactForm.styles'
+import { useMailToForm } from '../../../hooks/useMailToForm'
 
 interface AdresseProblemFormProps {
   city: { name: string; code: string }
@@ -28,7 +21,6 @@ const getInitialFormValues = (
     city: city.code,
     subject,
     message: '',
-    captchaToken: '',
     street: undefined,
     number: undefined,
   }
@@ -49,29 +41,17 @@ const getInitialFormValues = (
 }
 
 function AdresseProblemForm({ city, street }: AdresseProblemFormProps) {
-  const { sendMailToCommune } = useBALAdmin()
   const initialSubject = street ? subjects[0] : subjects[1]
   const [initialFormValues, setInitialFormValues] = useState(
     getInitialFormValues(initialSubject, city, street),
   )
-  const { emailStatus, canSubmit, onEdit, onSubmit, formData } = useContactForm(
-    initialFormValues,
-    sendMailToCommune,
-  )
+  const { onEdit, onSubmit, mailToData } = useMailToForm(initialFormValues)
 
   useEffect(() => {
     setInitialFormValues(getInitialFormValues(formData.subject, city, street))
   }, [formData.subject])
 
-  return emailStatus === EmailSentStatus.SENT ? (
-    <StyledContactFormSuccess>
-      <h2>Votre signalement a bien été envoyé à la commune</h2>
-      <p>
-        Nous lui avons transmis vos coordonnées pour qu&apos;elle puisse revenir vers vous et vous
-        tenir informé de la prise en compte de ce signalement.
-      </p>
-    </StyledContactFormSuccess>
-  ) : (
+  return (
     <StyledContactForm onSubmit={onSubmit}>
       <h2>Signalement</h2>
       <div className='fr-select-group'>
@@ -184,17 +164,7 @@ function AdresseProblemForm({ city, street }: AdresseProblemFormProps) {
           name='email'
         />
       </div>
-      <div className='captcha-wrapper'>
-        <HCaptcha sitekey={HCAPTCHA_SITE_KEY} onVerify={(token) => onEdit('captchaToken')(token)} />
-      </div>
-      {emailStatus === EmailSentStatus.ERROR && (
-        <p className='error-message'>Une erreur est survenue, veuillez réessayer plus tard.</p>
-      )}
-      <button
-        disabled={!canSubmit || emailStatus === EmailSentStatus.SENDING}
-        className='fr-btn fr-icon-send-plane-fill fr-btn--icon-right'
-        type='submit'
-      >
+      <button className='fr-btn fr-icon-send-plane-fill fr-btn--icon-right' type='submit'>
         Envoyer
       </button>
     </StyledContactForm>
