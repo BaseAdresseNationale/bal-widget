@@ -6,8 +6,8 @@ import AdresseNotFoundInBAN from '../AdresseNotFoundInBAN/AdresseNotFoundInBAN'
 import AdresseFoundInBAN from '../AdresseFoundInBAN/AdresseFoundInBAN'
 import { SignalementMode, SignalementType } from '../../../types/signalement.types'
 import { browseToMesSignalements, getSignalementMode } from '../../../utils/signalement.utils'
-import { useAPIDepot } from '../../../hooks/useAPIDepot'
 import { getSignalementCommuneStatus } from '../../../lib/api-signalement'
+import { getCurrentRevision } from '../../../lib/api-depot'
 
 interface APIAdresseResult {
   nom: string
@@ -25,7 +25,6 @@ export const ParticulierTroubleshooting = () => {
     street: null,
     number: null,
   })
-  const { getCurrentRevision } = useAPIDepot()
   const [signalementMode, setSignalementMode] = useState<SignalementMode>(SignalementMode.EMAIL)
   const [numeros, setNumeros] = useState<{ nom: string; code: string }[]>([])
   const [numeroNotFound, setNumeroNotFound] = useState(false)

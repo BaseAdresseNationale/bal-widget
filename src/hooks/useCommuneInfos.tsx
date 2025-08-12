@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { PublishedFromMesAdresses } from '../components/commune/CommuneInfosMessage/PublishedFromMesAdresses'
 import { PublishedFromMoissonneur } from '../components/commune/CommuneInfosMessage/PublishedFromMoissonneur'
 import { PublishedFromOtherClient } from '../components/commune/CommuneInfosMessage/PublishedFromOtherClient'
-import { useAPIDepot } from './useAPIDepot'
 import { useMesAdressesAPI } from './useMesAdresses'
 import { APIDepotRevision } from '../types/APIDepot.types'
 import { BALMesAdresses } from '../types/MesAdresses.types'
 import { isEmbeddedInIframe } from '../utils/iframe.utils'
+import { getCurrentRevision } from '../lib/api-depot'
 
 const ADRESSE_DATA_GOUV_URL =
   process.env.REACT_APP_ADRESSE_DATA_GOUV_URL || 'https://adresse.data.gouv.fr'
@@ -52,7 +52,6 @@ const formatInfosCommune = (communeInfos: CommuneInfosData) => {
 }
 
 export const useCommuneInfos = (codeCommune: string | null) => {
-  const { getCurrentRevision } = useAPIDepot()
   const { getPublishedBals } = useMesAdressesAPI()
   const [status, setStatus] = useState<'pending' | 'success' | 'error' | null>(null)
   const [communeInfos, setCommuneInfos] = useState<string | React.ReactNode>(null)

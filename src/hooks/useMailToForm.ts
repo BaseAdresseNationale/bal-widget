@@ -1,44 +1,52 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 
-export interface MailToParams {
+export interface MailToParams<T> {
+  to: string
+  subject: string
+  bodyData: T
   bcc?: string
   cc?: string
-  subject: string
-  body: string
-  to: string
 }
 
-export const useMailToForm = (initialData: MailToParams) => {
-  const [mailToData, setMailToData] = useState<MailToParams>(initialData)
+export const useMailToForm = <T>(
+  initialData: MailToParams<T>,
+  getBody: (formData: T) => string | Promise<string>,
+) => {
+  const [mailToData, setMailToData] = useState<MailToParams<T>>(initialData)
 
-  const mailtoHref = useMemo(() => {
+  const getMailtoHref = useCallback(async () => {
     const { to, ...relevantState } = mailToData
-    const validKeys = (Object.keys(relevantState) as Array<keyof Omit<MailToParams, 'to'>>).filter(
-      (param) => (relevantState[param] as string).length > 0,
-    )
-    const suffix = validKeys
-      .map((key) => {
+
+    const suffixParts = await Promise.all(
+      (Object.keys(relevantState) as Array<keyof Omit<MailToParams<T>, 'to'>>).map(async (key) => {
         if (mailToData[key]) {
-          const encodedValue = (mailToData[key] as string)
+          const valueToEncode =
+            key === 'bodyData' ? await getBody(mailToData[key]) : (mailToData[key] as string)
+
+          const encodedValue = valueToEncode
             .split('\n')
             .map((parts) => encodeURIComponent(parts))
             .join('%0D%0A')
 
-          return (key as string) + '=' + encodedValue
+          return ((key === 'bodyData' ? 'body' : key) as string) + '=' + encodedValue
         }
+
         return ''
-      })
-      .join('&')
-    const mailtoHref = `mailto:${to}${suffix && `?${suffix}`}`
-    return mailtoHref
+      }),
+    )
+
+    const suffix = suffixParts.join('&')
+
+    return `mailto:${to}${suffix && `?${suffix}`}`
   }, [mailToData])
 
-  const onEdit = (key: keyof MailToParams) => (value: string | null) => {
+  const onEdit = (key: keyof MailToParams<T>) => (value: T | string | null) => {
     setMailToData((prev) => ({ ...prev, [key]: value }))
   }
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const mailtoHref = await getMailtoHref()
     window.open(mailtoHref)
   }
 

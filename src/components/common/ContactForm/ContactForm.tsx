@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyledContactForm } from './ContactForm.styles'
 import { useMailToForm } from '../../../hooks/useMailToForm'
 import Autocomplete from '../Autocomplete/Autocomplete'
@@ -16,29 +16,30 @@ interface FormData {
   message: string
 }
 
-const getMessage = ({ firstName, lastName, commune, message }: FormData) => {
-  return `Bonjour,\n\nVous avez reçu un nouveau message via le formulaire de contact de BAL Widget.\n\nNom: ${lastName}\nPrénom: ${firstName}\nCommune: ${commune}\n\nMessage:\n${message}\n\nBonne journée,\n\nL’équipe BAL`
+const getBody = ({ firstName, lastName, commune, message }: FormData) => {
+  return `Message généré par BAL-Widget via le formulaire de contact pour les communes.\n\nCorespondant:\nNom: ${lastName}\nPrénom: ${firstName}\nCommune: ${commune}\n\nMessage:\n${message}`
 }
 
 function ContactForm({ subjects }: ContactFormProps) {
-  const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
-    commune: '',
-    message: '',
-  })
+  const {
+    onEdit,
+    onSubmit,
+    mailToData: { bodyData, subject },
+  } = useMailToForm(
+    {
+      to: 'adresse@data.gouv.fr',
+      subject: '',
+      bodyData: {
+        firstName: '',
+        lastName: '',
+        commune: '',
+        message: '',
+      },
+    },
+    getBody,
+  )
 
-  const onEditFormData = (key: keyof FormData) => (value: string | null) => {
-    setFormData((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const { onEdit, onSubmit, mailToData } = useMailToForm({
-    to: 'adresse@data.gouv.fr',
-    subject: '',
-    body: getMessage(formData),
-  })
-
-  const isSubmitDisabled = !formData.commune || !mailToData.subject || !formData.message
+  const isSubmitDisabled = !bodyData.commune || !subject || !bodyData.message
 
   return (
     <StyledContactForm onSubmit={onSubmit}>
@@ -48,7 +49,7 @@ function ContactForm({ subjects }: ContactFormProps) {
             Prénom
           </label>
           <input
-            onChange={(e) => onEditFormData('firstName')(e.target.value)}
+            onChange={(e) => onEdit('bodyData')({ ...bodyData, firstName: e.target.value })}
             className='fr-input'
             type='firstName'
             name='firstName'
@@ -59,7 +60,7 @@ function ContactForm({ subjects }: ContactFormProps) {
             Nom
           </label>
           <input
-            onChange={(e) => onEditFormData('lastName')(e.target.value)}
+            onChange={(e) => onEdit('bodyData')({ ...bodyData, lastName: e.target.value })}
             className='fr-input'
             type='lastName'
             name='lastName'
@@ -75,15 +76,20 @@ function ContactForm({ subjects }: ContactFormProps) {
             placeholder: 'Rechercher votre commune',
             required: true,
           }}
-          value={formData.commune}
-          onClearValue={() => onEditFormData('commune')('')}
+          value={bodyData.commune}
+          onClearValue={() => onEdit('bodyData')({ ...bodyData, commune: '' })}
           fetchResults={fetchCommunes}
           ResultCmp={(commune: APIGeoCommune) => (
             <div key={commune.code}>
               <button
                 tabIndex={0}
                 type='button'
-                onClick={() => onEditFormData('commune')(`${commune.nom} (${commune.code})`)}
+                onClick={() =>
+                  onEdit('bodyData')({
+                    ...bodyData,
+                    commune: `${commune.nom} (${commune.code})`,
+                  })
+                }
               >
                 {commune.nom} ({commune.code})
               </button>
@@ -117,7 +123,7 @@ function ContactForm({ subjects }: ContactFormProps) {
           Votre message*
         </label>
         <textarea
-          onChange={(e) => onEditFormData('message')(e.target.value)}
+          onChange={(e) => onEdit('bodyData')({ ...bodyData, message: e.target.value })}
           required
           className='fr-input'
           rows={10}

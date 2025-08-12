@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { StyledContactForm } from '../../common/ContactForm/ContactForm.styles'
 import { useMailToForm } from '../../../hooks/useMailToForm'
+import { getCurrentRevision, getEmailsCommune } from '../../../lib/api-depot'
+import { mailToSignalement } from './mailto-signalement.template'
 
 interface AdresseProblemFormProps {
   city: { name: string; code: string }
@@ -15,7 +17,6 @@ const getInitialFormValues = (
   street?: string,
 ) => {
   const baseValues = {
-    email: '',
     firstName: '',
     lastName: '',
     city: city.code,
@@ -40,16 +41,69 @@ const getInitialFormValues = (
   }
 }
 
+export type AdresseProblemFormType = ReturnType<typeof getInitialFormValues>
+
 function AdresseProblemForm({ city, street }: AdresseProblemFormProps) {
   const initialSubject = street ? subjects[0] : subjects[1]
-  const [initialFormValues, setInitialFormValues] = useState(
-    getInitialFormValues(initialSubject, city, street),
+
+  const getBody = useCallback(
+    async (bodyData: AdresseProblemFormType) => {
+      let publication: { client?: string; balId?: string; organization?: string } = {}
+      try {
+        const currentRevision = await getCurrentRevision(city.code)
+        publication = {
+          client: currentRevision?.client?.nom,
+        }
+        if (currentRevision?.client?.nom === 'Mes Adresses') {
+          publication.balId = currentRevision?.context?.extras?.balId
+        } else if (currentRevision?.client?.nom === 'Moissonneur BAL') {
+          const sourceId = currentRevision?.context?.extras?.sourceId
+          if (sourceId) {
+            const response = await fetch(`https://www.data.gouv.fr/api/1/datasets/${sourceId}`)
+            const dataset = await response.json()
+            publication.organization = dataset?.organization?.name
+          }
+        }
+      } catch (err) {
+        console.error(`An error occured while fetching current revision for commune ${city.code}`)
+      }
+
+      return mailToSignalement(bodyData, publication)
+    },
+    [city],
   )
-  const { onEdit, onSubmit, mailToData } = useMailToForm(initialFormValues)
+
+  const {
+    onEdit,
+    onSubmit,
+    mailToData: { bodyData, subject },
+  } = useMailToForm(
+    {
+      to: '',
+      cc: 'adresse@data.gouv.fr',
+      subject: street ? subjects[0] : subjects[1],
+      bodyData: getInitialFormValues(initialSubject, city, street),
+    },
+    getBody,
+  )
 
   useEffect(() => {
-    setInitialFormValues(getInitialFormValues(formData.subject, city, street))
-  }, [formData.subject])
+    async function fetchCommuneEmail() {
+      try {
+        const emails = await getEmailsCommune(city.code)
+        onEdit('to')(emails.join(','))
+      } catch (err) {
+        console.error(`Error fetching commune emails for ${city.code}`)
+      }
+    }
+
+    fetchCommuneEmail()
+  }, [city])
+
+  useEffect(() => {
+    onEdit('bodyData')(getInitialFormValues(subject, city, street))
+    onEdit('subject')(subject)
+  }, [subject])
 
   return (
     <StyledContactForm onSubmit={onSubmit}>
@@ -60,7 +114,7 @@ function AdresseProblemForm({ city, street }: AdresseProblemFormProps) {
         </label>
         <select
           onChange={(e) => onEdit('subject')(e.target.value)}
-          defaultValue={initialFormValues.subject}
+          defaultValue={subject}
           required
           className='fr-select'
           name='subject'
@@ -85,29 +139,29 @@ function AdresseProblemForm({ city, street }: AdresseProblemFormProps) {
           name='city'
         />
       </div>
-      {formData.subject !== subjects[2] && (
+      {subject !== subjects[2] && (
         <div className='input-wrapper'>
           <label className='fr-label' htmlFor='street'>
             Voie*
           </label>
           <input
-            onChange={(e) => onEdit('street')(e.target.value)}
+            onChange={(e) => onEdit('bodyData')({ ...bodyData, street: e.target.value })}
             required
             defaultValue={street}
             className='fr-input'
             type='text'
             name='street'
-            {...(formData.subject === subjects[1] ? { disabled: false } : { disabled: true })}
+            {...(subject === subjects[1] ? { disabled: false } : { disabled: true })}
           />
         </div>
       )}
-      {formData.subject === subjects[0] && (
+      {subject === subjects[0] && (
         <div className='input-wrapper'>
           <label className='fr-label' htmlFor='number'>
             Adresse manquante*
           </label>
           <input
-            onChange={(e) => onEdit('number')(e.target.value)}
+            onChange={(e) => onEdit('bodyData')({ ...bodyData, number: e.target.value })}
             required
             className='fr-input'
             type='text'
@@ -117,14 +171,14 @@ function AdresseProblemForm({ city, street }: AdresseProblemFormProps) {
       )}
       <div className='input-wrapper'>
         <label className='fr-label' htmlFor='message'>
-          Informations complémentaires{formData.subject === subjects[2] && '*'}
+          Informations complémentaires{subject === subjects[2] && '*'}
         </label>
         <textarea
-          onChange={(e) => onEdit('message')(e.target.value)}
+          onChange={(e) => onEdit('bodyData')({ ...bodyData, message: e.target.value })}
           className='fr-input'
           rows={5}
           name='message'
-          {...(formData.subject === subjects[2] ? { required: true } : { required: false })}
+          {...(subject === subjects[2] ? { required: true } : { required: false })}
         />
       </div>
       <h2>Contact</h2>
@@ -134,7 +188,7 @@ function AdresseProblemForm({ city, street }: AdresseProblemFormProps) {
             Prénom
           </label>
           <input
-            onChange={(e) => onEdit('firstName')(e.target.value)}
+            onChange={(e) => onEdit('bodyData')({ ...bodyData, firstName: e.target.value })}
             className='fr-input'
             type='firstName'
             name='firstName'
@@ -145,24 +199,12 @@ function AdresseProblemForm({ city, street }: AdresseProblemFormProps) {
             Nom
           </label>
           <input
-            onChange={(e) => onEdit('lastName')(e.target.value)}
+            onChange={(e) => onEdit('bodyData')({ ...bodyData, lastName: e.target.value })}
             className='fr-input'
             type='lastName'
             name='lastName'
           />
         </div>
-      </div>
-      <div className='input-wrapper'>
-        <label className='fr-label' htmlFor='email'>
-          Votre adresse e-mail*
-        </label>
-        <input
-          onChange={(e) => onEdit('email')(e.target.value)}
-          required
-          className='fr-input'
-          type='email'
-          name='email'
-        />
       </div>
       <button className='fr-btn fr-icon-send-plane-fill fr-btn--icon-right' type='submit'>
         Envoyer
