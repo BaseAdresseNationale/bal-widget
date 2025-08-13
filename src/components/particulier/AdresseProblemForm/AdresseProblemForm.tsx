@@ -80,7 +80,7 @@ function AdresseProblemForm({ city, street }: AdresseProblemFormProps) {
   } = useMailToForm(
     {
       to: '',
-      cc: 'adresse@data.gouv.fr',
+      bcc: 'adresse@data.gouv.fr',
       subject: street ? subjects[0] : subjects[1],
       bodyData: getInitialFormValues(initialSubject, city, street),
     },

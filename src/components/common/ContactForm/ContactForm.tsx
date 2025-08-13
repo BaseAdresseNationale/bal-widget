@@ -17,7 +17,7 @@ interface FormData {
 }
 
 const getBody = ({ firstName, lastName, commune, message }: FormData) => {
-  return `Message généré par BAL-Widget via le formulaire de contact pour les communes.\n\nCorespondant:\nNom: ${lastName}\nPrénom: ${firstName}\nCommune: ${commune}\n\nMessage:\n${message}`
+  return `Message généré par BAL-Widget via le formulaire de contact pour les communes.\n\nCorrespondant:\nNom: ${lastName}\nPrénom: ${firstName}\nCommune: ${commune}\n\nMessage:\n${message}`
 }
 
 function ContactForm({ subjects }: ContactFormProps) {
