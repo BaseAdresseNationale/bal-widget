@@ -59,9 +59,16 @@ function AdresseProblemForm({ city, street }: AdresseProblemFormProps) {
         } else if (currentRevision?.client?.nom === 'Moissonneur BAL') {
           const sourceId = currentRevision?.context?.extras?.sourceId
           if (sourceId) {
-            const response = await fetch(`https://www.data.gouv.fr/api/1/datasets/${sourceId}`)
-            const dataset = await response.json()
-            publication.organization = dataset?.organization?.name
+            try {
+              const response = await fetch(`https://www.data.gouv.fr/api/1/datasets/${sourceId}`)
+              const dataset = await response.json()
+              publication.organization = dataset?.organization?.name
+            } catch (err) {
+              console.error(
+                `An error occurred while fetching dataset from data.gouv.fr for sourceId ${sourceId}:`,
+                err,
+              )
+            }
           }
         }
       } catch (err) {

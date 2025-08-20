@@ -66,7 +66,7 @@ export const ParticulierTroubleshooting = () => {
         data?.numeros.map(
           ({ numero, suffixe, id }: { numero: number; suffixe: string; id: string }) => ({
             code: id,
-            nom: suffixe ? `${numero} ${suffixe}` : numero,
+            nom: suffixe ? `${numero} ${suffixe}` : numero.toString(),
           }),
         ) || []
 
