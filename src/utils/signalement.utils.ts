@@ -1,5 +1,6 @@
+import { getSignalementSourceId } from '../lib/api-signalement'
 import { APIDepotRevision } from '../types/APIDepot.types'
-import { SignalementMode } from '../types/signalement.types'
+import { SignalementMode, SignalementType } from '../types/signalement.types'
 
 const ObjectIdRE = new RegExp('^[0-9a-fA-F]{24}$')
 
@@ -18,3 +19,11 @@ export const getSignalementMode = (
 
   return SignalementMode.EMAIL
 }
+
+export const browseToMesSignalements = (id: string, type: SignalementType) =>
+  window.open(
+    `${
+      process.env.REACT_APP_MES_SIGNALEMENTS_URL
+    }/#/${id}?sourceId=${getSignalementSourceId()}&type=${type}`,
+    '_blank',
+  )

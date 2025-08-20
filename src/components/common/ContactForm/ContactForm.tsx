@@ -1,33 +1,47 @@
 import React from 'react'
-import HCaptcha from '@hcaptcha/react-hcaptcha'
-import { StyledContactForm, StyledContactFormSuccess } from './ContactForm.styles'
-import { EmailSentStatus, useContactForm } from '../../../hooks/useContactForm'
-import { useBALAdmin } from '../../../hooks/useBALAdmin'
+import { StyledContactForm } from './ContactForm.styles'
+import { useMailToForm } from '../../../hooks/useMailToForm'
+import Autocomplete from '../Autocomplete/Autocomplete'
+import { fetchCommunes } from '../../../lib/api-geo'
+import { APIGeoCommune } from '../../../types/APIGeo.types'
 
 interface ContactFormProps {
   subjects: string[]
 }
 
+interface FormData {
+  firstName: string
+  lastName: string
+  commune: string
+  message: string
+}
+
+const getBody = ({ firstName, lastName, commune, message }: FormData) => {
+  return `Message généré par BAL-Widget via le formulaire de contact pour les communes.\n\nCorrespondant:\nNom: ${lastName}\nPrénom: ${firstName}\nCommune: ${commune}\n\nMessage:\n${message}`
+}
+
 function ContactForm({ subjects }: ContactFormProps) {
-  const { sendMail } = useBALAdmin()
-  const { emailStatus, canSubmit, onEdit, onSubmit } = useContactForm(
+  const {
+    onEdit,
+    onSubmit,
+    mailToData: { bodyData, subject },
+  } = useMailToForm(
     {
-      email: '',
-      firstName: '',
-      lastName: '',
+      to: 'adresse@data.gouv.fr',
       subject: '',
-      message: '',
-      captchaToken: '',
+      bodyData: {
+        firstName: '',
+        lastName: '',
+        commune: '',
+        message: '',
+      },
     },
-    sendMail,
+    getBody,
   )
 
-  return emailStatus === EmailSentStatus.SENT ? (
-    <StyledContactFormSuccess>
-      <h2>Votre message a bien été envoyé</h2>
-      <p>Nous vous répondrons dans les plus brefs délais.</p>
-    </StyledContactFormSuccess>
-  ) : (
+  const isSubmitDisabled = !bodyData.commune || !subject || !bodyData.message
+
+  return (
     <StyledContactForm onSubmit={onSubmit}>
       <div className='input-wrapper fr-grid-row'>
         <div className='fr-col-6' style={{ paddingRight: 10 }}>
@@ -35,7 +49,7 @@ function ContactForm({ subjects }: ContactFormProps) {
             Prénom
           </label>
           <input
-            onChange={(e) => onEdit('firstName')(e.target.value)}
+            onChange={(e) => onEdit('bodyData')({ ...bodyData, firstName: e.target.value })}
             className='fr-input'
             type='firstName'
             name='firstName'
@@ -46,7 +60,7 @@ function ContactForm({ subjects }: ContactFormProps) {
             Nom
           </label>
           <input
-            onChange={(e) => onEdit('lastName')(e.target.value)}
+            onChange={(e) => onEdit('bodyData')({ ...bodyData, lastName: e.target.value })}
             className='fr-input'
             type='lastName'
             name='lastName'
@@ -55,15 +69,33 @@ function ContactForm({ subjects }: ContactFormProps) {
       </div>
       <div className='input-wrapper'>
         <label className='fr-label' htmlFor='email'>
-          Votre adresse e-mail*
+          Commune*
         </label>
-        <input
-          onChange={(e) => onEdit('email')(e.target.value)}
-          required
-          className='fr-input'
-          type='email'
-          name='email'
-        ></input>
+        <Autocomplete
+          inputProps={{
+            placeholder: 'Rechercher votre commune',
+            required: true,
+          }}
+          value={bodyData.commune}
+          onClearValue={() => onEdit('bodyData')({ ...bodyData, commune: '' })}
+          fetchResults={fetchCommunes}
+          ResultCmp={(commune: APIGeoCommune) => (
+            <div key={commune.code}>
+              <button
+                tabIndex={0}
+                type='button'
+                onClick={() =>
+                  onEdit('bodyData')({
+                    ...bodyData,
+                    commune: `${commune.nom} (${commune.code})`,
+                  })
+                }
+              >
+                {commune.nom} ({commune.code})
+              </button>
+            </div>
+          )}
+        />
       </div>
       <div className='fr-select-group'>
         <label className='fr-label' htmlFor='subject'>
@@ -91,24 +123,15 @@ function ContactForm({ subjects }: ContactFormProps) {
           Votre message*
         </label>
         <textarea
-          onChange={(e) => onEdit('message')(e.target.value)}
+          onChange={(e) => onEdit('bodyData')({ ...bodyData, message: e.target.value })}
           required
           className='fr-input'
           rows={10}
           name='message'
         />
       </div>
-      <div className='captcha-wrapper'>
-        <HCaptcha
-          sitekey={process.env.REACT_APP_HCAPTCHA_SITE_KEY || ''}
-          onVerify={(token) => onEdit('captchaToken')(token)}
-        />
-      </div>
-      {emailStatus === EmailSentStatus.ERROR && (
-        <p className='error-message'>Une erreur est survenue, veuillez réessayer plus tard.</p>
-      )}
       <button
-        disabled={!canSubmit || emailStatus === EmailSentStatus.SENDING}
+        disabled={isSubmitDisabled}
         className='fr-btn fr-icon-send-plane-fill fr-btn--icon-right'
         type='submit'
       >

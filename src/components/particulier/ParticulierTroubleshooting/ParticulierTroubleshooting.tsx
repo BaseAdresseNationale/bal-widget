@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyledParticulierToubleshooting } from './ParticulierToubleshooting.styles'
 import Autocomplete from '../../common/Autocomplete/Autocomplete'
 import Loader from '../../common/Loader/Loader'
 import AdresseNotFoundInBAN from '../AdresseNotFoundInBAN/AdresseNotFoundInBAN'
 import AdresseFoundInBAN from '../AdresseFoundInBAN/AdresseFoundInBAN'
-import { SignalementMode } from '../../../types/signalement.types'
-import { getSignalementMode } from '../../../utils/signalement.utils'
-import { useAPIDepot } from '../../../hooks/useAPIDepot'
-import { getSignalementCommuneStatus, getSignalementSourceId } from '../../../lib/api-signalement'
+import { SignalementMode, SignalementType } from '../../../types/signalement.types'
+import { browseToMesSignalements, getSignalementMode } from '../../../utils/signalement.utils'
+import { getSignalementCommuneStatus } from '../../../lib/api-signalement'
+import { getCurrentRevision } from '../../../lib/api-depot'
 
 interface APIAdresseResult {
   nom: string
@@ -19,27 +19,16 @@ export const ParticulierTroubleshooting = () => {
   const [adresse, setAdresse] = useState<{
     municipality: { nom: string; code: string } | null
     street: { nom: string; code: string } | null
-    number: string
+    number: { nom: string; code: string } | null
   }>({
     municipality: null,
     street: null,
-    number: '',
+    number: null,
   })
-  const { getCurrentRevision } = useAPIDepot()
   const [signalementMode, setSignalementMode] = useState<SignalementMode>(SignalementMode.EMAIL)
-  const [numeros, setNumeros] = useState<string[]>([])
+  const [numeros, setNumeros] = useState<{ nom: string; code: string }[]>([])
   const [numeroNotFound, setNumeroNotFound] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-
-  const browseToMesSignalements = useCallback(
-    () =>
-      window.open(
-        `${process.env.REACT_APP_MES_SIGNALEMENTS_URL}/#/${adresse.street
-          ?.code}?sourceId=${getSignalementSourceId()}&type=LOCATION_TO_CREATE`,
-        '_blank',
-      ),
-    [adresse],
-  )
 
   const fetchBAN = (type: string) => async (search: string) => {
     setIsLoading(true)
@@ -73,9 +62,12 @@ export const ParticulierTroubleshooting = () => {
         `https://plateforme.adresse.data.gouv.fr/lookup/${adresse.street?.code}`,
       )
       const data = await response.json()
-      const numeros =
-        data?.numeros.map(({ numero, suffixe }: { numero: number; suffixe: string }) =>
-          suffixe ? `${numero} ${suffixe}` : numero,
+      const numeros: { code: string; nom: string }[] =
+        data?.numeros.map(
+          ({ numero, suffixe, id }: { numero: number; suffixe: string; id: string }) => ({
+            code: id,
+            nom: suffixe ? `${numero} ${suffixe}` : numero.toString(),
+          }),
         ) || []
 
       return numeros
@@ -90,7 +82,12 @@ export const ParticulierTroubleshooting = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (adresse.municipality && adresse.street) {
-        fetchNumeros().then(setNumeros)
+        try {
+          const numeros = await fetchNumeros()
+          setNumeros(numeros)
+        } catch (err) {
+          console.error(`Error fetching numbers for street ${adresse.street}`)
+        }
       } else if (adresse.municipality) {
         let isCommuneDisabled: boolean
         try {
@@ -118,7 +115,7 @@ export const ParticulierTroubleshooting = () => {
   return (
     <StyledParticulierToubleshooting>
       {adresse.municipality && adresse.street && adresse.number ? (
-        <AdresseFoundInBAN />
+        <AdresseFoundInBAN adresseId={adresse.number.code} />
       ) : numeroNotFound ? (
         <AdresseNotFoundInBAN adresse={adresse} />
       ) : (
@@ -137,7 +134,7 @@ export const ParticulierTroubleshooting = () => {
                     setAdresse({
                       municipality: null,
                       street: null,
-                      number: '',
+                      number: null,
                     })
                   }
                   className='fr-icon-close-line'
@@ -176,7 +173,7 @@ export const ParticulierTroubleshooting = () => {
                       setAdresse((adresse) => ({
                         ...adresse,
                         street: null,
-                        number: '',
+                        number: null,
                       }))
                     }
                     className='fr-icon-close-line'
@@ -208,7 +205,20 @@ export const ParticulierTroubleshooting = () => {
                   <button
                     type='button'
                     className='fr-btn fr-btn--secondary fr-btn--sm not-found'
-                    onClick={() => setNumeroNotFound(true)}
+                    {...(signalementMode === SignalementMode.MES_SIGNALEMENTS
+                      ? {
+                          onClick: () => {
+                            if (adresse.municipality?.code) {
+                              browseToMesSignalements(
+                                adresse.municipality.code,
+                                SignalementType.LOCATION_TO_CREATE,
+                              )
+                            }
+                          },
+                        }
+                      : {
+                          onClick: () => setNumeroNotFound(true),
+                        })}
                   >
                     Je ne trouve pas ma voie
                   </button>
@@ -232,16 +242,16 @@ export const ParticulierTroubleshooting = () => {
                     onChange={(event) =>
                       setAdresse(() => ({
                         ...adresse,
-                        number: event.target.value,
+                        number: { nom: event.target.value, code: event.target.value },
                       }))
                     }
                   >
                     <option value='' disabled>
                       -- Choisir votre numéro dans la liste
                     </option>
-                    {numeros.map((numero) => (
-                      <option key={numero} value={numero}>
-                        {numero}
+                    {numeros.map(({ code, nom }) => (
+                      <option key={code} value={code}>
+                        {nom}
                       </option>
                     ))}
                   </select>
@@ -250,7 +260,14 @@ export const ParticulierTroubleshooting = () => {
                     className='fr-btn fr-btn--secondary fr-btn--sm not-found'
                     {...(signalementMode === SignalementMode.MES_SIGNALEMENTS
                       ? {
-                          onClick: browseToMesSignalements,
+                          onClick: () => {
+                            if (adresse.street?.code) {
+                              browseToMesSignalements(
+                                adresse.street.code,
+                                SignalementType.LOCATION_TO_CREATE,
+                              )
+                            }
+                          },
                         }
                       : {
                           onClick: () => setNumeroNotFound(true),

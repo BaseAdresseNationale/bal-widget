@@ -17,43 +17,7 @@ export const useBALAdmin = () => {
     return data
   }, [])
 
-  const sendMail = useCallback(async (emailData: { captchaToken: string }) => {
-    const response = await fetch(`${balWidgetUrl}/send-mail`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(emailData),
-    })
-    const data = await response.json()
-
-    if (response.status !== 200) {
-      throw new Error(data.message)
-    }
-
-    return data
-  }, [])
-
-  const sendMailToCommune = useCallback(async (emailData: { captchaToken: string }) => {
-    const response = await fetch(`${balWidgetUrl}/send-mail-to-commune`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(emailData),
-    })
-    const data = await response.json()
-
-    if (response.status !== 200) {
-      throw new Error(data.message)
-    }
-
-    return data
-  }, [])
-
   return {
     getConfig,
-    sendMail,
-    sendMailToCommune,
   }
 }

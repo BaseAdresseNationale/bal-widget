@@ -2,12 +2,16 @@ import React, { useEffect, useRef, useState } from 'react'
 import { StyledAutocomplete } from './Autocomplete.styles'
 
 interface AutocompleteProps<T> {
+  value?: string
+  onClearValue?: () => void
   fetchResults: (search: string) => Promise<T[]>
   ResultCmp: React.FC<T>
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>
 }
 
 const Autocomplete = <T extends { code: string }>({
+  value,
+  onClearValue,
   fetchResults,
   ResultCmp,
   inputProps,
@@ -32,6 +36,10 @@ const Autocomplete = <T extends { code: string }>({
   }, [search])
 
   const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (value && onClearValue) {
+      onClearValue()
+    }
+
     if (e.target.value.length <= 3) {
       setSearch(e.target.value)
     } else if (searchTimeoutRef.current) {
@@ -59,12 +67,13 @@ const Autocomplete = <T extends { code: string }>({
           id='autocomplete-search'
           name='autocomplete-search'
           {...inputProps}
+          value={value ? value : undefined}
         />
-        <button className='fr-btn' title='Rechercher' disabled={inputProps?.disabled}>
+        <button type='button' className='fr-btn' title='Rechercher' disabled={inputProps?.disabled}>
           Rechercher
         </button>
       </div>
-      {hasFocus && (
+      {hasFocus && !value && (
         <div className='results'>
           {results.length > 0 &&
             results.map((result: T) => <ResultCmp key={result.code} {...result} />)}
