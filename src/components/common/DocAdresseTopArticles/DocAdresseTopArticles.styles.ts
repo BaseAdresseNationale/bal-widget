@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const StyledGitBookTopArticles = styled.div`
+export const StyledDocAdresseTopArticles = styled.div`
   .links-wrapper {
     button {
       display: block;

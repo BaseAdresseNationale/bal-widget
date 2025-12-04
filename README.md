@@ -45,6 +45,7 @@ Elles peuvent être définies classiquement ou en créant un fichier `.env` sur 
 | `REACT_APP_MES_SIGNALEMENTS_URL`       | URL de base de mes-signalements  |
 | `REACT_APP_MES_SIGNALEMENTS_SOURCE_ID` | ID de la source de signalement   |
 | `REACT_APP_API_SIGNALEMENT_URL`        | URL de base de l'API signalement |
+| `REACT_APP_DOC_ADRESSE_URL`            | URL de base de la documentation  |
 
 Toutes ces variables ont des valeurs par défaut que vous trouverez dans le fichier `.env.sample`.
 

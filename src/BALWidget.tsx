@@ -7,7 +7,7 @@ import HomePage from './pages'
 import { AnimatePresence } from 'framer-motion'
 import CommuneWelcomePage from './pages/commune'
 import ParticulierWelcomePage from './pages/particulier'
-import GitBookEmbededPage from './pages/common/GitBookEmbededPage'
+import DocAdresseEmbededPage from './pages/common/DocAdresseEmbededPage'
 import CommuneBALStatusPage from './pages/commune/CommuneBALStatusPage'
 import ContactPage from './pages/commune/ContactPage'
 import ConfigContext from './contexts/configContext'
@@ -40,7 +40,7 @@ function BALWidget() {
             <Route index element={<HomePage />} />
             <Route path='commune' element={<CommuneWelcomePage />} />
             <Route path='commune/bal-status' element={<CommuneBALStatusPage />} />
-            <Route path='commune/gitbook' element={<GitBookEmbededPage />} />
+            <Route path='commune/doc-adresse' element={<DocAdresseEmbededPage />} />
             <Route
               path='commune/contact'
               element={<ContactPage subjects={config?.contactUs.subjects} />}
@@ -54,7 +54,7 @@ function BALWidget() {
               path='particulier/troubleshooting'
               element={<ParticulierTroubleshootingPage />}
             />
-            <Route path='particulier/gitbook' element={<GitBookEmbededPage />} />
+            <Route path='particulier/doc-adresse' element={<DocAdresseEmbededPage />} />
             <Route path='particulier/contact' element={<AdresseProblemFormPage />} />
           </Routes>
         </AnimatePresence>
