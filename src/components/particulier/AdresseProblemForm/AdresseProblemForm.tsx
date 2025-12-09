@@ -20,6 +20,7 @@ const getInitialFormValues = (
     firstName: '',
     lastName: '',
     city: city.code,
+    cityName: city.name,
     subject,
     message: '',
     street: undefined,
