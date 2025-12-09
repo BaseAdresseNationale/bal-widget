@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import HelpBlock from '../../components/common/HelpBlock/HelpBlock'
-import GitBookTopArticles from '../../components/common/GitbookTopArticles/GitbookTopArticles'
+import DocAdresseTopArticles from '../../components/common/DocAdresseTopArticles/DocAdresseTopArticles'
 import AnimatedPage from '../../layouts/AnimatedPage'
 import ConfigContext from '../../contexts/configContext'
 import RouterHistoryContext from '../../contexts/routerhistoryContext'
@@ -21,8 +21,8 @@ function ParticulierWelcomePage() {
         </button>
       </HelpBlock>
       <HelpBlock label={config?.gitbookParticuliers?.welcomeBlockTitle || ''}>
-        <GitBookTopArticles
-          path='/particulier/gitbook'
+        <DocAdresseTopArticles
+          path='/particulier/doc-adresse'
           articles={config?.gitbookParticuliers?.topArticles || []}
         />
       </HelpBlock>
