@@ -7,13 +7,14 @@ export const mailToSignalement = (
 
 Je vous contacte car mon adresse n'est pas référencée dans la Base Adresse Nationale. Voici le détail de mon signalement, mes coordonnées ainsi que la procédure à suivre afin de prendre en compte le signalement :
 
+${bodyData.city ? `Commune : ${bodyData.cityName}` : ''}
 ${bodyData.street ? `Voie : ${bodyData.street}` : ''}
 ${bodyData.number ? `Numéro : ${bodyData.number}` : ''}
 ${bodyData.message ? `Message : ${bodyData.message}` : ''}
 
 ${
   bodyData.firstName || bodyData.lastName
-    ? `Coordonées de contact : ${bodyData.firstName} ${bodyData.lastName}`
+    ? `Coordonnées de contact : ${bodyData.firstName} ${bodyData.lastName}`
     : ''
 }
 
