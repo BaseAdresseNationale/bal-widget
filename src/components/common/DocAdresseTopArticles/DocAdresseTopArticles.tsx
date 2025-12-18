@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import { StyledGitBookTopArticles } from './GitbookTopArticles.styles'
+import { StyledDocAdresseTopArticles } from './DocAdresseTopArticles.styles'
 import RouterHistoryContext from '../../../contexts/routerhistoryContext'
 
-interface GitBookTopArticlesProps {
+interface DocAdresseTopArticlesProps {
   articles: {
     label: string
     url: string
@@ -10,7 +10,7 @@ interface GitBookTopArticlesProps {
   path: string
 }
 
-function GitBookTopArticles({ articles, path: pagePath }: GitBookTopArticlesProps) {
+function DocAdresseTopArticles({ articles, path: pagePath }: DocAdresseTopArticlesProps) {
   const { navigate } = useContext(RouterHistoryContext)
 
   const onFocus = () => {
@@ -22,7 +22,7 @@ function GitBookTopArticles({ articles, path: pagePath }: GitBookTopArticlesProp
   }
 
   return (
-    <StyledGitBookTopArticles>
+    <StyledDocAdresseTopArticles>
       <div className='links-wrapper'>
         {articles.map(({ label, url }) => (
           <button key={label} onClick={() => onSelectArticle(url)} className='fr-link'>
@@ -31,23 +31,23 @@ function GitBookTopArticles({ articles, path: pagePath }: GitBookTopArticlesProp
         ))}
       </div>
       <div className='fr-search-bar' id='header-search' role='search'>
-        <label className='fr-label' htmlFor='gitbook-search'>
+        <label className='fr-label' htmlFor='docadresse-search'>
           Recherche
         </label>
         <input
           className='fr-input'
           placeholder='Rechercher dans la documentation'
           type='search'
-          id='gitbook-search'
-          name='gitbook-search'
+          id='docadresse-search'
+          name='docadresse-search'
           onFocus={onFocus}
         />
         <button className='fr-btn' title='Rechercher'>
           Rechercher
         </button>
       </div>
-    </StyledGitBookTopArticles>
+    </StyledDocAdresseTopArticles>
   )
 }
 
-export default GitBookTopArticles
+export default DocAdresseTopArticles

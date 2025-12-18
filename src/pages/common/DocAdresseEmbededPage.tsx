@@ -3,16 +3,14 @@ import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import AnimatedPage from '../../layouts/AnimatedPage'
 
-const iframeBaseSrc = 'https://doc.adresse.data.gouv.fr'
-
-const StyledGitBookEmbededPage = styled.iframe`
+const StyledDocAdresseEmbededPage = styled.iframe`
   width: 100%;
   height: 100%;
 `
 
-function GitBookEmbededPage() {
+function DocAdresseEmbededPage() {
   const location = useLocation()
-  let iframeSrc = iframeBaseSrc
+  let iframeSrc = `${process.env.REACT_APP_DOC_ADRESSE_URL}`
   const search = location.search
   if (search) {
     const searchParams = new URLSearchParams(search)
@@ -24,9 +22,9 @@ function GitBookEmbededPage() {
 
   return (
     <AnimatedPage style={{ padding: 0, height: '100%' }}>
-      <StyledGitBookEmbededPage src={iframeSrc} />
+      <StyledDocAdresseEmbededPage src={iframeSrc} />
     </AnimatedPage>
   )
 }
 
-export default GitBookEmbededPage
+export default DocAdresseEmbededPage
