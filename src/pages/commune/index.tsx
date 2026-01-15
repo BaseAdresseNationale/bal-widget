@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import HelpBlock from '../../components/common/HelpBlock/HelpBlock'
-import GitBookTopArticles from '../../components/common/GitbookTopArticles/GitbookTopArticles'
+import DocAdresseTopArticles from '../../components/common/DocAdresseTopArticles/DocAdresseTopArticles'
 import AnimatedPage from '../../layouts/AnimatedPage'
 import ConfigContext from '../../contexts/configContext'
 import Autocomplete from '../../components/common/Autocomplete/Autocomplete'
@@ -37,8 +37,8 @@ function CommuneWelcomePage() {
         />
       </HelpBlock>
       <HelpBlock label={config?.gitbookCommunes?.welcomeBlockTitle || ''}>
-        <GitBookTopArticles
-          path='/commune/gitbook'
+        <DocAdresseTopArticles
+          path='/commune/doc-adresse'
           articles={config?.gitbookCommunes?.topArticles || []}
         />
       </HelpBlock>
