@@ -14,6 +14,7 @@ env:
   REACT_APP_MES_SIGNALEMENTS_URL: ${{ vars.REACT_APP_MES_SIGNALEMENTS_URL }}
   REACT_APP_MES_SIGNALEMENTS_SOURCE_ID: ${{ vars.REACT_APP_MES_SIGNALEMENTS_SOURCE_ID }}
   REACT_APP_API_SIGNALEMENT_URL: ${{ vars.REACT_APP_API_SIGNALEMENT_URL }}
+  REACT_APP_DOC_ADRESSE_URL: ${{ vars.REACT_APP_DOC_ADRESSE_URL }}
 
 jobs:
   deployment:
@@ -25,8 +26,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
-          cache: 'yarn'
+          node-version: "lts/*"
+          cache: "yarn"
 
       - name: Build
         run: |
