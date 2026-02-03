@@ -34,7 +34,7 @@ export const ParticulierTroubleshooting = () => {
     setIsLoading(true)
     try {
       const response = await fetch(
-        `https://api-adresse.data.gouv.fr/search/?q=${search}&type=${type}&limit=10${
+        `https://data.geopf.fr/geocodage/search/?q=${search}&index=address&type=${type}&limit=10${
           adresse.municipality ? `&citycode=${adresse.municipality.code}` : ''
         }`,
       )
