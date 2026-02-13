@@ -1,4 +1,3 @@
-import React from 'react'
 import AnimatedPage from '../../layouts/AnimatedPage'
 import ContactForm from '../../components/common/ContactForm/ContactForm'
 

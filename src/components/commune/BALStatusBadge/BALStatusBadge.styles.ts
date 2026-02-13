@@ -1,12 +1,12 @@
 import styled from 'styled-components'
+import Button from '@codegouvfr/react-dsfr/Button'
 
-export const StyledBALStatusBadge = styled.span<{
+export const StyledBALStatusBadge = styled(Button)<{
   $color: string
-  $content: string
   $background: string
 }>`
   position: relative;
-  display: inline-block;
+  display: flex;
   margin-left: 10px;
   background-color: ${(props) => props.$background};
   color: ${(props) => props.$color};
@@ -18,23 +18,4 @@ export const StyledBALStatusBadge = styled.span<{
   width: fit-content;
   min-width: 100px;
   text-align: center;
-
-  &:hover {
-    &:after {
-      position: absolute;
-      padding: 5px;
-      bottom: calc(100% + 5px);
-      transform: translateX(-50%);
-      left: 50%;
-      background-color: black;
-      opacity: 0.8;
-      width: 200px;
-      color: white;
-      content: '${(props) => props.$content}';
-      font-weight: normal;
-      text-transform: none;
-      border-radius: 4px;
-      line-height: 1.5;
-    }
-  }
 `

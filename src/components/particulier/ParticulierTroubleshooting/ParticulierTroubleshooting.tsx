@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { StyledParticulierToubleshooting } from './ParticulierToubleshooting.styles'
-import Autocomplete from '../../common/Autocomplete/Autocomplete'
 import Loader from '../../common/Loader/Loader'
 import AdresseNotFoundInBAN from '../AdresseNotFoundInBAN/AdresseNotFoundInBAN'
 import AdresseFoundInBAN from '../AdresseFoundInBAN/AdresseFoundInBAN'
@@ -8,6 +7,8 @@ import { SignalementMode, SignalementType } from '../../../types/signalement.typ
 import { browseToMesSignalements, getSignalementMode } from '../../../utils/signalement.utils'
 import { getSignalementCommuneStatus } from '../../../lib/api-signalement'
 import { getCurrentRevision } from '../../../lib/api-depot'
+import SearchInput from '../../common/SearchInput'
+import { SearchItemType } from '../../common/SearchInput/SearchInput'
 
 interface APIAdresseResult {
   nom: string
@@ -31,6 +32,10 @@ export const ParticulierTroubleshooting = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const fetchBAN = (type: string) => async (search: string) => {
+    if (!search || search.length < 3) {
+      return []
+    }
+
     setIsLoading(true)
     try {
       const response = await fetch(
@@ -44,9 +49,11 @@ export const ParticulierTroubleshooting = () => {
         ({ properties }: { properties: { id: string; name: string; postcode?: string } }) => ({
           code: properties.id,
           nom: properties.name,
+          label: properties.name,
+          id: properties.id,
           ...(properties.postcode && { postcode: properties.postcode }),
         }),
-      )
+      ) as SearchItemType<APIAdresseResult>[]
     } catch (error) {
       console.error(error)
       return []
@@ -142,20 +149,18 @@ export const ParticulierTroubleshooting = () => {
                 />
               </div>
             ) : (
-              <Autocomplete
-                inputProps={{ placeholder: 'Rechercher ma commune' }}
-                fetchResults={fetchBAN('municipality')}
-                ResultCmp={(commune: APIAdresseResult) => (
-                  <div key={commune.code}>
-                    <button
-                      tabIndex={0}
-                      type='button'
-                      onClick={() => setAdresse(() => ({ ...adresse, municipality: commune }))}
-                    >
-                      {commune.nom} ({commune.postcode})
-                    </button>
-                  </div>
-                )}
+              <SearchInput
+                label='Rechercher ma commune'
+                onSearch={fetchBAN('municipality')}
+                onSelect={(commune?: SearchItemType<APIAdresseResult> | null) => {
+                  if (commune) {
+                    setAdresse(() => ({ ...adresse, municipality: commune }))
+                  }
+                }}
+                nativeInputProps={{ placeholder: 'Tours...', required: true }}
+                itemToString={(commune?: SearchItemType<APIAdresseResult> | null) =>
+                  commune ? `${commune.nom} (${commune.postcode})` : ''
+                }
               />
             )}
           </div>
@@ -182,25 +187,18 @@ export const ParticulierTroubleshooting = () => {
                 </div>
               ) : (
                 <>
-                  <Autocomplete
-                    inputProps={{ placeholder: 'Rechercher ma voie' }}
-                    fetchResults={fetchBAN('street')}
-                    ResultCmp={(voie: APIAdresseResult) => (
-                      <div key={voie.code}>
-                        <button
-                          tabIndex={0}
-                          type='button'
-                          onClick={() =>
-                            setAdresse(() => ({
-                              ...adresse,
-                              street: { nom: voie.nom, code: voie.code },
-                            }))
-                          }
-                        >
-                          {voie.nom}
-                        </button>
-                      </div>
-                    )}
+                  <SearchInput
+                    label='Rechercher ma voie'
+                    nativeInputProps={{ placeholder: 'Rue Nationale...', required: true }}
+                    onSearch={fetchBAN('street')}
+                    onSelect={(voie?: SearchItemType<APIAdresseResult> | null) => {
+                      if (voie) {
+                        setAdresse(() => ({
+                          ...adresse,
+                          street: { nom: voie.nom, code: voie.code },
+                        }))
+                      }
+                    }}
                   />
                   <button
                     type='button'

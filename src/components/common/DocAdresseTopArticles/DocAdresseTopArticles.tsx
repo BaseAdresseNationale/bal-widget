@@ -1,6 +1,8 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { StyledDocAdresseTopArticles } from './DocAdresseTopArticles.styles'
 import RouterHistoryContext from '../../../contexts/routerhistoryContext'
+import { liteClient as algoliasearch } from 'algoliasearch/lite'
+import { InstantSearch, SearchBox, Hits } from 'react-instantsearch'
 
 interface DocAdresseTopArticlesProps {
   articles: {
@@ -10,12 +12,17 @@ interface DocAdresseTopArticlesProps {
   path: string
 }
 
+const searchClient = algoliasearch(
+  process.env.REACT_APP_ALGOLIA_APP_ID!,
+  process.env.REACT_APP_ALGOLIA_SEARCH_KEY!,
+)
+const instantSearchProps = {
+  indexName: process.env.REACT_APP_ALGOLIA_INDEX_NAME,
+  searchClient,
+}
+
 function DocAdresseTopArticles({ articles, path: pagePath }: DocAdresseTopArticlesProps) {
   const { navigate } = useContext(RouterHistoryContext)
-
-  const onFocus = () => {
-    navigate(pagePath)
-  }
 
   const onSelectArticle = (path: string) => {
     navigate(`${pagePath}?path=` + path, { replace: true })
@@ -30,22 +37,14 @@ function DocAdresseTopArticles({ articles, path: pagePath }: DocAdresseTopArticl
           </button>
         ))}
       </div>
-      <div className='fr-search-bar' id='header-search' role='search'>
-        <label className='fr-label' htmlFor='docadresse-search'>
-          Recherche
-        </label>
-        <input
+      <InstantSearch {...instantSearchProps}>
+        <SearchBox
           className='fr-input'
           placeholder='Rechercher dans la documentation'
-          type='search'
           id='docadresse-search'
-          name='docadresse-search'
-          onFocus={onFocus}
         />
-        <button className='fr-btn' title='Rechercher'>
-          Rechercher
-        </button>
-      </div>
+        <Hits />
+      </InstantSearch>
     </StyledDocAdresseTopArticles>
   )
 }

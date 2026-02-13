@@ -13,13 +13,13 @@ export const StyledCommuneInfosMessage = styled.div`
     border: 1px solid var(--background-action-high-blue-france);
     width: 100%;
     summary {
-      margin: 0;
-      padding: 0;
-      outline: none;
-      font-weight: bold;
-
-      &:focus {
-        outline: none;
+      div {
+        display: flex;
+        h3 {
+          margin: 0;
+          margin-left: 10px;
+          display: inline;
+        }
       }
     }
 
@@ -30,8 +30,9 @@ export const StyledCommuneInfosMessage = styled.div`
       justify-content: space-around;
       cursor: initial;
 
-      div {
+      p {
         font-size: 12px;
+        margin: 0;
       }
     }
   }

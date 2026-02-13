@@ -1,4 +1,3 @@
-import React from 'react'
 import { StyledMainButton } from './MainButton.styles'
 
 interface MainButtonProps {
@@ -12,6 +11,8 @@ function MainButton({ onClick, isExpanded }: MainButtonProps) {
       onClick={onClick}
       className={`fr-btn ${isExpanded ? 'fr-icon-close-line' : 'fr-icon-question-answer-fill'}`}
       title="J'ai besoin d'aide"
+      aria-label="Ouvrir le centre d'aide"
+      {...(isExpanded && { tabIndex: -1 })}
     />
   )
 }

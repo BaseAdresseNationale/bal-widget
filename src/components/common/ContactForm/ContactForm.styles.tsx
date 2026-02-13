@@ -27,4 +27,8 @@ export const StyledContactForm = styled.form`
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
   }
+
+  legend {
+    font-size: 0.875rem;
+  }
 `
