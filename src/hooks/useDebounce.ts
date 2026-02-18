@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 // TODO : Use only one useDebounce function
 
 export const useDebounce = (value: string, timeoutMs: number = 500) => {
-  const timeout = useRef<NodeJS.Timeout>()
+  const timeout = useRef<NodeJS.Timeout | null>(null)
   const [debouncedValue, setDebouncedValue] = useState(value)
 
   useEffect(() => {
