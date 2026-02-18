@@ -2,8 +2,8 @@ import { useContext } from 'react'
 import { StyledDocAdresseTopArticles } from './DocAdresseTopArticles.styles'
 import RouterHistoryContext from '../../../contexts/routerhistoryContext'
 import { liteClient as algoliasearch } from 'algoliasearch/lite'
-import { InstantSearch, SearchBox, Hits } from 'react-instantsearch'
-import type { Hit as AlgoliaHit } from 'instantsearch.js'
+import SearchInput from '../SearchInput'
+import { SearchItemType } from '../SearchInput/SearchInput'
 
 interface DocAdresseTopArticlesProps {
   articles: {
@@ -13,38 +13,56 @@ interface DocAdresseTopArticlesProps {
   path: string
 }
 
+type DocAdresseSearchHit = {
+  url: string
+  hierarchy: {
+    lvl0?: string
+    lvl1?: string
+    lvl2?: string
+    lvl3?: string
+    lvl4?: string
+    lvl5?: string
+  }
+}
+
 const searchClient = algoliasearch(
   process.env.REACT_APP_ALGOLIA_APP_ID!,
   process.env.REACT_APP_ALGOLIA_SEARCH_KEY!,
 )
-const instantSearchProps = {
-  indexName: process.env.REACT_APP_ALGOLIA_INDEX_NAME,
-  searchClient,
-}
 
-function CustomHit({
-  hit,
-  onSelectArticle,
-}: {
-  hit: AlgoliaHit
-  onSelectArticle: (path: string) => void
-}) {
-  const { url, hierarchy } = hit
-  const path = `/docs/${url.split('/docs/')[1]}`
-  const label =
-    hierarchy?.lvl6 ||
-    hierarchy?.lvl5 ||
-    hierarchy?.lvl4 ||
-    hierarchy?.lvl3 ||
-    hierarchy?.lvl2 ||
-    hierarchy?.lvl1 ||
-    hierarchy?.lvl0 ||
-    'Article sans titre'
+const searchAlgolia = async (query: string): Promise<SearchItemType<{ path: string }>[]> => {
+  const { results } = await searchClient.search<DocAdresseSearchHit>({
+    requests: [
+      {
+        indexName: process.env.REACT_APP_ALGOLIA_INDEX_NAME!,
+        query,
+        hitsPerPage: 10,
+      },
+    ],
+  })
 
-  return (
-    <button key={label} onClick={() => onSelectArticle(path)} className='fr-link hit-item'>
-      {label}
-    </button>
+  const getLabel = ({ hierarchy }: DocAdresseSearchHit) => {
+    return (
+      hierarchy.lvl5 ||
+      hierarchy.lvl4 ||
+      hierarchy.lvl3 ||
+      hierarchy.lvl2 ||
+      hierarchy.lvl1 ||
+      hierarchy.lvl0 ||
+      'Sans titre'
+    )
+  }
+
+  const getPath = ({ url }: DocAdresseSearchHit) => {
+    return `/docs/${url.split('/docs/')[1]}`
+  }
+
+  return (results[0] as unknown as { hits: DocAdresseSearchHit[] }).hits.map(
+    (hit: DocAdresseSearchHit) => ({
+      label: getLabel(hit),
+      id: hit.url,
+      path: getPath(hit),
+    }),
   )
 }
 
@@ -64,21 +82,16 @@ function DocAdresseTopArticles({ articles, path: pagePath }: DocAdresseTopArticl
           </button>
         ))}
       </div>
-      <InstantSearch {...instantSearchProps}>
-        <div className='fr-input-wrap fr-icon-search-line'>
-          <SearchBox
-            submitIconComponent={() => null}
-            className='fr-input'
-            placeholder='Rechercher dans la documentation'
-            id='docadresse-search'
-            inputProps={{ style: { width: '100%' } }}
-          />
-        </div>
-        <Hits
-          className='ais-Hits'
-          hitComponent={(props) => <CustomHit onSelectArticle={onSelectArticle} {...props} />}
-        />
-      </InstantSearch>
+      <SearchInput
+        onSearch={searchAlgolia}
+        onSelect={(hit?: SearchItemType<{ path: string }> | null) => {
+          if (hit) {
+            onSelectArticle(hit.path)
+          }
+        }}
+        label='Rechercher dans la documentation'
+        nativeInputProps={{ placeholder: 'Publier une Base Adresse Locale...' }}
+      />
     </StyledDocAdresseTopArticles>
   )
 }

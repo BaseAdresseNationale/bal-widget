@@ -77,7 +77,7 @@ function ContactForm({ subjects }: ContactFormProps) {
           itemToString={(commune?: SearchItemType<APIGeoCommune> | null) =>
             commune ? `${commune.nom} (${commune.code})` : ''
           }
-          onSelect={(commune?: APIGeoCommune | null) => {
+          onSelect={(commune?: SearchItemType<APIGeoCommune> | null) => {
             if (commune) {
               onEdit('bodyData')({
                 ...bodyData,
@@ -86,39 +86,43 @@ function ContactForm({ subjects }: ContactFormProps) {
             }
           }}
           label='Commune*'
-          nativeInputProps={{ placeholder: 'Rechercher votre commune', required: true }}
+          nativeInputProps={{ placeholder: 'Amboise...', required: true }}
         />
       </div>
 
-      <Select
-        label='Sujet de votre message*'
-        nativeSelectProps={{
-          onChange: (e) => onEdit('subject')(e.target.value),
-          defaultValue: '',
-          required: true,
-        }}
-      >
-        <option value='' disabled>
-          Selectionnez une option
-        </option>
-        {subjects.map((subject) => (
-          <option key={subject} value={subject}>
-            {subject}
+      <div className='input-wrapper'>
+        <Select
+          label='Sujet de votre message*'
+          nativeSelectProps={{
+            onChange: (e) => onEdit('subject')(e.target.value),
+            defaultValue: '',
+            required: true,
+          }}
+        >
+          <option value='' disabled>
+            Selectionnez une option
           </option>
-        ))}
-      </Select>
+          {subjects.map((subject) => (
+            <option key={subject} value={subject}>
+              {subject}
+            </option>
+          ))}
+        </Select>
+      </div>
 
-      <Input
-        label='Votre message*'
-        textArea
-        nativeTextAreaProps={{
-          required: true,
-          onChange: (e) => {
-            onEdit('bodyData')({ ...bodyData, message: e.target.value })
-          },
-          rows: 10,
-        }}
-      />
+      <div className='input-wrapper'>
+        <Input
+          label='Votre message*'
+          textArea
+          nativeTextAreaProps={{
+            required: true,
+            onChange: (e) => {
+              onEdit('bodyData')({ ...bodyData, message: e.target.value })
+            },
+            rows: 10,
+          }}
+        />
+      </div>
 
       <legend>Les champs avec * sont obligatoires</legend>
       <Button

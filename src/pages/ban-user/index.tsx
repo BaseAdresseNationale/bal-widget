@@ -15,8 +15,8 @@ function BANUserWelcomePage() {
         <button
           onClick={() =>
             parentNavigateTo({
-              href: '/outils',
-              target: '_self',
+              href: 'https://adresse.data.gouv.fr/outils',
+              target: '_blank',
             })
           }
           className='fr-btn fr-icon-arrow-right-line fr-btn--icon-right'

@@ -130,13 +130,11 @@ export default function SearchInput<T>({
   return (
     <SearchComboboxWrapper>
       <SearchComboboxInputWrapper>
-        <SearchComboboxInputLoader>
-          <i
-            className={`search-combobox-input-loader-icon ri-refresh-line ${
-              isLoading ? 'loading' : ''
-            }`}
-          />
-        </SearchComboboxInputLoader>
+        {isLoading && (
+          <SearchComboboxInputLoader>
+            <i className='search-combobox-input-loader-icon ri-refresh-line loading' />
+          </SearchComboboxInputLoader>
+        )}
 
         <Input
           iconId='fr-icon-search-line'

@@ -14,11 +14,15 @@ export const StyledCommuneInfosMessage = styled.div`
     width: 100%;
     summary {
       div {
-        display: flex;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        width: calc(100% - 24px);
         h3 {
           margin: 0;
           margin-left: 10px;
           display: inline;
+          font-size: 1.25rem;
         }
       }
     }

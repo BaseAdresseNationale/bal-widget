@@ -11,11 +11,9 @@ export const StyledBALStatusBadge = styled(Button)<{
   background-color: ${(props) => props.$background};
   color: ${(props) => props.$color};
   border-radius: 4px;
-  padding: 2px 5px;
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
   width: fit-content;
-  min-width: 100px;
   text-align: center;
 `

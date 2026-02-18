@@ -27,6 +27,10 @@ interface CommuneInfosData {
 }
 
 const StyledCommuneInfosMessage = styled.div`
+  .custom-accompaniement {
+    margin-top: 1.5rem;
+  }
+
   .partenaire-cards-wrapper {
     display: flex;
     flex-direction: column;
@@ -81,7 +85,7 @@ const formatInfosCommune = (communeInfos: CommuneInfosData) => {
     communeInfoContent = (
       <StyledCommuneInfosMessage>
         {communeInfoContent}
-        <div>
+        <div className='custom-accompaniement'>
           <h3>Besoin d&apos;un accompagnement personnalisé?</h3>
           <p>
             Votre commune peut bénéficier de l’accompagnement gratuit d’un organisme partenaire de

@@ -70,6 +70,7 @@ export const BALStatusBadge = ({ status, sync, balId }: BALStatusBadgeProps) => 
         aria-describedby={`bal-status-${balId}`}
         $color={computedStatus.color}
         $background={computedStatus.background}
+        size='small'
       >
         <span className='bal-status-badge__label'>{computedStatus.label}</span>
       </StyledBALStatusBadge>

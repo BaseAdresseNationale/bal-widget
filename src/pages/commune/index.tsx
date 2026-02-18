@@ -35,8 +35,8 @@ function CommuneWelcomePage() {
               onSelectCommune(commune)
             }
           }}
-          nativeInputProps={{ placeholder: 'Rechercher ma commune' }}
-          label={null}
+          nativeInputProps={{ placeholder: 'Bourg-La-Reine...' }}
+          label='Rechercher ma commune'
         />
       </HelpBlock>
       <HelpBlock label={config?.gitbookCommunes?.welcomeBlockTitle || ''}>

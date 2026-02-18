@@ -3,6 +3,7 @@ import { BALStatusBadge } from '../BALStatusBadge/BALStatusBadge'
 import { MES_ADRESSES_URL } from '../../../hooks/useMesAdresses'
 import { BALMesAdresses } from '../../../types/MesAdresses.types'
 import { isEmbeddedInIframe } from '../../../utils/iframe.utils'
+import Button from '@codegouvfr/react-dsfr/Button'
 
 type PublishedFromMesAdressesProps = {
   publishedBals: BALMesAdresses[]
@@ -25,15 +26,19 @@ export const PublishedFromMesAdresses = ({ publishedBals }: PublishedFromMesAdre
               <p>Créée le {new Date(bal.createdAt).toLocaleDateString('fr')}</p>
               <p>Dernière mise à jour le {new Date(bal.updatedAt).toLocaleDateString('fr')}</p>
             </div>
-            <a
-              href={`${MES_ADRESSES_URL}/bal/${bal.id}`}
-              className='fr-btn fr-btn--primary'
-              target={isEmbeddedInIframe() ? '_parent' : '_blank'}
-              rel='noreferrer'
+            <Button
+              linkProps={
+                {
+                  href: `${MES_ADRESSES_URL}/bal/${bal.id}`,
+                  target: isEmbeddedInIframe() ? '_parent' : '_blank',
+                  rel: 'noreferrer',
+                } as React.AnchorHTMLAttributes<HTMLAnchorElement>
+              }
+              size='small'
               aria-label='Consulter la Base Adresse Locale de la commune'
             >
               Consulter
-            </a>
+            </Button>
           </div>
         </details>
       ))}
