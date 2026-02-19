@@ -22,6 +22,10 @@ export const StyledPartenaireCard = styled.div`
     width: 80px;
   }
 
+  a:focus {
+    outline: auto;
+  }
+
   a::after {
     content: '';
     position: absolute;
