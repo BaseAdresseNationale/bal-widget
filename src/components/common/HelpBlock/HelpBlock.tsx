@@ -1,8 +1,9 @@
+import { ReactNode } from 'react'
 import { StyledHelpBlock } from './HelpBlock.styles'
 
 interface HelpBlockProps {
   label: string
-  children: React.ReactNode
+  children: ReactNode
 }
 
 function HelpBlock({ label, children }: HelpBlockProps) {

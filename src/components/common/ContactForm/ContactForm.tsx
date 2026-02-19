@@ -124,7 +124,7 @@ function ContactForm({ subjects }: ContactFormProps) {
         />
       </div>
 
-      <legend>Les champs avec * sont obligatoires</legend>
+      <p className='legend'>Les champs avec * sont obligatoires</p>
       <Button
         type='submit'
         disabled={isSubmitDisabled}

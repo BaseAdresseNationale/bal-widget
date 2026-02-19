@@ -25,7 +25,7 @@ export const StyledContactForm = styled.form`
     margin-bottom: 0.5rem;
   }
 
-  legend {
+  .legend {
     font-size: 0.875rem;
     align-self: flex-start;
   }

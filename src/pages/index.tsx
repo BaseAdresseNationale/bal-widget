@@ -14,6 +14,7 @@ function HomePage() {
             <button
               onClick={() => navigate('/commune')}
               className='fr-btn fr-btn--icon-right fr-icon-france-line'
+              aria-label='Vous êtes une commune'
             >
               Une commune
             </button>
@@ -22,6 +23,7 @@ function HomePage() {
             <button
               onClick={() => navigate('/ban-user')}
               className='fr-btn fr-btn--icon-right fr-icon-settings-5-line'
+              aria-label='Vous êtes un utilisateur de la BAN'
             >
               Un utilisateur BAN
             </button>
@@ -30,6 +32,7 @@ function HomePage() {
             <button
               onClick={() => navigate('/particulier')}
               className='fr-btn fr-btn--icon-right fr-icon-user-line'
+              aria-label='Vous êtes un particulier'
             >
               Un particulier
             </button>

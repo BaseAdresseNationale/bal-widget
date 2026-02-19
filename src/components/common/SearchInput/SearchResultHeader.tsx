@@ -1,7 +1,8 @@
+import { ReactNode } from 'react'
 import { ItemHeader } from './SearchResultHeader.styles'
 
 interface SearchResultHeaderProps {
-  header: React.ReactNode
+  header: ReactNode
 }
 
 function SearchResultHeader({ header }: SearchResultHeaderProps) {

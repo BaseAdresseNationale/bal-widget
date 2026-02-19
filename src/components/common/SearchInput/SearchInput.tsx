@@ -49,10 +49,14 @@ export default function SearchInput<T>({
 
   const onSearchAsync = useCallback(
     async (...args: [string, AbortSignal]) => {
-      setIsLoading(true)
-      const results = await onSearch(...args)
-      setIsLoading(false)
-      return results
+      try {
+        setIsLoading(true)
+        const results = await onSearch(...args)
+        setIsLoading(false)
+        return results
+      } finally {
+        setIsLoading(false)
+      }
     },
     [onSearch],
   )

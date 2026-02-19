@@ -20,6 +20,7 @@ function BANUserWelcomePage() {
             })
           }
           className='fr-btn fr-icon-arrow-right-line fr-btn--icon-right'
+          aria-label="Pour accéder aux données et outils d'exploitation, c'est par ici"
         >
           C&apos;est par ici
         </button>

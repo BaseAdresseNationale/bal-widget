@@ -1,8 +1,9 @@
+import { ReactNode } from 'react'
 import { Item, ItemLabel, ItemDetails } from './SearchResultItem.styles'
 
 interface SearchResultItemProps {
-  label: React.ReactNode
-  details?: React.ReactNode
+  label: ReactNode
+  details?: ReactNode
   isHighlighted?: boolean
 }
 
