@@ -25,46 +25,55 @@ type DocAdresseSearchHit = {
   }
 }
 
-const searchClient = algoliasearch(
-  process.env.REACT_APP_ALGOLIA_APP_ID!,
-  process.env.REACT_APP_ALGOLIA_SEARCH_KEY!,
-)
+const algoliaAppId = process.env.REACT_APP_ALGOLIA_APP_ID
+const algoliaSearchKey = process.env.REACT_APP_ALGOLIA_SEARCH_KEY
+const algoliaIndexName = process.env.REACT_APP_ALGOLIA_INDEX_NAME
 
-const searchAlgolia = async (query: string): Promise<SearchItemType<{ path: string }>[]> => {
-  const { results } = await searchClient.search<DocAdresseSearchHit>({
-    requests: [
-      {
-        indexName: process.env.REACT_APP_ALGOLIA_INDEX_NAME!,
-        query,
-        hitsPerPage: 10,
-      },
-    ],
-  })
+const createSearchAlgolia = () => {
+  if (!algoliaAppId || !algoliaSearchKey || !algoliaIndexName) {
+    return null
+  }
 
-  const getLabel = ({ hierarchy }: DocAdresseSearchHit) => {
-    return (
-      hierarchy.lvl5 ||
-      hierarchy.lvl4 ||
-      hierarchy.lvl3 ||
-      hierarchy.lvl2 ||
-      hierarchy.lvl1 ||
-      hierarchy.lvl0 ||
-      'Sans titre'
+  const searchClient = algoliasearch(algoliaAppId, algoliaSearchKey)
+
+  return async (query: string): Promise<SearchItemType<{ path: string }>[]> => {
+    const { results } = await searchClient.search<DocAdresseSearchHit>({
+      requests: [
+        {
+          indexName: algoliaIndexName,
+          query,
+          hitsPerPage: 10,
+        },
+      ],
+    })
+
+    const getLabel = ({ hierarchy }: DocAdresseSearchHit) => {
+      return (
+        hierarchy.lvl5 ||
+        hierarchy.lvl4 ||
+        hierarchy.lvl3 ||
+        hierarchy.lvl2 ||
+        hierarchy.lvl1 ||
+        hierarchy.lvl0 ||
+        'Sans titre'
+      )
+    }
+
+    const getPath = ({ url }: DocAdresseSearchHit) => {
+      return `/docs/${url.split('/docs/')[1]}`
+    }
+
+    return (results[0] as unknown as { hits: DocAdresseSearchHit[] }).hits.map(
+      (hit: DocAdresseSearchHit) => ({
+        label: getLabel(hit),
+        id: hit.url,
+        path: getPath(hit),
+      }),
     )
   }
-
-  const getPath = ({ url }: DocAdresseSearchHit) => {
-    return `/docs/${url.split('/docs/')[1]}`
-  }
-
-  return (results[0] as unknown as { hits: DocAdresseSearchHit[] }).hits.map(
-    (hit: DocAdresseSearchHit) => ({
-      label: getLabel(hit),
-      id: hit.url,
-      path: getPath(hit),
-    }),
-  )
 }
+
+const searchAlgolia = createSearchAlgolia()
 
 function DocAdresseTopArticles({ articles, path: pagePath }: DocAdresseTopArticlesProps) {
   const { navigate } = useContext(RouterHistoryContext)
@@ -82,16 +91,18 @@ function DocAdresseTopArticles({ articles, path: pagePath }: DocAdresseTopArticl
           </button>
         ))}
       </div>
-      <SearchInput
-        onSearch={searchAlgolia}
-        onSelect={(hit?: SearchItemType<{ path: string }> | null) => {
-          if (hit) {
-            onSelectArticle(hit.path)
-          }
-        }}
-        label='Rechercher dans la documentation'
-        nativeInputProps={{ placeholder: 'Publier une Base Adresse Locale...' }}
-      />
+      {searchAlgolia && (
+        <SearchInput
+          onSearch={searchAlgolia}
+          onSelect={(hit?: SearchItemType<{ path: string }> | null) => {
+            if (hit) {
+              onSelectArticle(hit.path)
+            }
+          }}
+          label='Rechercher dans la documentation'
+          nativeInputProps={{ placeholder: 'Publier une Base Adresse Locale...' }}
+        />
+      )}
     </StyledDocAdresseTopArticles>
   )
 }
