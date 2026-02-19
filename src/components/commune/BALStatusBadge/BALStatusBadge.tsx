@@ -1,6 +1,6 @@
+import React from 'react'
 import { StyledBALStatusBadge } from './BALStatusBadge.styles'
 import { BALMesAdresses } from '../../../types/MesAdresses.types'
-import { Tooltip } from '@codegouvfr/react-dsfr/Tooltip'
 
 interface BALStatusBadgeProps {
   status: 'published' | 'replaced'
@@ -8,7 +8,6 @@ interface BALStatusBadgeProps {
     status: 'conflict' | 'paused' | 'outdated' | 'synced'
     isPaused: boolean
   }
-  balId: string
 }
 
 const STATUSES = {
@@ -58,22 +57,15 @@ export function computeStatus(balStatus: BALMesAdresses['status'], sync: BALMesA
   return STATUSES[balStatus]
 }
 
-export const BALStatusBadge = ({ status, sync, balId }: BALStatusBadgeProps) => {
+export const BALStatusBadge = ({ status, sync }: BALStatusBadgeProps) => {
   const computedStatus = computeStatus(status, sync)
   return (
-    <Tooltip kind='hover' title={computedStatus.content} id={`bal-status-${balId}`}>
-      <StyledBALStatusBadge
-        iconId='fr-icon-info-line'
-        iconPosition='right'
-        priority='tertiary no outline'
-        title='En savoir plus sur le statut de cette Base Adresse Locale'
-        aria-describedby={`bal-status-${balId}`}
-        $color={computedStatus.color}
-        $background={computedStatus.background}
-        size='small'
-      >
-        <span className='bal-status-badge__label'>{computedStatus.label}</span>
-      </StyledBALStatusBadge>
-    </Tooltip>
+    <StyledBALStatusBadge
+      $color={computedStatus.color}
+      $background={computedStatus.background}
+      $content={computedStatus.content}
+    >
+      <span className='bal-status-badge__label'>{computedStatus.label}</span>
+    </StyledBALStatusBadge>
   )
 }

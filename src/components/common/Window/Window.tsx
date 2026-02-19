@@ -11,7 +11,7 @@ interface WindowProps {
   onClose?: () => void
 }
 
-function Window({ children, isExpanded, onClose }: WindowProps, ref: React.Ref<HTMLDivElement>) {
+function Window({ children, isExpanded, onClose }: WindowProps) {
   const { config } = useContext(ConfigContext)
   const location = useLocation()
   const { navigate } = useContext(RouterHistoryContext)
@@ -24,33 +24,23 @@ function Window({ children, isExpanded, onClose }: WindowProps, ref: React.Ref<H
   const isOnHomePage = location.pathname === '/'
 
   return (
-    <StyledWindow
-      ref={ref}
-      $isExpanded={isExpanded}
-      role='dialog'
-      aria-modal='true'
-      aria-label="Centre d'aide"
-    >
-      <header role='banner'>
+    <StyledWindow $isExpanded={isExpanded}>
+      <header>
         <div>
           {isOnHomePage ? (
             <div className='logo-wrapper'>
-              <img src={Logo} alt='' height={30} width={30} />
+              <img src={Logo} alt='Logo BAL' height={30} width={30} />
             </div>
           ) : (
             <button title='Retour' onClick={onClick} className='fr-btn fr-icon-arrow-left-line' />
           )}
           <h1>{config?.global?.title}</h1>
         </div>
-        <button onClick={onClose} className='fr-btn fr-icon-close-line' title='Fermer'>
-          <span className='fr-sr-only'>Fermer</span>
-        </button>
+        <button onClick={onClose} className='fr-btn fr-icon-close-line' title='Fermer' />
       </header>
-      <main role='main' className='main-container'>
-        {children}
-      </main>
+      <main className='main-container'>{children}</main>
     </StyledWindow>
   )
 }
 
-export default React.forwardRef(Window)
+export default Window

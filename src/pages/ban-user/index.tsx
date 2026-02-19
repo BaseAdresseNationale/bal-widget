@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import React, { useContext } from 'react'
 import HelpBlock from '../../components/common/HelpBlock/HelpBlock'
 import AnimatedPage from '../../layouts/AnimatedPage'
 import RouterHistoryContext from '../../contexts/routerhistoryContext'
@@ -15,12 +15,11 @@ function BANUserWelcomePage() {
         <button
           onClick={() =>
             parentNavigateTo({
-              href: 'https://adresse.data.gouv.fr/outils',
-              target: '_blank',
+              href: '/outils',
+              target: '_self',
             })
           }
           className='fr-btn fr-icon-arrow-right-line fr-btn--icon-right'
-          aria-label="Pour accéder aux données et outils d'exploitation, c'est par ici"
         >
           C&apos;est par ici
         </button>

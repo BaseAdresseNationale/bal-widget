@@ -3,12 +3,11 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import ReactDOM from 'react-dom/client'
 import BALWidget from './BALWidget'
 import reportWebVitals from './reportWebVitals'
+import '@gouvfr/dsfr/dist/dsfr.min.css'
+import '@gouvfr/dsfr/dist/utility/utility.min.css'
 import GlobalStyle from './globalStyle'
 import { ConfigProvider } from './contexts/configContext'
 import { RouterHistoryProvider } from './contexts/routerhistoryContext'
-import { startReactDsfr } from '@codegouvfr/react-dsfr/spa'
-
-startReactDsfr({ defaultColorScheme: 'light' })
 
 const body = document.getElementsByTagName('body')[0]
 const balWidgetRootElement = document.createElement('div')

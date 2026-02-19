@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyledCommuneInfosMessage } from './CommuneInfosMessage.style'
 import ConfigContext from '../../../contexts/configContext'
 import { useDataGouv } from '../../../hooks/useDataGouv'

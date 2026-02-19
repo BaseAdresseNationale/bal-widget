@@ -1,9 +1,9 @@
+import React from 'react'
 import { StyledCommuneInfosMessage } from './CommuneInfosMessage.style'
 import { BALStatusBadge } from '../BALStatusBadge/BALStatusBadge'
 import { MES_ADRESSES_URL } from '../../../hooks/useMesAdresses'
 import { BALMesAdresses } from '../../../types/MesAdresses.types'
 import { isEmbeddedInIframe } from '../../../utils/iframe.utils'
-import Button from '@codegouvfr/react-dsfr/Button'
 
 type PublishedFromMesAdressesProps = {
   publishedBals: BALMesAdresses[]
@@ -16,36 +16,21 @@ export const PublishedFromMesAdresses = ({ publishedBals }: PublishedFromMesAdre
       {publishedBals.map((bal) => (
         <details key={bal.id}>
           <summary>
-            <span role='heading' aria-level={3}>
-              {bal.nom}
-            </span>
+            <span>{bal.nom}</span> <BALStatusBadge status={bal.status} sync={bal.sync} />
           </summary>
           <div>
             <div>
-              <div className='status-wrapper'>
-                Statut <BALStatusBadge status={bal.status} sync={bal.sync} balId={bal.id} />
-              </div>
-              <p>
-                Créée le <span>{new Date(bal.createdAt).toLocaleDateString('fr')}</span>
-              </p>
-              <p>
-                Dernière mise à jour le{' '}
-                <span>{new Date(bal.updatedAt).toLocaleDateString('fr')}</span>
-              </p>
+              <div>Créée le {new Date(bal.createdAt).toLocaleDateString('fr')}</div>
+              <div>Dernière mise à jour le {new Date(bal.updatedAt).toLocaleDateString('fr')}</div>
             </div>
-            <Button
-              linkProps={
-                {
-                  href: `${MES_ADRESSES_URL}/bal/${bal.id}`,
-                  target: isEmbeddedInIframe() ? '_parent' : '_blank',
-                  rel: 'noreferrer',
-                } as React.AnchorHTMLAttributes<HTMLAnchorElement>
-              }
-              size='small'
-              aria-label='Consulter la Base Adresse Locale de la commune'
+            <a
+              href={`${MES_ADRESSES_URL}/bal/${bal.id}`}
+              className='fr-btn fr-btn--primary'
+              target={isEmbeddedInIframe() ? '_parent' : '_blank'}
+              rel='noreferrer'
             >
               Consulter
-            </Button>
+            </a>
           </div>
         </details>
       ))}
