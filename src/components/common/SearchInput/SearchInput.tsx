@@ -153,7 +153,7 @@ export default function SearchInput<T>({
       </SearchComboboxInputWrapper>
 
       <SearchComboboxDialog open={isOpen}>
-        <SearchComboboxMenu className={`${!isOpen && 'hidden'}`} {...getMenuProps()}>
+        <SearchComboboxMenu className={`${!isOpen ? 'hidden' : ''}`} {...getMenuProps()}>
           {isOpen &&
             items.map((item, index) => {
               const { id, header, label, details } = item
