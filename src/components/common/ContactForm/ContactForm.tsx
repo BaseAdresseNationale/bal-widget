@@ -1,9 +1,12 @@
-import React from 'react'
 import { StyledContactForm } from './ContactForm.styles'
 import { useMailToForm } from '../../../hooks/useMailToForm'
-import Autocomplete from '../Autocomplete/Autocomplete'
 import { fetchCommunes } from '../../../lib/api-geo'
 import { APIGeoCommune } from '../../../types/APIGeo.types'
+import SearchInput from './../../common/SearchInput'
+import { SearchItemType } from '../SearchInput/SearchInput'
+import Input from '@codegouvfr/react-dsfr/Input'
+import { Select } from '@codegouvfr/react-dsfr/Select'
+import { Button } from '@codegouvfr/react-dsfr/Button'
 
 interface ContactFormProps {
   subjects: string[]
@@ -45,70 +48,58 @@ function ContactForm({ subjects }: ContactFormProps) {
     <StyledContactForm onSubmit={onSubmit}>
       <div className='input-wrapper fr-grid-row'>
         <div className='fr-col-6' style={{ paddingRight: 10 }}>
-          <label className='fr-label' htmlFor='firstName'>
-            Prénom
-          </label>
-          <input
-            onChange={(e) => onEdit('bodyData')({ ...bodyData, firstName: e.target.value })}
-            className='fr-input'
-            type='firstName'
-            name='firstName'
-          ></input>
+          <Input
+            label='Prénom'
+            nativeInputProps={{
+              onChange: (e) => onEdit('bodyData')({ ...bodyData, firstName: e.target.value }),
+              type: 'text',
+              name: 'firstName',
+              autoComplete: 'given-name',
+            }}
+          />
         </div>
         <div className='fr-col-6'>
-          <label className='fr-label' htmlFor='lastName'>
-            Nom
-          </label>
-          <input
-            onChange={(e) => onEdit('bodyData')({ ...bodyData, lastName: e.target.value })}
-            className='fr-input'
-            type='lastName'
-            name='lastName'
-          ></input>
+          <Input
+            label='Nom'
+            nativeInputProps={{
+              onChange: (e) => onEdit('bodyData')({ ...bodyData, lastName: e.target.value }),
+              type: 'text',
+              name: 'lastName',
+              autoComplete: 'family-name',
+            }}
+          />
         </div>
       </div>
+
       <div className='input-wrapper'>
-        <label className='fr-label' htmlFor='email'>
-          Commune*
-        </label>
-        <Autocomplete
-          inputProps={{
-            placeholder: 'Rechercher votre commune',
-            required: true,
+        <SearchInput
+          onSearch={fetchCommunes}
+          itemToString={(commune?: SearchItemType<APIGeoCommune> | null) =>
+            commune ? `${commune.nom} (${commune.code})` : ''
+          }
+          onSelect={(commune?: SearchItemType<APIGeoCommune> | null) => {
+            if (commune) {
+              onEdit('bodyData')({
+                ...bodyData,
+                commune: `${commune.nom} (${commune.code})`,
+              })
+            }
           }}
-          value={bodyData.commune}
-          onClearValue={() => onEdit('bodyData')({ ...bodyData, commune: '' })}
-          fetchResults={fetchCommunes}
-          ResultCmp={(commune: APIGeoCommune) => (
-            <div key={commune.code}>
-              <button
-                tabIndex={0}
-                type='button'
-                onClick={() =>
-                  onEdit('bodyData')({
-                    ...bodyData,
-                    commune: `${commune.nom} (${commune.code})`,
-                  })
-                }
-              >
-                {commune.nom} ({commune.code})
-              </button>
-            </div>
-          )}
+          label='Commune*'
+          nativeInputProps={{ placeholder: 'Amboise...', required: true }}
         />
       </div>
-      <div className='fr-select-group'>
-        <label className='fr-label' htmlFor='subject'>
-          Sujet de votre message*
-        </label>
-        <select
-          onChange={(e) => onEdit('subject')(e.target.value)}
-          defaultValue=''
-          required
-          className='fr-select'
-          name='subject'
+
+      <div className='input-wrapper'>
+        <Select
+          label='Sujet de votre message*'
+          nativeSelectProps={{
+            onChange: (e) => onEdit('subject')(e.target.value),
+            defaultValue: '',
+            required: true,
+          }}
         >
-          <option value='' disabled hidden>
+          <option value='' disabled>
             Selectionnez une option
           </option>
           {subjects.map((subject) => (
@@ -116,27 +107,32 @@ function ContactForm({ subjects }: ContactFormProps) {
               {subject}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
+
       <div className='input-wrapper'>
-        <label className='fr-label' htmlFor='message'>
-          Votre message*
-        </label>
-        <textarea
-          onChange={(e) => onEdit('bodyData')({ ...bodyData, message: e.target.value })}
-          required
-          className='fr-input'
-          rows={10}
-          name='message'
+        <Input
+          label='Votre message*'
+          textArea
+          nativeTextAreaProps={{
+            required: true,
+            onChange: (e) => {
+              onEdit('bodyData')({ ...bodyData, message: e.target.value })
+            },
+            rows: 10,
+          }}
         />
       </div>
-      <button
-        disabled={isSubmitDisabled}
-        className='fr-btn fr-icon-send-plane-fill fr-btn--icon-right'
+
+      <p className='legend'>Les champs avec * sont obligatoires</p>
+      <Button
         type='submit'
+        disabled={isSubmitDisabled}
+        iconId='fr-icon-send-plane-fill'
+        iconPosition='right'
       >
         Envoyer
-      </button>
+      </Button>
     </StyledContactForm>
   )
 }

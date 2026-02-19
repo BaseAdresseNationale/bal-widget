@@ -13,13 +13,12 @@ export const StyledCommuneInfosMessage = styled.div`
     border: 1px solid var(--background-action-high-blue-france);
     width: 100%;
     summary {
-      margin: 0;
-      padding: 0;
-      outline: none;
-      font-weight: bold;
-
-      &:focus {
-        outline: none;
+      span[role='heading'] {
+        margin: 0;
+        margin-left: 10px;
+        display: inline;
+        font-size: 1.25rem;
+        font-weight: 500;
       }
     }
 
@@ -30,8 +29,22 @@ export const StyledCommuneInfosMessage = styled.div`
       justify-content: space-around;
       cursor: initial;
 
-      div {
+      .status-wrapper {
+        display: flex;
+        align-items: flex-end;
         font-size: 12px;
+        margin: 5px 0;
+      }
+
+      p {
+        font-size: 12px;
+        margin: 5px 0;
+
+        span {
+          font-size: 14px;
+
+          font-weight: 500;
+        }
       }
     }
   }

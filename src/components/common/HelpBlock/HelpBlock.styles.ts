@@ -15,4 +15,12 @@ export const StyledHelpBlock = styled.div`
     margin: 0 0 10px 0;
     line-height: normal;
   }
+
+  ul {
+    padding: 0;
+    li {
+      list-style: none;
+      padding: 0;
+    }
+  }
 `
