@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
-export const StyledPartenaireCard = styled.div`
-  position: relative;
+export const StyledPartenaireCard = styled.a`
   display: flex;
   gap: 2rem;
   padding: 1rem;
@@ -20,21 +19,5 @@ export const StyledPartenaireCard = styled.div`
   img {
     height: 80px;
     width: 80px;
-  }
-
-  a:focus {
-    outline: auto;
-  }
-
-  a::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    mask-image: none;
-    background-color: transparent;
   }
 `

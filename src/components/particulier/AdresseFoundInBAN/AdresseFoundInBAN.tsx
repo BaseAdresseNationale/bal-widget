@@ -1,3 +1,4 @@
+import React from 'react'
 import { browseToMesSignalements } from '../../../utils/signalement.utils'
 import { SignalementType } from '../../../types/signalement.types'
 

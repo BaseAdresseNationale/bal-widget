@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { StyledBALWidget } from './BALWidget.styles'
 import MainButton from './components/common/MainButton/MainButton'
 import Window from './components/common/Window/Window'
@@ -15,32 +15,10 @@ import ParticulierTroubleshootingPage from './pages/particulier/ParticulierTroub
 import AdresseProblemFormPage from './pages/particulier/AdresseProblemFormPage'
 import BANUserContactPage from './pages/ban-user/BANUserContactPage'
 import BANUserWelcomePage from './pages/ban-user'
-import * as focusTrap from 'focus-trap'
 
 function BALWidget() {
   const location = useLocation()
   const { config, isOpen, setIsOpen } = useContext(ConfigContext)
-  const windowRef = useRef<HTMLDivElement>(null)
-  const focusTrapRef = useRef<focusTrap.FocusTrap | null>(null)
-
-  // Focus trap for accessibility
-  useEffect(() => {
-    if (!windowRef.current) {
-      return
-    }
-
-    if (!focusTrapRef.current) {
-      focusTrapRef.current = focusTrap.createFocusTrap(windowRef.current, {
-        escapeDeactivates: false,
-      })
-    }
-
-    if (isOpen) {
-      focusTrapRef.current.activate()
-    } else {
-      focusTrapRef.current.deactivate()
-    }
-  }, [isOpen])
 
   // Track location change on matomo
   useEffect(() => {
@@ -56,13 +34,7 @@ function BALWidget() {
 
   return (
     <StyledBALWidget>
-      <MainButton
-        isExpanded={isOpen}
-        onClick={() => {
-          setIsOpen((oldState) => !oldState)
-        }}
-      />
-      <Window isExpanded={isOpen} onClose={() => setIsOpen(false)} ref={windowRef}>
+      <Window isExpanded={isOpen} onClose={() => setIsOpen(false)}>
         <AnimatePresence>
           <Routes location={location} key={location.pathname}>
             <Route index element={<HomePage />} />
@@ -87,6 +59,7 @@ function BALWidget() {
           </Routes>
         </AnimatePresence>
       </Window>
+      <MainButton isExpanded={isOpen} onClick={() => setIsOpen((oldState) => !oldState)} />
     </StyledBALWidget>
   )
 }
