@@ -16,15 +16,22 @@ export const PublishedFromMesAdresses = ({ publishedBals }: PublishedFromMesAdre
       {publishedBals.map((bal) => (
         <details key={bal.id}>
           <summary>
-            <div>
-              <h3>{bal.nom}</h3>
-              <BALStatusBadge status={bal.status} sync={bal.sync} balId={bal.id} />
-            </div>
+            <span role='heading' aria-level={3}>
+              {bal.nom}
+            </span>
           </summary>
           <div>
             <div>
-              <p>Créée le {new Date(bal.createdAt).toLocaleDateString('fr')}</p>
-              <p>Dernière mise à jour le {new Date(bal.updatedAt).toLocaleDateString('fr')}</p>
+              <div className='status-wrapper'>
+                Statut <BALStatusBadge status={bal.status} sync={bal.sync} balId={bal.id} />
+              </div>
+              <p>
+                Créée le <span>{new Date(bal.createdAt).toLocaleDateString('fr')}</span>
+              </p>
+              <p>
+                Dernière mise à jour le{' '}
+                <span>{new Date(bal.updatedAt).toLocaleDateString('fr')}</span>
+              </p>
             </div>
             <Button
               linkProps={

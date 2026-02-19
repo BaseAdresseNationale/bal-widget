@@ -31,8 +31,7 @@ function BALWidget() {
 
     if (!focusTrapRef.current) {
       focusTrapRef.current = focusTrap.createFocusTrap(windowRef.current, {
-        escapeDeactivates: true,
-        onDeactivate: () => setIsOpen(false),
+        escapeDeactivates: false,
       })
     }
 

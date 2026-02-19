@@ -16,4 +16,8 @@ export const StyledBALStatusBadge = styled(Button)<{
   text-transform: uppercase;
   width: fit-content;
   text-align: center;
+
+  &:hover {
+    background-color: ${(props) => props.$background} !important;
+  }
 `
