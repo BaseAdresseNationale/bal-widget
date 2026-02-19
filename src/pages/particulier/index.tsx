@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import HelpBlock from '../../components/common/HelpBlock/HelpBlock'
 import DocAdresseTopArticles from '../../components/common/DocAdresseTopArticles/DocAdresseTopArticles'
 import AnimatedPage from '../../layouts/AnimatedPage'
@@ -16,6 +16,7 @@ function ParticulierWelcomePage() {
           onClick={() => navigate('/particulier/troubleshooting')}
           style={{ textAlign: 'left' }}
           className='fr-btn fr-icon-arrow-right-line fr-btn--icon-right'
+          aria-label="Pour vérifier si votre adresse est répertoriée, c'est par ici"
         >
           C&apos;est par ici
         </button>

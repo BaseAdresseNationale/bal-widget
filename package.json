@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@gouvfr/dsfr": "^1.10.2",
+    "@codegouvfr/react-dsfr": "^1.31.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -11,6 +11,9 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "algoliasearch": "^5.48.0",
+    "downshift": "^9.3.0",
+    "focus-trap": "^8.0.0",
     "framer-motion": "^10.16.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -21,12 +24,20 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "yarn predev && craco start",
+    "build": "yarn prebuild && craco build",
     "test": "react-scripts test",
     "lint": "eslint src/**/*.{ts,tsx}",
     "lint:fix": "eslint --fix 'src/**/*.{ts,tsx}'",
-    "format": "prettier --write 'src/**/*.{ts,tsx,css,md}' --config ./.prettierrc"
+    "format": "prettier --write 'src/**/*.{ts,tsx,css,md}' --config ./.prettierrc",
+    "postinstall": "react-dsfr copy-static-assets",
+    "predev": "react-dsfr update-icons",
+    "prebuild": "react-dsfr update-icons"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!@codegouvfr/react-dsfr)"
+    ]
   },
   "eslintConfig": {
     "extends": [

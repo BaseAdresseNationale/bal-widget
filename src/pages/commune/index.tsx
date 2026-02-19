@@ -1,11 +1,12 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import HelpBlock from '../../components/common/HelpBlock/HelpBlock'
 import DocAdresseTopArticles from '../../components/common/DocAdresseTopArticles/DocAdresseTopArticles'
 import AnimatedPage from '../../layouts/AnimatedPage'
 import ConfigContext from '../../contexts/configContext'
-import Autocomplete from '../../components/common/Autocomplete/Autocomplete'
 import RouterHistoryContext from '../../contexts/routerhistoryContext'
 import { fetchCommunes } from '../../lib/api-geo'
+import SearchInput from '../../components/common/SearchInput'
+import { SearchItemType } from '../../components/common/SearchInput/SearchInput'
 
 interface APIGeoCommune {
   nom: string
@@ -24,16 +25,18 @@ function CommuneWelcomePage() {
   return (
     <AnimatedPage animation={isNavigatingBack ? 'prev' : 'next'}>
       <HelpBlock label={config?.communes?.welcomeBlockTitle || ''}>
-        <Autocomplete
-          inputProps={{ placeholder: 'Rechercher une commune' }}
-          fetchResults={fetchCommunes}
-          ResultCmp={(commune: APIGeoCommune) => (
-            <div key={commune.code}>
-              <button tabIndex={0} type='button' onClick={() => onSelectCommune(commune)}>
-                {commune.nom} ({commune.code})
-              </button>
-            </div>
-          )}
+        <SearchInput
+          onSearch={fetchCommunes}
+          itemToString={(commune?: SearchItemType<APIGeoCommune> | null) =>
+            commune ? `${commune.nom} (${commune.code})` : ''
+          }
+          onSelect={(commune?: SearchItemType<APIGeoCommune> | null) => {
+            if (commune) {
+              onSelectCommune(commune)
+            }
+          }}
+          nativeInputProps={{ placeholder: 'Bourg-La-Reine...' }}
+          label='Rechercher ma commune'
         />
       </HelpBlock>
       <HelpBlock label={config?.gitbookCommunes?.welcomeBlockTitle || ''}>

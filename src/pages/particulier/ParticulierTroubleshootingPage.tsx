@@ -1,4 +1,3 @@
-import React from 'react'
 import AnimatedPage from '../../layouts/AnimatedPage'
 import { ParticulierTroubleshooting } from '../../components/particulier/ParticulierTroubleshooting/ParticulierTroubleshooting'
 
