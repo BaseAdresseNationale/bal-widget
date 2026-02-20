@@ -6,12 +6,9 @@ export const StyledContactForm = styled.form`
   flex-direction: column;
   align-items: center;
 
-  *:not(button) {
-    width: 100%;
-  }
-
   .input-wrapper {
     margin-bottom: 1.5rem;
+    width: 100%;
   }
 
   button[type='submit'] {
@@ -26,5 +23,10 @@ export const StyledContactForm = styled.form`
   h2 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
+  }
+
+  .legend {
+    font-size: 0.875rem;
+    align-self: flex-start;
   }
 `

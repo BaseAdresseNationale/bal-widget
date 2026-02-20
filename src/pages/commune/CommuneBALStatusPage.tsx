@@ -1,4 +1,3 @@
-import React from 'react'
 import AnimatedPage from '../../layouts/AnimatedPage'
 import { useSearchParams } from '../../hooks/useSearchParams'
 import { useCommuneInfos } from '../../hooks/useCommuneInfos'

@@ -18,6 +18,8 @@ import styled from 'styled-components'
 const ADRESSE_DATA_GOUV_URL =
   process.env.REACT_APP_ADRESSE_DATA_GOUV_URL || 'https://adresse.data.gouv.fr'
 
+const ObjectIdRE = new RegExp('^[0-9a-fA-F]{24}$')
+
 interface CommuneInfosData {
   balsMesAdresses: BALMesAdresses[]
   currentRevision: APIDepotRevision | null
@@ -25,6 +27,10 @@ interface CommuneInfosData {
 }
 
 const StyledCommuneInfosMessage = styled.div`
+  .custom-accompaniement {
+    margin-top: 1.5rem;
+  }
+
   .partenaire-cards-wrapper {
     display: flex;
     flex-direction: column;
@@ -39,16 +45,18 @@ const formatInfosCommune = (communeInfos: CommuneInfosData) => {
   let communeInfoContent: string | React.ReactNode = ''
 
   if (currentRevision) {
-    switch (currentRevision.client.nom) {
-      case 'Mes Adresses':
-        communeInfoContent = <PublishedFromMesAdresses publishedBals={balsMesAdresses} />
-        break
-      case 'Moissonneur BAL':
-        communeInfoContent = <PublishedFromMoissonneur currentRevision={currentRevision} />
-        break
-      default:
-        communeInfoContent = <PublishedFromOtherClient currentRevision={currentRevision} />
-        break
+    // Commune publiée via Mes Adresses
+    if (
+      currentRevision?.context?.extras?.balId &&
+      ObjectIdRE.test(currentRevision.context.extras.balId)
+    ) {
+      communeInfoContent = <PublishedFromMesAdresses publishedBals={balsMesAdresses} />
+    }
+    // Commune publiée via le Moissonneur BAL
+    else if (currentRevision?.context?.extras?.sourceId) {
+      communeInfoContent = <PublishedFromMoissonneur currentRevision={currentRevision} />
+    } else {
+      communeInfoContent = <PublishedFromOtherClient currentRevision={currentRevision} />
     }
   } else if (!currentRevision && communeInfos.balsMesAdresses.length > 0) {
     communeInfoContent =
@@ -77,8 +85,8 @@ const formatInfosCommune = (communeInfos: CommuneInfosData) => {
     communeInfoContent = (
       <StyledCommuneInfosMessage>
         {communeInfoContent}
-        <div>
-          <strong>Besoin d&apos;un accompagnement personnalisé?</strong>
+        <div className='custom-accompaniement'>
+          <h3>Besoin d&apos;un accompagnement personnalisé?</h3>
           <p>
             Votre commune peut bénéficier de l’accompagnement gratuit d’un organisme partenaire de
             la Charte Base Adresse Locale. N’hésitez pas à les contacter :
