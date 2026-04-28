@@ -8,7 +8,7 @@ type PartenaireCardProps = {
 export const PartenaireCard = ({ partenaireDeLaCharte }: PartenaireCardProps) => {
   return (
     <StyledPartenaireCard>
-      <img src={partenaireDeLaCharte.picture} alt='' style={{ objectFit: 'contain' }} />
+      <img src={partenaireDeLaCharte.pictureUrl} alt='' style={{ objectFit: 'contain' }} />
       <div>
         <a href={partenaireDeLaCharte.link} target='_blank' rel='noreferrer'>
           <h4>{partenaireDeLaCharte.name}</h4>
