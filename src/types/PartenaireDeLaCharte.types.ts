@@ -37,7 +37,7 @@ export type PartenaireDeLaChartType = {
   updatedAt: string
   type: PartenaireDeLaCharteTypeEnum
   name: string
-  picture: string
+  pictureUrl: string
   contactFirstName: string
   contactLastName: string
   contactEmail: string
