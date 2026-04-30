@@ -44,8 +44,28 @@ export const useBALAdmin = () => {
     [],
   )
 
+  const sendSondageResponses = useCallback(
+    async (sondageId: string, answers: Record<string, string | number>): Promise<void> => {
+      const response = await fetch(
+        `${BAL_ADMIN_API_URL}/api/bal-widget/sondages/${encodeURIComponent(sondageId)}/responses`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answers }),
+        },
+      )
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}))
+        throw new Error(data.message || `Failed to send sondage responses (${response.status})`)
+      }
+    },
+    [],
+  )
+
   return {
     getConfig,
     getPartenairesDeLaCharte,
+    sendSondageResponses,
   }
 }

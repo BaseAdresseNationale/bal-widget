@@ -2,9 +2,11 @@ import { useContext } from 'react'
 import HelpBlock from '../components/common/HelpBlock/HelpBlock'
 import AnimatedPage from '../layouts/AnimatedPage'
 import RouterHistoryContext from '../contexts/routerhistoryContext'
+import ConfigContext from '../contexts/configContext'
 
 function HomePage() {
   const { navigate } = useContext(RouterHistoryContext)
+  const { availableSondage } = useContext(ConfigContext)
 
   return (
     <AnimatedPage animation='prev'>
@@ -39,6 +41,17 @@ function HomePage() {
           </li>
         </ul>
       </HelpBlock>
+      {availableSondage && (
+        <HelpBlock label='Donnez votre avis'>
+          <button
+            onClick={() => navigate('/sondage')}
+            className='fr-btn fr-btn--icon-right fr-icon-questionnaire-line'
+            aria-label={`Répondre au sondage : ${availableSondage.name}`}
+          >
+            {availableSondage.name}
+          </button>
+        </HelpBlock>
+      )}
     </AnimatedPage>
   )
 }

@@ -1,10 +1,27 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useBALAdmin } from '../hooks/useBALAdmin'
+import { useSondage } from '../hooks/useSondage'
 import { isEmbeddedInIframe } from '../utils/iframe.utils'
 import RouterHistoryContext from './routerhistoryContext'
 export interface BALWidgetLink {
   label: string
   url: string
+}
+
+export type SondageQuestionType = 'rating-5-stars' | 'free-text'
+
+export interface SondageQuestion {
+  id: string
+  type: SondageQuestionType
+  label: string
+}
+
+export interface Sondage {
+  id: string
+  name: string
+  enabled: boolean
+  site: string
+  questions: SondageQuestion[]
 }
 
 export interface BALWidgetConfig {
@@ -30,6 +47,7 @@ export interface BALWidgetConfig {
     welcomeBlockTitle: string
     topArticles: BALWidgetLink[]
   }
+  sondages: Sondage[]
 }
 
 interface ConfigContextType {
@@ -37,6 +55,10 @@ interface ConfigContextType {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   parentNavigateTo: (url: { href: string; target?: string }) => void
+  activeSondage: Sondage | null
+  availableSondage: Sondage | null
+  dismissActiveSondage: () => void
+  markActiveSondageAsAnswered: () => void
 }
 
 const ConfigContext = React.createContext<ConfigContextType>({
@@ -44,6 +66,10 @@ const ConfigContext = React.createContext<ConfigContextType>({
   isOpen: false,
   setIsOpen: () => {},
   parentNavigateTo: () => {},
+  activeSondage: null,
+  availableSondage: null,
+  dismissActiveSondage: () => {},
+  markActiveSondageAsAnswered: () => {},
 })
 
 interface ConfigProviderProps {
@@ -58,6 +84,22 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
   const { getConfig } = useBALAdmin()
   const [isLoading, setIsLoading] = useState(true)
   const isEmbedded = isEmbeddedInIframe()
+
+  const { activeSondage, availableSondage, dismissSondage, markSondageAsAnswered } = useSondage(
+    config?.sondages,
+  )
+
+  const dismissActiveSondage = useCallback(() => {
+    if (availableSondage) {
+      dismissSondage(availableSondage.id)
+    }
+  }, [availableSondage, dismissSondage])
+
+  const markActiveSondageAsAnswered = useCallback(() => {
+    if (availableSondage) {
+      markSondageAsAnswered(availableSondage.id)
+    }
+  }, [availableSondage, markSondageAsAnswered])
 
   const parentNavigateTo = (content: { href: string; target?: string }) => {
     window.parent.postMessage({ type: 'BAL_WIDGET_PARENT_NAVIGATE_TO', content }, '*')
@@ -102,7 +144,26 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
     }
   }, [isEmbedded, getConfig])
 
-  const value = useMemo(() => ({ config, isOpen, setIsOpen, parentNavigateTo }), [config, isOpen])
+  const value = useMemo(
+    () => ({
+      config,
+      isOpen,
+      setIsOpen,
+      parentNavigateTo,
+      activeSondage,
+      availableSondage,
+      dismissActiveSondage,
+      markActiveSondageAsAnswered,
+    }),
+    [
+      config,
+      isOpen,
+      activeSondage,
+      availableSondage,
+      dismissActiveSondage,
+      markActiveSondageAsAnswered,
+    ],
+  )
 
   return <ConfigContext.Provider value={value}>{!isLoading && children}</ConfigContext.Provider>
 }
