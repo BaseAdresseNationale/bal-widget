@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import AnimatedPage from '../../layouts/AnimatedPage'
 import HelpBlock from '../../components/common/HelpBlock/HelpBlock'
 import SondageForm, { SondageAnswers } from '../../components/common/SondageForm/SondageForm'
@@ -56,6 +57,11 @@ function SondagePage() {
           </div>
         ) : (
           <>
+            {availableSondage.description && (
+              <div className='sondage-description'>
+                <ReactMarkdown>{availableSondage.description}</ReactMarkdown>
+              </div>
+            )}
             <SondageForm
               sondage={availableSondage}
               onSubmit={handleSubmit}

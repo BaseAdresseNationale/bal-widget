@@ -20,6 +20,7 @@ export interface Sondage {
   id: string
   name: string
   enabled: boolean
+  description?: string
   site: string
   questions: SondageQuestion[]
 }
