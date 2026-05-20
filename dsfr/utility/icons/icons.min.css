@@ -1,3 +1,9 @@
+.fr-icon-questionnaire-line::before,
+.fr-icon-questionnaire-line::after {
+    -webkit-mask-image: url("../../icons/communication/questionnaire-line.svg");
+    mask-image: url("../../icons/communication/questionnaire-line.svg");
+}
+
 .fr-icon-france-line::before,
 .fr-icon-france-line::after {
     -webkit-mask-image: url("../../icons/map/france-line.svg");
@@ -20,6 +26,12 @@
 .fr-icon-arrow-right-line::after {
     -webkit-mask-image: url("../../icons/arrows/arrow-right-line.svg");
     mask-image: url("../../icons/arrows/arrow-right-line.svg");
+}
+
+.fr-icon-info-line::before,
+.fr-icon-info-line::after {
+    -webkit-mask-image: url("../../icons/system/fr--info-line.svg");
+    mask-image: url("../../icons/system/fr--info-line.svg");
 }
 
 .fr-icon-send-plane-fill::before,
@@ -58,12 +70,6 @@
     mask-image: url("../../icons/arrows/arrow-left-line.svg");
 }
 
-.fr-icon-info-line::before,
-.fr-icon-info-line::after {
-    -webkit-mask-image: url("../../icons/system/fr--info-line.svg");
-    mask-image: url("../../icons/system/fr--info-line.svg");
-}
-
 .fr-icon-translate-2::before,
 .fr-icon-translate-2::after {
     -webkit-mask-image: url("../../icons/editor/translate-2.svg");
@@ -89,6 +95,11 @@
 }
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .fr-icon-questionnaire-line::before,
+    .fr-icon-questionnaire-line::after {
+        background-image: url("../../icons/communication/questionnaire-line.svg");
+    }
+    
     .fr-icon-france-line::before,
     .fr-icon-france-line::after {
         background-image: url("../../icons/map/france-line.svg");
@@ -107,6 +118,11 @@
     .fr-icon-arrow-right-line::before,
     .fr-icon-arrow-right-line::after {
         background-image: url("../../icons/arrows/arrow-right-line.svg");
+    }
+    
+    .fr-icon-info-line::before,
+    .fr-icon-info-line::after {
+        background-image: url("../../icons/system/fr--info-line.svg");
     }
     
     .fr-icon-send-plane-fill::before,
@@ -137,11 +153,6 @@
     .fr-icon-arrow-left-line::before,
     .fr-icon-arrow-left-line::after {
         background-image: url("../../icons/arrows/arrow-left-line.svg");
-    }
-    
-    .fr-icon-info-line::before,
-    .fr-icon-info-line::after {
-        background-image: url("../../icons/system/fr--info-line.svg");
     }
     
     .fr-icon-translate-2::before,
