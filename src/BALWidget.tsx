@@ -15,7 +15,9 @@ import ParticulierTroubleshootingPage from './pages/particulier/ParticulierTroub
 import AdresseProblemFormPage from './pages/particulier/AdresseProblemFormPage'
 import BANUserContactPage from './pages/ban-user/BANUserContactPage'
 import BANUserWelcomePage from './pages/ban-user'
+import SondagePage from './pages/sondage'
 import * as focusTrap from 'focus-trap'
+import { useTriggerSondage } from './hooks/useTriggerSondage'
 
 function BALWidget() {
   const location = useLocation()
@@ -54,10 +56,13 @@ function BALWidget() {
     window.parent.postMessage(message, '*')
   }, [isOpen])
 
+  const { isWizzing } = useTriggerSondage()
+
   return (
     <StyledBALWidget>
       <MainButton
         isExpanded={isOpen}
+        isWizzing={isWizzing}
         onClick={() => {
           setIsOpen((oldState) => !oldState)
         }}
@@ -84,6 +89,8 @@ function BALWidget() {
             />
             <Route path='particulier/doc-adresse' element={<DocAdresseEmbededPage />} />
             <Route path='particulier/contact' element={<AdresseProblemFormPage />} />
+
+            <Route path='sondage' element={<SondagePage />} />
           </Routes>
         </AnimatePresence>
       </Window>
