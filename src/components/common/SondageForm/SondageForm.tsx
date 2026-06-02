@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from '@codegouvfr/react-dsfr/Button'
 import { Input } from '@codegouvfr/react-dsfr/Input'
+import { RadioButtons } from '@codegouvfr/react-dsfr/RadioButtons'
 import { Sondage, SondageQuestion } from '../../../contexts/configContext'
 import { StyledSondageForm } from './SondageForm.styles'
 
@@ -82,6 +83,34 @@ function renderQuestion(
           }}
         />
       )
+    case 'yes-no': {
+      const currentValue = answers[question.id] as string | undefined
+      return (
+        <RadioButtons
+          legend=''
+          aria-label={question.label}
+          orientation='horizontal'
+          options={[
+            {
+              label: 'Oui',
+              nativeInputProps: {
+                value: 'yes',
+                checked: currentValue === 'yes',
+                onChange: () => setAnswer(question.id, 'yes'),
+              },
+            },
+            {
+              label: 'Non',
+              nativeInputProps: {
+                value: 'no',
+                checked: currentValue === 'no',
+                onChange: () => setAnswer(question.id, 'no'),
+              },
+            },
+          ]}
+        />
+      )
+    }
     default:
       return null
   }
@@ -101,6 +130,9 @@ function SondageForm({ sondage, onSubmit, isSubmitting }: SondageFormProps) {
     }
     if (q.type === 'free-text') {
       return !value || (typeof value === 'string' && value.trim() === '')
+    }
+    if (q.type === 'yes-no') {
+      return value !== 'yes' && value !== 'no'
     }
     return false
   })

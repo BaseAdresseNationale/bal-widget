@@ -8,8 +8,11 @@ export interface BALWidgetLink {
   url: string
 }
 
-export type SondageQuestionType = 'rating-5-stars' | 'free-text'
-
+export enum SondageQuestionType {
+  RATING_5_STARS = 'rating-5-stars',
+  FREE_TEXT = 'free-text',
+  YES_NO = 'yes-no',
+}
 export interface SondageQuestion {
   id: string
   type: SondageQuestionType
