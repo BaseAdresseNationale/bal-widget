@@ -5,6 +5,7 @@ import HelpBlock from '../../components/common/HelpBlock/HelpBlock'
 import SondageForm, { SondageAnswers } from '../../components/common/SondageForm/SondageForm'
 import ConfigContext from '../../contexts/configContext'
 import { useBALAdmin } from '../../hooks/useBALAdmin'
+import RouterHistoryContext from '../../contexts/routerhistoryContext'
 
 function SondagePage() {
   const { availableSondage, markActiveSondageAsAnswered, setIsOpen } = useContext(ConfigContext)
@@ -12,8 +13,9 @@ function SondagePage() {
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { navigate } = useContext(RouterHistoryContext)
 
-  if (!availableSondage) {
+  if (!availableSondage && !submitted) {
     return (
       <AnimatedPage>
         <HelpBlock label='Sondage indisponible'>
@@ -24,6 +26,9 @@ function SondagePage() {
   }
 
   const handleSubmit = async (answers: SondageAnswers) => {
+    if (!availableSondage) {
+      return
+    }
     setIsSubmitting(true)
     setError(null)
     try {
@@ -41,29 +46,30 @@ function SondagePage() {
     }
   }
 
+  const handleClose = () => {
+    navigate('/')
+    setIsOpen(false)
+  }
+
   return (
     <AnimatedPage>
-      <HelpBlock label={availableSondage.name}>
+      <HelpBlock label={submitted ? 'Merci !' : availableSondage!.name}>
         {submitted ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <p>Merci pour votre retour !</p>
-            <button
-              type='button'
-              className='fr-btn fr-btn--secondary'
-              onClick={() => setIsOpen(false)}
-            >
+            <button type='button' className='fr-btn fr-btn--secondary' onClick={handleClose}>
               Fermer
             </button>
           </div>
         ) : (
           <>
-            {availableSondage.description && (
+            {availableSondage!.description && (
               <div className='sondage-description'>
-                <ReactMarkdown>{availableSondage.description}</ReactMarkdown>
+                <ReactMarkdown>{availableSondage!.description}</ReactMarkdown>
               </div>
             )}
             <SondageForm
-              sondage={availableSondage}
+              sondage={availableSondage!}
               onSubmit={handleSubmit}
               isSubmitting={isSubmitting}
             />

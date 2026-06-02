@@ -5,7 +5,7 @@ import { RadioButtons } from '@codegouvfr/react-dsfr/RadioButtons'
 import { Sondage, SondageQuestion } from '../../../contexts/configContext'
 import { StyledSondageForm } from './SondageForm.styles'
 
-export type SondageAnswers = Record<string, string | number>
+export type SondageAnswers = Record<string, string | number | boolean>
 
 interface SondageFormProps {
   sondage: Sondage
@@ -139,7 +139,12 @@ function SondageForm({ sondage, onSubmit, isSubmitting }: SondageFormProps) {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    onSubmit(answers)
+    const normalizedAnswers = sondage.questions.reduce<SondageAnswers>((acc, q) => {
+      const value = answers[q.id]
+      acc[q.id] = q.type === 'yes-no' ? value === 'yes' : value
+      return acc
+    }, {})
+    onSubmit(normalizedAnswers)
   }
 
   return (

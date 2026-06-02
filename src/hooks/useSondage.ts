@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Sondage } from '../contexts/configContext'
 
 const STORAGE_PREFIX = 'bal-widget-sondage-'
@@ -53,14 +53,20 @@ export const useSondage = (sondages: Sondage[] | undefined) => {
     return sondages.find((s) => s.enabled && matchesHostname(s.site, hostname)) || null
   }, [sondages])
 
+  const [statusById, setStatusById] = useState<Record<string, SondageStatus>>({})
+
+  const currentStatus = matchingSondage
+    ? statusById[matchingSondage.id] ?? getSondageStatus(matchingSondage.id)
+    : null
+
   // Sondage proposé à l'utilisateur (bouton sur la home) : visible tant qu'il n'a pas
   // répondu, même s'il l'a précédemment dismissé.
   const availableSondage = useMemo<Sondage | null>(() => {
     if (!matchingSondage) {
       return null
     }
-    return getSondageStatus(matchingSondage.id) === 'answered' ? null : matchingSondage
-  }, [matchingSondage])
+    return currentStatus === 'answered' ? null : matchingSondage
+  }, [matchingSondage, currentStatus])
 
   // Sondage qui déclenche l'ouverture automatique + wizz : uniquement si l'utilisateur
   // n'a ni répondu ni dismissé.
@@ -68,15 +74,17 @@ export const useSondage = (sondages: Sondage[] | undefined) => {
     if (!matchingSondage) {
       return null
     }
-    return getSondageStatus(matchingSondage.id) === null ? matchingSondage : null
-  }, [matchingSondage])
+    return currentStatus === null || currentStatus === undefined ? matchingSondage : null
+  }, [matchingSondage, currentStatus])
 
   const dismissSondage = useCallback((id: string) => {
     setSondageStatus(id, 'dismissed')
+    setStatusById((prev) => ({ ...prev, [id]: 'dismissed' }))
   }, [])
 
   const markSondageAsAnswered = useCallback((id: string) => {
     setSondageStatus(id, 'answered')
+    setStatusById((prev) => ({ ...prev, [id]: 'answered' }))
   }, [])
 
   return { activeSondage, availableSondage, dismissSondage, markSondageAsAnswered }
