@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { Button } from '@codegouvfr/react-dsfr/Button'
 import { Input } from '@codegouvfr/react-dsfr/Input'
-import { Sondage, SondageQuestion } from '../../../contexts/configContext'
+import { RadioButtons } from '@codegouvfr/react-dsfr/RadioButtons'
+import { Sondage, SondageQuestion, SondageQuestionType } from '../../../contexts/configContext'
 import { StyledSondageForm } from './SondageForm.styles'
 
-export type SondageAnswers = Record<string, string | number>
+export type SondageAnswers = Record<string, string | number | boolean>
 
 interface SondageFormProps {
   sondage: Sondage
@@ -61,7 +62,7 @@ function renderQuestion(
   setAnswer: (id: string, value: string | number) => void,
 ) {
   switch (question.type) {
-    case 'rating-5-stars':
+    case SondageQuestionType.RATING_5_STARS:
       return (
         <StarRating
           questionId={question.id}
@@ -69,7 +70,7 @@ function renderQuestion(
           onChange={(value) => setAnswer(question.id, value)}
         />
       )
-    case 'free-text':
+    case SondageQuestionType.FREE_TEXT:
       return (
         <Input
           label=''
@@ -82,6 +83,34 @@ function renderQuestion(
           }}
         />
       )
+    case SondageQuestionType.YES_NO: {
+      const currentValue = answers[question.id] as string | undefined
+      return (
+        <RadioButtons
+          legend=''
+          aria-label={question.label}
+          orientation='horizontal'
+          options={[
+            {
+              label: 'Oui',
+              nativeInputProps: {
+                value: 'yes',
+                checked: currentValue === 'yes',
+                onChange: () => setAnswer(question.id, 'yes'),
+              },
+            },
+            {
+              label: 'Non',
+              nativeInputProps: {
+                value: 'no',
+                checked: currentValue === 'no',
+                onChange: () => setAnswer(question.id, 'no'),
+              },
+            },
+          ]}
+        />
+      )
+    }
     default:
       return null
   }
@@ -96,18 +125,26 @@ function SondageForm({ sondage, onSubmit, isSubmitting }: SondageFormProps) {
 
   const isSubmitDisabled = sondage.questions.some((q) => {
     const value = answers[q.id]
-    if (q.type === 'rating-5-stars') {
+    if (q.type === SondageQuestionType.RATING_5_STARS) {
       return typeof value !== 'number'
     }
-    if (q.type === 'free-text') {
+    if (q.type === SondageQuestionType.FREE_TEXT) {
       return !value || (typeof value === 'string' && value.trim() === '')
+    }
+    if (q.type === SondageQuestionType.YES_NO) {
+      return value !== 'yes' && value !== 'no'
     }
     return false
   })
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    onSubmit(answers)
+    const normalizedAnswers = sondage.questions.reduce<SondageAnswers>((acc, q) => {
+      const value = answers[q.id]
+      acc[q.id] = q.type === SondageQuestionType.YES_NO ? value === 'yes' : value
+      return acc
+    }, {})
+    onSubmit(normalizedAnswers)
   }
 
   return (

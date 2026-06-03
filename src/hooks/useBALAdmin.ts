@@ -45,7 +45,10 @@ export const useBALAdmin = () => {
   )
 
   const sendSondageResponses = useCallback(
-    async (sondageId: string, answers: Record<string, string | number>): Promise<void> => {
+    async (
+      sondageId: string,
+      answers: Record<string, string | number | boolean>,
+    ): Promise<void> => {
       const response = await fetch(
         `${BAL_ADMIN_API_URL}/api/bal-widget/sondages/${encodeURIComponent(sondageId)}/responses`,
         {

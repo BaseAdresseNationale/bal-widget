@@ -10,6 +10,10 @@ export const StyledSondageForm = styled.form`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    .fr-fieldset {
+      margin: 0;
+    }
   }
 
   .question-label {
