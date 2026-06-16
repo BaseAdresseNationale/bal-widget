@@ -34,16 +34,22 @@
     mask-image: url("../../icons/business/send-plane-fill.svg");
 }
 
-.fr-icon-question-answer-fill::before,
-.fr-icon-question-answer-fill::after {
-    -webkit-mask-image: url("../../icons/communication/question-answer-fill.svg");
-    mask-image: url("../../icons/communication/question-answer-fill.svg");
-}
-
 .fr-icon-close-line::before,
 .fr-icon-close-line::after {
     -webkit-mask-image: url("../../icons/system/close-line.svg");
     mask-image: url("../../icons/system/close-line.svg");
+}
+
+.fr-icon-info-line::before,
+.fr-icon-info-line::after {
+    -webkit-mask-image: url("../../icons/system/fr--info-line.svg");
+    mask-image: url("../../icons/system/fr--info-line.svg");
+}
+
+.fr-icon-question-answer-fill::before,
+.fr-icon-question-answer-fill::after {
+    -webkit-mask-image: url("../../icons/communication/question-answer-fill.svg");
+    mask-image: url("../../icons/communication/question-answer-fill.svg");
 }
 
 .fr-icon-search-line::before,
@@ -62,12 +68,6 @@
 .fr-icon-arrow-left-line::after {
     -webkit-mask-image: url("../../icons/arrows/arrow-left-line.svg");
     mask-image: url("../../icons/arrows/arrow-left-line.svg");
-}
-
-.fr-icon-info-line::before,
-.fr-icon-info-line::after {
-    -webkit-mask-image: url("../../icons/system/fr--info-line.svg");
-    mask-image: url("../../icons/system/fr--info-line.svg");
 }
 
 .fr-icon-translate-2::before,
@@ -125,14 +125,19 @@
         background-image: url("../../icons/business/send-plane-fill.svg");
     }
     
-    .fr-icon-question-answer-fill::before,
-    .fr-icon-question-answer-fill::after {
-        background-image: url("../../icons/communication/question-answer-fill.svg");
-    }
-    
     .fr-icon-close-line::before,
     .fr-icon-close-line::after {
         background-image: url("../../icons/system/close-line.svg");
+    }
+    
+    .fr-icon-info-line::before,
+    .fr-icon-info-line::after {
+        background-image: url("../../icons/system/fr--info-line.svg");
+    }
+    
+    .fr-icon-question-answer-fill::before,
+    .fr-icon-question-answer-fill::after {
+        background-image: url("../../icons/communication/question-answer-fill.svg");
     }
     
     .fr-icon-search-line::before,
@@ -148,11 +153,6 @@
     .fr-icon-arrow-left-line::before,
     .fr-icon-arrow-left-line::after {
         background-image: url("../../icons/arrows/arrow-left-line.svg");
-    }
-    
-    .fr-icon-info-line::before,
-    .fr-icon-info-line::after {
-        background-image: url("../../icons/system/fr--info-line.svg");
     }
     
     .fr-icon-translate-2::before,
