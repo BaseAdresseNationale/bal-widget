@@ -51,7 +51,3 @@ Elles peuvent être définies classiquement ou en créant un fichier `.env` sur 
 | `REACT_APP_ALGOLIA_INDEX_NAME`         | Algolia index name               |
 
 Toutes ces variables ont des valeurs par défaut que vous trouverez dans le fichier `.env.sample`.
-
-### Licence
-
-MIT
