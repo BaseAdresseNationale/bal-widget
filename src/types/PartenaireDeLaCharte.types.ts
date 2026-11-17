@@ -44,7 +44,7 @@ export type PartenaireDeLaChartType = {
   services: PartenaireDeLaCharteServiceEnum[]
   codeDepartement: string[]
   codeCommune?: string
-  link?: string
+  webSiteURL?: string
   charteURL?: string
   signatureDate?: string
   dataGouvOrganizationId?: string[]
