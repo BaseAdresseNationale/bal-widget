@@ -10,7 +10,7 @@ export const PartenaireCard = ({ partenaireDeLaCharte }: PartenaireCardProps) =>
     <StyledPartenaireCard>
       <img src={partenaireDeLaCharte.pictureUrl} alt='' style={{ objectFit: 'contain' }} />
       <div>
-        <a href={partenaireDeLaCharte.link} target='_blank' rel='noreferrer'>
+        <a href={partenaireDeLaCharte.webSiteURL} target='_blank' rel='noreferrer'>
           <h4>{partenaireDeLaCharte.name}</h4>
         </a>
         <ul className='fr-badges-group'>
