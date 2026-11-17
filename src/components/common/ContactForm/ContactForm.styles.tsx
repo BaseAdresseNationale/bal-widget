@@ -6,6 +6,10 @@ export const StyledContactForm = styled.form`
   flex-direction: column;
   align-items: center;
 
+  .fr-select-group {
+    width: 100%;
+  }
+
   .input-wrapper {
     margin-bottom: 1.5rem;
     width: 100%;
@@ -23,6 +27,7 @@ export const StyledContactForm = styled.form`
   h2 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
+    align-self: flex-start;
   }
 
   .legend {
